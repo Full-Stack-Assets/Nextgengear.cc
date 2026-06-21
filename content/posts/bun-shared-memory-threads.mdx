@@ -1,0 +1,27 @@
+---
+title: "Bun Adds Shared-Memory Threads to JavaScriptCore"
+description: "Bun open PR for shared-memory threads in JavaScriptCore"
+date: "2026-06-20T20:21:39.937Z"
+category: "engineering"
+tags: 
+  - "bun"
+  - "javascriptcore"
+  - "sharedmemory"
+  - "threads"
+hero: 
+  url: "https://images.pexels.com/photos/19859289/pexels-photo-19859289.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+  alt: "Appetizing pastries with cream and toppings, displayed in a bakery setting."
+  credit: "Valeria Boltneva"
+  creditUrl: "https://www.pexels.com/@valeriya"
+sources: 
+  - title: "Bun has an open PR adding shared-memory threads to JavaScriptCore"
+    url: "https://github.com/oven-sh/WebKit/pull/249"
+  - title: "Shared-memory threads for JavaScriptCore (experimental, not working yet) by Jarred-Sumner · Pull Request #249 · oven-sh/WebKit"
+    url: "https://github.com/oven-sh/WebKit/pull/249"
+  - title: "Bun has an open PR adding shared-memory threads to JavaScriptCore | Hacker News"
+    url: "https://news.ycombinator.com/item?id=48610841"
+  - title: "Workers - Bun"
+    url: "https://bun.sh/docs/runtime/workers"
+---
+
+A recent open PR on GitHub proposes adding shared-memory threads to JavaScriptCore, a significant development for the JavaScript ecosystem. This feature would enable true parallelism in JavaScript, allowing developers to run functions on separate threads while sharing the same heap and objects. The implications of this change are substantial, as it could fundamentally alter how JavaScript applications are designed and developed. <Callout type="takeaway">The introduction of shared-memory threads to JavaScriptCore could revolutionize the way developers approach parallelism in JavaScript.</Callout> ## What happened The PR, submitted by Jarred-Sumner, introduces a new Thread function that allows running functions on separate threads, all within the same heap and with access to the same objects. This approach eliminates the need for structured cloning, message passing, or relying on SharedArrayBuffer as an escape hatch. The implementation has made significant progress, with parallel JavaScript execution through all four JIT tiers and the thread test suite now passing without a global lock. However, the PR is still in its experimental phase and requires further work, including thread-sanitizer cleanup, fuzzing, and benchmarking. ## Why it matters The addition of shared-memory threads to JavaScriptCore matters because it addresses a long-standing limitation of JavaScript: its single-threaded nature. By enabling true parallelism, developers can create more efficient and scalable applications. This feature could particularly benefit applications that rely heavily on computational tasks, such as scientific simulations, data processing, and machine learning. The change also aligns with the broader trend of increasing parallelism in software development, driven by the growing availability of multi-core processors. <ProsCons> <Pros> <li>Enables true parallelism in JavaScript, improving performance and efficiency.</li> <li>Simplifies development by allowing shared access to objects and eliminating the need for complex messaging protocols.</li> <li>Could lead to significant advancements in applications that rely on computational tasks.</li> </Pros> <Cons> <li>Introduces complexity and potential risks associated with shared-memory concurrency, such as race conditions and memory leaks.</li> <li>May require significant changes to existing codebases and development practices.</li> <li>Could lead to increased memory usage and potential performance issues if not managed properly.</li> </Cons> </ProsCons> ## How to think about it When considering the implications of shared-memory threads in JavaScriptCore, developers should think about how this feature can be leveraged to improve the performance and efficiency of their applications. This might involve identifying computational bottlenecks that could be addressed through parallelism, as well as rethinking development practices to accommodate shared-memory concurrency. It's also crucial to weigh the potential benefits against the added complexity and risks, ensuring that the use of shared-memory threads is judicious and well-managed. <Callout type="warning">Developers should be cautious of the potential risks associated with shared-memory concurrency, including race conditions and memory leaks, and ensure they have a deep understanding of how to manage these risks effectively.</Callout> ## FAQ <FAQ> <Question q="What are shared-memory threads in JavaScriptCore?">Shared-memory threads in JavaScriptCore refer to the ability to run functions on separate threads while sharing the same heap and objects, enabling true parallelism in JavaScript.</Question> <Question q="How do shared-memory threads differ from workers in JavaScript?">Shared-memory threads differ from workers in that they share the same heap and objects, whereas workers run in separate contexts and require messaging protocols to communicate.</Question> <Question q="What are the potential benefits and risks of using shared-memory threads in JavaScriptCore?">The potential benefits include improved performance and efficiency, while the risks include added complexity, potential race conditions, and memory leaks.</Question> </FAQ>

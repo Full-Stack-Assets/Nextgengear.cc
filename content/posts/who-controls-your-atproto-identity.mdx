@@ -1,0 +1,82 @@
+---
+title: "Who Controls Your ATProto Identity? Analyzing the Security of PDS Key Management"
+description: "An analysis of ATProto identity security, the risks of delegated PDS key management, and how developers can protect their decentralized IDs."
+date: "2026-06-21T21:21:50.881Z"
+category: "security"
+tags: 
+  - "atproto"
+  - "decentralization"
+  - "cryptography"
+  - "identity"
+hero: 
+  url: "https://images.pexels.com/photos/3861437/pexels-photo-3861437.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+  alt: "Laboratory setting showing gloved hands holding innovative 3D printed metal structures."
+  credit: "ThisIsEngineering"
+  creditUrl: "https://www.pexels.com/@thisisengineering"
+sources: 
+  - title: "Who owns your ATProto identity?"
+    url: "https://kevinak.se/blog/who-actually-owns-your-atproto-identity-hint-its-probably-not-you"
+  - title: "Who Actually Owns Your ATProto Identity? Hint: It's Probably Not You"
+    url: "https://kevinak.se/blog/who-actually-owns-your-atproto-identity-hint-its-probably-not-you"
+  - title: "Who owns your ATProto identity? | Hacker News"
+    url: "https://news.ycombinator.com/item?id=48619140"
+  - title: "Identity - AT Protocol"
+    url: "https://atproto.com/guides/identity"
+  - title: "About | ATStore"
+    url: "https://atstore.fyi/en/about"
+---
+
+The rapid growth of the AT Protocol (ATProto) has introduced developers to a highly portable, decentralized identity system powered by Personal Data Servers (PDS). However, the architectural convenience of delegating key management to a third-party PDS operator introduces a significant, often overlooked security trade-off. Because the host operator holds both the signing and rotation keys by default, users do not fully control their cryptographic identity. Understanding this delegation risk is critical for developers building cross-app ecosystems where a single compromised key can compromise an entire digital footprint.
+
+<Callout type="takeaway">
+Delegating key management to a third-party Personal Data Server means your provider can cryptographically impersonate you across the entire ATProto ecosystem.
+</Callout>
+
+## What happened
+
+Recent technical deep dives into the AT Protocol's Personal Data Server (PDS) architecture have highlighted a critical centralization risk regarding how cryptographic keys are managed. By default, a user's PDS holds their signing key, which is used to sign every repository commit, post, follow, and interaction. More importantly, the PDS also manages the rotation key, which dictates the decentralized identifier (DID) document's state. Because of this setup, a PDS operator can technically alter signing keys or redirect accounts, making any unauthorized action cryptographically indistinguishable from legitimate user activity.
+
+While the protocol supports enrolling a self-controlled rotation key with higher priority than the PDS's key, this is not the default behavior. Consequently, the vast majority of users—estimated to be over 99.9% hosting on default Bluesky infrastructure—rely entirely on their host's operational integrity. If an operator is compromised, coerced, or goes rogue, they possess the technical capability to not only post on a user's behalf but also permanently lock them out of their identity across all connected applications.
+
+## Why it matters
+
+Unlike traditional federated or isolated social networks where a compromise is scoped to a single platform, ATProto is designed as an "everything account" identity layer. Applications like Tangled for git collaboration, Leaflet for publishing, and Grain for social interactions all write to the same repository signed by the same key. A single compromised PDS operator exposes a developer's identity across the entire ecosystem, opening the door to severe supply chain attacks, such as unauthorized repository commits or malicious package updates.
+
+Conversely, if an operator decides to deplatform a user, they do not just lose access to a single application like Bluesky. Because the PDS controls the active identity state, a hostile operator can effectively destroy a user's ability to interact with any ATProto-compatible application. While the raw data remains public on the firehose, the cryptographic identity itself is rendered unusable without access to recovery keys.
+
+<ProsCons>
+  <Pros>
+    <li>Enables seamless, consumer-friendly onboarding without requiring complex local key management or hardware tokens.</li>
+    <li>Allows rapid data portability and service discovery across disparate applications using standard DID documents.</li>
+    <li>Supports recovery mechanisms via backup rotation keys to reclaim hijacked identities.</li>
+  </Pros>
+  <Cons>
+    <li>Concentrates cryptographic signing and rotation authority in the hands of third-party PDS hosts by default.</li>
+    <li>Expands the blast radius of a single host compromise to cover every connected application in the ATProto ecosystem.</li>
+    <li>Lacks native, user-friendly client tooling to manage offline or hardware-backed rotation keys easily.</li>
+  </Cons>
+</ProsCons>
+
+## How to think about it
+
+Developers and builders must approach ATProto not as a fully trustless system out of the box, but as a framework that trades immediate sovereignty for user convenience. To mitigate these risks, high-value accounts—especially developers managing code repositories or critical infrastructure—should treat their PDS as a semi-trusted agent rather than an absolute authority. This requires actively enrolling a self-controlled, offline rotation key that sits above the PDS in the DID PLC document hierarchy, allowing for rapid recovery and key rotation if the host is compromised.
+
+Furthermore, the ecosystem must mature to support hybrid models, such as local PDS proxies. Under this model, a local, secure environment holds the private keys (potentially backed by a hardware security module) to sign state updates, while a remote PDS proxy merely hosts and broadcasts the signed events to the network. Until these architectures and their corresponding user experiences are standardized, developers should exercise caution when linking sensitive workflows, like source control, to the same identity used for casual social media.
+
+<Callout type="warning">
+Do not use default, third-party hosted PDS accounts for sensitive developer workflows or code signing without first enrolling a self-controlled backup rotation key.
+</Callout>
+
+## FAQ
+
+<FAQ>
+  <Question q="Can a PDS operator actually post or commit code as me?">
+    Yes. Because the PDS holds your active signing key by default, any action the operator takes on your behalf is cryptographically valid and indistinguishable from your own actions across all ATProto applications.
+  </Question>
+  <Question q="How does ATProto identity differ from traditional platforms like GitHub?">
+    On traditional platforms, compromising your account does not give the host your private SSH or GPG keys used for local git commits. On ATProto, the PDS manages the keys for all integrated services, meaning a host compromise affects your social media, git repositories, and blogs simultaneously.
+  </Question>
+  <Question q="Is it possible to secure my identity without self-hosting a PDS?">
+    Yes. You can enroll a self-controlled backup rotation key with higher priority than your PDS's key. This allows you to cryptographically reclaim your DID and point it to a new PDS if your current provider is compromised or acts maliciously.
+  </Question>
+</FAQ>

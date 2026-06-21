@@ -1,0 +1,29 @@
+---
+title: "Who Owns Your ATProto Identity?"
+description: "ATProto identity system raises security concerns"
+date: "2026-06-21T17:48:52.824Z"
+category: "security"
+tags: 
+  - "atproto"
+  - "identity"
+  - "security"
+  - "decentralization"
+hero: 
+  url: "https://images.pexels.com/photos/37263348/pexels-photo-37263348.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+  alt: "Attendees explore mini car models at an indoor automotive exhibition."
+  credit: "Denys Novikov"
+  creditUrl: "https://www.pexels.com/@denys-novikov-2160541479"
+sources: 
+  - title: "Who Owns Your ATProto Identity? Hint: It's Probably Not You"
+    url: "https://kevinak.se/blog/who-actually-owns-your-atproto-identity-hint-its-probably-not-you"
+  - title: "Who Actually Owns Your ATProto Identity? Hint: It's Probably Not You"
+    url: "https://kevinak.se/blog/who-actually-owns-your-atproto-identity-hint-its-probably-not-you"
+  - title: "Who Owns Your ATProto Identity? Hint: It's Probably Not You | Hacker News"
+    url: "https://news.ycombinator.com/item?id=48619140"
+  - title: "Identity - AT Protocol"
+    url: "https://atproto.com/guides/identity"
+  - title: "Building on AT Protocol"
+    url: "https://dbushell.com/2026/03/10/building-on-at-protocol/"
+---
+
+The ATProto identity system has been found to have a significant flaw, allowing Personal Data Server (PDS) operators to impersonate users across multiple applications. This is because the PDS holds the user's signing key, which is used to authenticate all activity on the platform. As a result, if a PDS operator is compromised or malicious, they can post, like, and follow on behalf of the user, and even lock them out of their own identity. <Callout type="takeaway">The ATProto identity system's design allows PDS operators to have significant control over user identities, posing a major security risk.</Callout> ## What happened The ATProto identity system was designed to provide a decentralized and portable way for users to manage their online identities. However, the system's reliance on PDS operators to manage user signing keys has created a significant security vulnerability. According to research, a PDS operator can impersonate a user across multiple applications, including social media, git repositories, and blogs. This is because the PDS operator has access to the user's signing key, which is used to authenticate all activity on the platform. The researcher found that the system's design allows PDS operators to have significant control over user identities, posing a major security risk. The issue is not limited to a single application, but rather affects the entire ATProto ecosystem. ## Why it matters The ATProto identity system's security vulnerability has significant implications for users and developers. If a PDS operator is compromised or malicious, they can cause significant harm to users, including impersonating them, locking them out of their own identities, and even stealing their data. The issue also highlights the risks of relying on a single entity to manage user identities, rather than using a more decentralized approach. The researcher notes that the system's design trades convenience for sovereignty, making it brittle and vulnerable to attack. <ProsCons> <Pros> <li>Decentralized identity management</li> <li>Portable identities across applications</li> <li>End-to-end encryption</li> </Pros> <Cons> <li>PDS operators have significant control over user identities</li> <li>Security vulnerability allows for impersonation and identity theft</li> <li>Risk of data loss and compromise</li> </Cons> </ProsCons> ## How to think about it To mitigate the security risks associated with the ATProto identity system, users and developers should consider taking a more decentralized approach to identity management. This could include using self-hosted PDS solutions, implementing additional security measures such as two-factor authentication, and being cautious when granting permissions to applications. It is also essential to educate users about the risks associated with the ATProto identity system and the importance of protecting their online identities. <Callout type="warning">Users should be aware of the security risks associated with the ATProto identity system and take steps to protect their online identities, including using self-hosted PDS solutions and being cautious when granting permissions to applications.</Callout> ## FAQ <FAQ> <Question q="What is the ATProto identity system?">The ATProto identity system is a decentralized identity management system that allows users to manage their online identities across multiple applications.</Question> <Question q="What is the security vulnerability in the ATProto identity system?">The security vulnerability in the ATProto identity system allows PDS operators to impersonate users and gain control over their identities, posing a significant security risk.</Question> <Question q="How can users protect themselves from the security vulnerability?">Users can protect themselves by using self-hosted PDS solutions, implementing additional security measures such as two-factor authentication, and being cautious when granting permissions to applications.</Question> </FAQ>

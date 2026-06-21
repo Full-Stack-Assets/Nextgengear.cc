@@ -1,0 +1,746 @@
+{
+  "topics": [
+    {
+      "slug": "opus-4-6-vs-opus-4-7-token-comparison",
+      "title": "Anonymous request-token comparisons from Opus 4.6 and Opus 4.7",
+      "url": "https://tokens.billchambers.me/leaderboard",
+      "publishedAt": "2026-04-19T14:27:28.065Z",
+      "signature": "c15c89eb52ab90e7"
+    },
+    {
+      "slug": "eu-replaceable-batteries-2027",
+      "title": "All phones sold in the EU to have replaceable batteries from 2027",
+      "url": "https://www.theolivepress.es/spain-news/2026/04/20/eu-to-force-replaceable-batteries-in-phones-and-tablets-from-2027/",
+      "publishedAt": "2026-04-20T16:03:25.773Z",
+      "signature": "b6e119950e15a203"
+    },
+    {
+      "slug": "tim-cook-apple-ceo-legacy",
+      "title": "Tim Cook's Impeccable Timing",
+      "url": "https://stratechery.com/2026/tim-cooks-impeccable-timing/",
+      "publishedAt": "2026-04-21T16:20:38.612Z",
+      "signature": "7dd8c13d02db36aa"
+    },
+    {
+      "slug": "spacex-acquire-cursor-60b",
+      "title": "SpaceX says it has agreement to acquire Cursor for $60B",
+      "url": "https://twitter.com/spacex/status/2046713419978453374",
+      "publishedAt": "2026-04-22T16:00:26.770Z",
+      "signature": "d1f226565968faa4"
+    },
+    {
+      "slug": "us-wealth-happiness-disparity",
+      "title": "If America's So Rich, How'd It Get So Sad?",
+      "url": "https://www.derekthompson.org/p/if-americas-so-rich-howd-it-get-so",
+      "publishedAt": "2026-04-23T17:06:44.835Z",
+      "signature": "494cf2a002693131"
+    },
+    {
+      "slug": "google-invests-in-anthropic",
+      "title": "Google plans to invest up to $40B in Anthropic",
+      "url": "https://www.bloomberg.com/news/articles/2026-04-24/google-plans-to-invest-up-to-40-billion-in-anthropic",
+      "publishedAt": "2026-04-25T14:32:32.830Z",
+      "signature": "780e79ac5cb597d7"
+    },
+    {
+      "slug": "microsoft-openai-partnership-ends",
+      "title": "Microsoft and OpenAI end their exclusive and revenue-sharing deal",
+      "url": "https://www.bloomberg.com/news/articles/2026-04-27/microsoft-to-stop-sharing-revenue-with-main-ai-partner-openai",
+      "publishedAt": "2026-04-27T17:13:44.881Z",
+      "signature": "694468db9bcd6c5d"
+    },
+    {
+      "slug": "google-pentagon-ai-deal",
+      "title": "Google and Pentagon reportedly agree on deal for 'any lawful' use of AI",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/919494/google-pentagon-classified-ai-deal",
+      "publishedAt": "2026-04-28T18:00:42.492Z",
+      "signature": "23f3d0273b51a0c2"
+    },
+    {
+      "slug": "ai-carb-counting-inaccuracies",
+      "title": "He asked AI to count carbs 27000 times. It couldn't give the same answer twice",
+      "url": "https://www.diabettech.com/i-asked-ai-to-count-my-carbs-27000-times-it-couldnt-give-me-the-same-answer-twice/",
+      "publishedAt": "2026-04-29T17:12:27.289Z",
+      "signature": "cc3ce10604d8b86f"
+    },
+    {
+      "slug": "belgium-stops-nuclear-decommissioning",
+      "title": "Belgium stops decommissioning nuclear power plants",
+      "url": "https://dpa-international.com/general-news/urn:newsml:dpa.com:20090101:260430-930-14717/",
+      "publishedAt": "2026-04-30T17:05:46.401Z",
+      "signature": "b4446835d702dfe6"
+    },
+    {
+      "slug": "grok-4-3-beta-launch",
+      "title": "Grok 4.3",
+      "url": "https://docs.x.ai/developers/models/grok-4.3",
+      "publishedAt": "2026-05-01T15:37:31.313Z",
+      "signature": "739bd02962924373"
+    },
+    {
+      "slug": "ti-84-evo-graphing-calculator",
+      "title": "Ti-84 Evo",
+      "url": "https://education.ti.com/en/products/calculators/graphing-calculators/ti-84-evo",
+      "publishedAt": "2026-05-02T14:41:29.511Z",
+      "signature": "f6ffc3e8595968c1"
+    },
+    {
+      "slug": "overcoming-ai-psychosis-with-specs",
+      "title": "Specsmaxxing – On overcoming AI psychosis, and why I write specs in YAML",
+      "url": "https://acai.sh/blog/specsmaxxing",
+      "publishedAt": "2026-05-03T14:41:11.760Z",
+      "signature": "f7b9c73be42a7955"
+    },
+    {
+      "slug": "eu-removable-batteries-2027",
+      "title": "Removable batteries in smartphones will be mandatory in the EU starting in 2027",
+      "url": "https://www.ecopv-eu.com/en/blog-en/replaceable-smartphone-batteries-2027-eu-regulation/",
+      "publishedAt": "2026-05-04T17:19:40.242Z",
+      "signature": "c169c6107f3e299e"
+    },
+    {
+      "slug": "google-chrome-ai-model-installation",
+      "title": "Google Chrome silently installs a 4 GB AI model on your device without consent",
+      "url": "https://www.thatprivacyguy.com/blog/chrome-silent-nano-install/",
+      "publishedAt": "2026-05-05T17:09:49.837Z",
+      "signature": "4b85ee9211f8cae8"
+    },
+    {
+      "slug": "vibe-coding-agentic-engineering",
+      "title": "Vibe coding and agentic engineering are getting closer than I'd like",
+      "url": "https://simonwillison.net/2026/May/6/vibe-coding-and-agentic-engineering/",
+      "publishedAt": "2026-05-06T17:18:49.476Z",
+      "signature": "9a08d5c9fd16e535"
+    },
+    {
+      "slug": "insider-trading-oil-futures",
+      "title": "Grand Theft Oil Futures: Insider traders keep making a killing at our expense",
+      "url": "https://paulkrugman.substack.com/p/grand-theft-oil-futures",
+      "publishedAt": "2026-05-07T18:02:59.954Z",
+      "signature": "6e8bfb98d51d6689"
+    },
+    {
+      "slug": "poland-joins-top-20-economies",
+      "title": "Poland is now among the 20 largest economies",
+      "url": "https://apnews.com/article/poland-economy-growth-g20-gdp-26fe06e120398410f8d773ba5661e7aa",
+      "publishedAt": "2026-05-08T16:55:06.079Z",
+      "signature": "2dba305e9a7d2d84"
+    },
+    {
+      "slug": "chatgpt-5-5-pro-math-capabilities",
+      "title": "A recent experience with ChatGPT 5.5 Pro",
+      "url": "https://gowers.wordpress.com/2026/05/08/a-recent-experience-with-chatgpt-5-5-pro/",
+      "publishedAt": "2026-05-09T15:17:07.257Z",
+      "signature": "87f888ec5fd30c16"
+    },
+    {
+      "slug": "meta-ai-employee-backlash",
+      "title": "Meta's embrace of AI is making its employees miserable",
+      "url": "https://www.nytimes.com/2026/05/08/technology/meta-ai-employees-miserable.html",
+      "publishedAt": "2026-05-10T15:34:49.828Z",
+      "signature": "f8171f2ea5fc1262"
+    },
+    {
+      "slug": "software-engineering-lifetime-career",
+      "title": "Software engineering may no longer be a lifetime career",
+      "url": "https://www.seangoedecke.com/software-engineering-may-no-longer-be-a-lifetime-career/",
+      "publishedAt": "2026-05-11T18:25:49.958Z",
+      "signature": "2f9c729b40d3983a"
+    },
+    {
+      "slug": "ai-generated-code-language-shift",
+      "title": "If AI writes your code, why use Python?",
+      "url": "https://medium.com/@NMitchem/if-ai-writes-your-code-why-use-python-bf8c4ba1a055",
+      "publishedAt": "2026-05-12T14:28:26.696Z",
+      "signature": "dcd02cf40d63cc57"
+    },
+    {
+      "slug": "migrating-to-european-cloud",
+      "title": "I Moved My Digital Stack to Europe",
+      "url": "https://monokai.com/articles/how-i-moved-my-digital-stack-to-europe/",
+      "publishedAt": "2026-05-13T14:37:51.024Z",
+      "signature": "ab760110b00500df"
+    },
+    {
+      "slug": "claude-for-small-business",
+      "title": "Claude for Small Business",
+      "url": "https://www.anthropic.com/news/claude-for-small-business",
+      "publishedAt": "2026-05-14T14:15:18.767Z",
+      "signature": "2980a2985fbb4c1d"
+    },
+    {
+      "slug": "anthropic-mythos-ai",
+      "title": "Too dangerous or just too expensive? The real reason Anthropic is hiding Mythos",
+      "url": "https://kingy.ai/ai/too-dangerous-to-release-or-just-too-expensive-the-real-reason-anthropic-is-hiding-its-most-powerful-ai/",
+      "publishedAt": "2026-05-15T14:10:15.514Z",
+      "signature": "826f332cb987df73"
+    },
+    {
+      "slug": "companies-not-ready-for-ai",
+      "title": "I believe there are entire companies right now under AI psychosis",
+      "url": "https://twitter.com/mitchellh/status/2055380239711457578",
+      "publishedAt": "2026-05-16T13:25:40.176Z",
+      "signature": "701292b43478b250"
+    },
+    {
+      "slug": "eric-schmidt-booed-at-university-of-arizona",
+      "title": "Eric Schmidt speech about AI booed during graduation",
+      "url": "https://www.nbcnews.com/tech/tech-news/former-google-ceo-booed-graduation-speech-ai-rcna345585",
+      "publishedAt": "2026-05-18T15:35:49.650Z",
+      "signature": "312d3bd5def1557f"
+    },
+    {
+      "slug": "llm-advancements",
+      "title": "The last six months in LLMs in five minutes",
+      "url": "https://simonwillison.net/2026/May/19/5-minute-llms/",
+      "publishedAt": "2026-05-19T15:25:53.186Z",
+      "signature": "7410ebf21739fa2e"
+    },
+    {
+      "slug": "europe-breaks-free-from-visa-and-mastercard",
+      "title": "Goodbye Visa and Mastercard: 130M Europeans switching to sovereign payment",
+      "url": "https://www.lesnumeriques.com/banque-en-ligne/adieu-visa-et-mastercard-130-millions-d-europeens-basculent-vers-un-paiement-100-souverain-des-2026-n250918.html",
+      "publishedAt": "2026-05-20T15:23:39.247Z",
+      "signature": "af42c10894b9351a"
+    },
+    {
+      "slug": "shunning-ai-is-human-choice",
+      "title": "Shunning AI is the human choice",
+      "url": "https://www.thehandbasket.co/p/hating-ai-is-good-actually",
+      "publishedAt": "2026-05-21T15:30:23.911Z",
+      "signature": "8a2d2f10dc7679cf"
+    },
+    {
+      "slug": "steve-wozniak-ai-actual-intelligence",
+      "title": "Steve Wozniak cheered after telling students they have AI – actual intelligence",
+      "url": "https://www.businessinsider.com/steve-wozniak-apple-ai-graduation-speech-2026-5",
+      "publishedAt": "2026-05-22T14:42:37.518Z",
+      "signature": "e934b209759f4855"
+    },
+    {
+      "slug": "microsoft-cancels-claude-code-licenses",
+      "title": "Microsoft starts canceling Claude Code licenses",
+      "url": "https://www.theverge.com/tech/930447/microsoft-claude-code-discontinued-notepad",
+      "publishedAt": "2026-05-23T13:28:13.957Z",
+      "signature": "306d996738ad2f51"
+    },
+    {
+      "slug": "orange-county-toxic-chemical-leak",
+      "title": "Toxic chemical leak at a manufacturing facility in Orange County",
+      "url": "https://www.bbc.com/news/articles/c3w2l249j8go",
+      "publishedAt": "2026-05-24T13:29:01.766Z",
+      "signature": "32ac02cfaa4d31b6"
+    },
+    {
+      "slug": "google-alternatives",
+      "title": "Search engines alternatives now that Google isn't Google anymore",
+      "url": "https://techcrunch.com/2026/05/21/six-search-engines-worth-trying-now-that-google-isnt-really-google-anymore/",
+      "publishedAt": "2026-05-25T14:56:52.495Z",
+      "signature": "30a508d7d5381582"
+    },
+    {
+      "slug": "github-actions-down-again",
+      "title": "GitHub Actions down again today",
+      "url": "https://www.githubstatus.com/?today",
+      "publishedAt": "2026-05-26T15:33:04.389Z",
+      "signature": "53e30903bbc3ba59"
+    },
+    {
+      "slug": "ai-fatigue-in-tech",
+      "title": "I'm Tired of Talking to AI",
+      "url": "https://orchidfiles.com/im-tired-of-ai-generated-answers/",
+      "publishedAt": "2026-05-27T15:44:49.658Z",
+      "signature": "4cc1cf068d75ac7d"
+    },
+    {
+      "slug": "anthropic-and-openai-product-market-fit",
+      "title": "I think Anthropic and OpenAI have found product-market fit",
+      "url": "https://simonwillison.net/2026/May/27/product-market-fit/",
+      "publishedAt": "2026-05-28T13:23:35.260Z",
+      "signature": "fabc0befa8bae35d"
+    },
+    {
+      "slug": "blue-origin-new-glenn-explodes",
+      "title": "Blue Origin's New Glenn blows up during static fire test",
+      "url": "https://twitter.com/nasaspaceflight/status/2060164928472854821",
+      "publishedAt": "2026-05-29T13:15:01.021Z",
+      "signature": "21f0fac637e0b5ad"
+    },
+    {
+      "slug": "dead-economy-theory",
+      "title": "The dead economy theory",
+      "url": "https://www.owenmcgrann.com/p/the-dead-economy-theory",
+      "publishedAt": "2026-05-30T12:33:08.913Z",
+      "signature": "589a9f127e224005"
+    },
+    {
+      "slug": "rsync-ai-debate",
+      "title": "Please Do Not Vibe Fuck Up This Software",
+      "url": "https://github.com/RsyncProject/rsync/issues/929",
+      "publishedAt": "2026-05-31T12:36:36.145Z",
+      "signature": "df76ffdd65a5fcba"
+    },
+    {
+      "slug": "malaysia-bans-social-media-for-kids",
+      "title": "Malaysia enforces ban on social media accounts for children younger than 16",
+      "url": "https://apnews.com/article/malaysia-social-media-ban-16-bfaa7b01163b61b5d53c4ecfa870d133",
+      "publishedAt": "2026-06-01T14:10:22.783Z",
+      "signature": "c45e9bd7cdbb54fa"
+    },
+    {
+      "slug": "stock-market-impact-anthropic-spacex-openai",
+      "title": "Can the stockmarket swallow Anthropic, SpaceX and OpenAI?",
+      "url": "https://www.economist.com/finance-and-economics/2026/06/01/can-the-stockmarket-swallow-anthropic-spacex-and-openai",
+      "publishedAt": "2026-06-02T13:25:55.127Z",
+      "signature": "00f54b1337240ae8"
+    },
+    {
+      "slug": "ai-outperforms-law-professors",
+      "title": "AI outperforms law professors in Stanford Law study",
+      "url": "https://law.stanford.edu/press/ai-outperforms-law-professors-in-stanford-law-study/",
+      "publishedAt": "2026-06-03T13:47:36.955Z",
+      "signature": "1b0fe55cd877abc0"
+    },
+    {
+      "slug": "artificial-intelligence-not-conscious",
+      "title": "Artificial intelligence is not conscious – Ted Chiang",
+      "url": "https://www.theatlantic.com/philosophy/2026/06/no-artificial-intelligence-is-not-conscious/687378/",
+      "publishedAt": "2026-06-04T13:14:20.900Z",
+      "signature": "2ce06c2384abe730"
+    },
+    {
+      "slug": "ladybird-development-change",
+      "title": "Changing How We Develop Ladybird",
+      "url": "https://ladybird.org/posts/changing-how-we-develop-ladybird/",
+      "publishedAt": "2026-06-05T13:10:01.312Z",
+      "signature": "6ffca3dbfa12fa8d"
+    },
+    {
+      "slug": "grapheneos-user-reported",
+      "title": "GrapheneOS user reported to authorities for using GrapheneOS",
+      "url": "https://discuss.grapheneos.org/d/36134-grapheneos-user-reported-to-authorities-for-using-grapheneos",
+      "publishedAt": "2026-06-06T12:35:29.156Z",
+      "signature": "c5913425c48ee2a0"
+    },
+    {
+      "slug": "pentagon-raises-israeli-spying-threat",
+      "title": "Pentagon raised threat of Israeli spying on U.S. to highest level, sources say",
+      "url": "https://www.nbcnews.com/politics/national-security/pentagon-raised-threat-israeli-spying-us-highest-level-sources-say-rcna348565",
+      "publishedAt": "2026-06-07T10:57:45.659Z",
+      "signature": "9a58502ec0650edd"
+    },
+    {
+      "slug": "designing-with-claude",
+      "title": "I design with Claude more than Figma now",
+      "url": "https://blog.janestreet.com/i-design-with-claude-code-more-than-figma-now-index/",
+      "publishedAt": "2026-06-07T12:40:37.947Z",
+      "signature": "e1fa83a3da4ff15b"
+    },
+    {
+      "slug": "social-media-entertainment-shift",
+      "title": "Anti-social: It's fads, not friends, which now dominate social media feeds",
+      "url": "https://www.bbc.com/worklife/article/20260520-how-social-media-ceased-to-be-social",
+      "publishedAt": "2026-06-08T15:55:54.420Z",
+      "signature": "92cd314bc467e3e5"
+    },
+    {
+      "slug": "apple-siri-ai",
+      "title": "Siri AI",
+      "url": "https://www.apple.com/apple-intelligence/",
+      "publishedAt": "2026-06-09T14:54:23.877Z",
+      "signature": "3995a3476470ce2c"
+    },
+    {
+      "slug": "fn-key-frustration",
+      "title": "I Hate (Most) Keyboard 'Fn' Keys",
+      "url": "https://danq.me/2026/06/09/fn-keys/",
+      "publishedAt": "2026-06-10T15:41:02.461Z",
+      "signature": "ea760ff68f25a344"
+    },
+    {
+      "slug": "ai-wont-replace-software-engineers",
+      "title": "Why AI hasn't replaced software engineers, and won't",
+      "url": "https://www.normaltech.ai/p/why-ai-hasnt-replaced-software-engineers",
+      "publishedAt": "2026-06-11T16:05:04.134Z",
+      "signature": "c56acd2cf3ece5f6"
+    },
+    {
+      "slug": "claude-fable-proactive-coding",
+      "title": "Claude Fable is relentlessly proactive",
+      "url": "https://simonwillison.net/2026/Jun/11/fable-is-relentlessly-proactive/",
+      "publishedAt": "2026-06-12T15:17:35.095Z",
+      "signature": "05cbf5f52837290f"
+    },
+    {
+      "slug": "us-government-suspends-fable-5-mythos-5-access",
+      "title": "Statement on US government directive to suspend access to Fable 5 and Mythos 5",
+      "url": "https://www.anthropic.com/news/fable-mythos-access",
+      "publishedAt": "2026-06-13T14:03:13.517Z",
+      "signature": "f1bebfaad74a3e23"
+    },
+    {
+      "slug": "us-crackdown-on-anthropic-ai",
+      "title": "Amazon CEO's talks with U.S. officials triggered crackdown on Anthropic models",
+      "url": "https://www.wsj.com/tech/ai/amazon-ceos-talks-with-u-s-officials-triggered-crackdown-on-anthropic-models-dcc90578?st=Yct6gx&reflink=desktopwebshare_permalink",
+      "publishedAt": "2026-06-14T08:20:36.748Z",
+      "signature": "680807df19e7eeea"
+    },
+    {
+      "slug": "census-bureau-bans-noise-infusion",
+      "title": "Noise infusion banned from statistical products published by Census Bureau",
+      "url": "https://desfontain.es/blog/banning-noise.html",
+      "publishedAt": "2026-06-14T11:36:14.502Z",
+      "signature": "8fd1405eed521b89"
+    },
+    {
+      "slug": "earning-a-billion-dollars",
+      "title": "How to Earn a Billion Dollars",
+      "url": "https://paulgraham.com/earn.html",
+      "publishedAt": "2026-06-14T14:19:47.536Z",
+      "signature": "6c212c999e72ba7c"
+    },
+    {
+      "slug": "ai-adoption-rates",
+      "title": "No, everyone is not using AI for everything",
+      "url": "https://gabrielweinberg.com/p/people-are-consuming-ai-like-they",
+      "publishedAt": "2026-06-14T18:19:43.324Z",
+      "signature": "dc137360362cae93"
+    },
+    {
+      "slug": "swiss-voters-reject-population-cap",
+      "title": "Swiss voters reject proposal to cap population at ten million",
+      "url": "https://www.swissinfo.ch/eng/swiss-politics/swiss-voters-reject-proposal-to-cap-population-at-ten-million/91548146",
+      "publishedAt": "2026-06-14T20:24:23.790Z",
+      "signature": "32da542060ef07ac"
+    },
+    {
+      "slug": "atlantic-cold-blob-amoc-shutdown",
+      "title": "A 'cold blob' in the Atlantic could be a sign of AMOC shutdown",
+      "url": "https://www.cnn.com/2026/06/12/climate/cold-blob-atlantic-amoc-ocean-circulation",
+      "publishedAt": "2026-06-14T22:19:38.050Z",
+      "signature": "cd28bfc465c75f28"
+    },
+    {
+      "slug": "us-blocks-anthropic-ai-models",
+      "title": "Did Anthropic ask for this?",
+      "url": "https://www.verysane.ai/p/did-anthropic-ask-for-this",
+      "publishedAt": "2026-06-15T02:51:58.461Z",
+      "signature": "26f302004220ab25"
+    },
+    {
+      "slug": "hacker-news-june-2026",
+      "title": "Ask HN: What are you working on? (June 2026)",
+      "url": "https://news.ycombinator.com/item?id=48528779",
+      "publishedAt": "2026-06-15T06:32:51.357Z",
+      "signature": "cdec5d22f757bedc"
+    },
+    {
+      "slug": "tech-leadership-shift",
+      "title": "What the Fuck Happened to Nerds",
+      "url": "https://mrmarket.lol/what-the-fuck-happened-to-nerds/",
+      "publishedAt": "2026-06-15T13:23:43.871Z",
+      "signature": "daff9a312810b2a8"
+    },
+    {
+      "slug": "what-happened-to-nerds",
+      "title": "What happened to nerds?",
+      "url": "https://mrmarket.lol/what-the-fuck-happened-to-nerds/",
+      "publishedAt": "2026-06-15T18:45:30.413Z",
+      "signature": "2082f80ddbd950bd"
+    },
+    {
+      "slug": "hetzner-price-adjustment",
+      "title": "Hetzner Price Adjustment",
+      "url": "https://docs.hetzner.com/general/infrastructure-and-availability/price-adjustment/#cloud-servers",
+      "publishedAt": "2026-06-15T21:49:11.700Z",
+      "signature": "e996a513c733ae79"
+    },
+    {
+      "slug": "fox-acquires-roku",
+      "title": "Fox to buy Roku",
+      "url": "https://www.wsj.com/business/deals/fox-roku-deal-f6e564f9",
+      "publishedAt": "2026-06-15T23:52:34.477Z",
+      "signature": "c520d0f2a3dd2c09"
+    },
+    {
+      "slug": "peopleless-economy-technological-feasibility",
+      "title": "Peopleless economy? Not technically impossible",
+      "url": "https://gmalandrakis.com/writings/ad-economicum.html",
+      "publishedAt": "2026-06-16T05:07:51.125Z",
+      "signature": "8ac2b8f7a3ae9bbd"
+    },
+    {
+      "slug": "john-carmack-fabrice-bellard",
+      "title": "John Carmack on Fabrice Bellard",
+      "url": "https://twitter.com/ID_AA_Carmack/status/2064095424420487226",
+      "publishedAt": "2026-06-16T11:25:19.160Z",
+      "signature": "4616bf884323b3c7"
+    },
+    {
+      "slug": "spacex-acquires-cursor",
+      "title": "SpaceX to buy Cursor for $60B",
+      "url": "https://www.reuters.com/legal/transactional/spacex-buy-anysphere-60-billion-2026-06-16/",
+      "publishedAt": "2026-06-16T17:08:28.556Z",
+      "signature": "af537c0bfc15107a"
+    },
+    {
+      "slug": "google-chrome-update-ends-ad-blockers",
+      "title": "Google Chrome update will close the door on ad blockers",
+      "url": "https://9to5google.com/2026/06/15/google-chromes-next-update-will-mark-the-end-of-popular-ad-blockers/",
+      "publishedAt": "2026-06-16T21:12:14.414Z",
+      "signature": "e352069b992ece21"
+    },
+    {
+      "slug": "meta-engineering-crisis",
+      "title": "Is Meta destroying its engineering organization?",
+      "url": "https://newsletter.pragmaticengineer.com/p/why-is-meta-destroying-its-engineering",
+      "publishedAt": "2026-06-16T23:29:50.164Z",
+      "signature": "01e0fb5a62119184"
+    },
+    {
+      "slug": "ai-impact-on-self-help-books",
+      "title": "Has AI already killed self-help nonfiction books?",
+      "url": "https://tim.blog/2026/06/12/has-ai-already-killed-nonfiction/",
+      "publishedAt": "2026-06-17T04:49:32.480Z",
+      "signature": "528fcf98dba41162"
+    },
+    {
+      "slug": "openai-leaked-financials",
+      "title": "Leaked OpenAI financials show $38.5B loss and compute burn",
+      "url": "https://runtimewire.com/article/openai-leaked-financials-altman-compute-burn",
+      "publishedAt": "2026-06-17T09:56:15.564Z",
+      "signature": "762c30d805796974"
+    },
+    {
+      "slug": "ai-in-brand-messaging-turnoff",
+      "title": "Sixty percent of US consumers say 'AI' in brand messaging is a turnoff",
+      "url": "https://wpvip.com/future-of-the-web-2026/",
+      "publishedAt": "2026-06-17T17:00:22.534Z",
+      "signature": "8bf3058eba8743f4"
+    },
+    {
+      "slug": "americans-skeptical-of-ai-impact",
+      "title": "Only 16 Percent of Americans Think AI Will Have a Positive Impact on Society",
+      "url": "https://techcrunch.com/2026/06/17/only-16-percent-of-americans-think-ai-will-have-a-positive-impact-on-society-a-new-study-shows/",
+      "publishedAt": "2026-06-17T19:31:09.687Z",
+      "signature": "905d5155c891e899"
+    },
+    {
+      "slug": "midjourney-medical",
+      "title": "Midjourney Medical",
+      "url": "https://www.midjourney.com/medical/blogpost",
+      "publishedAt": "2026-06-18T06:02:01.112Z",
+      "signature": "a47398a0af60a8b2"
+    },
+    {
+      "slug": "apple-to-raise-prices",
+      "title": "Apple boss Tim Cook says prices to rise due to memory chip costs",
+      "url": "https://www.bbc.com/news/articles/c3wyxvqdx1zo",
+      "publishedAt": "2026-06-18T10:47:06.933Z",
+      "signature": "3bcfecb9595a6eb2"
+    },
+    {
+      "slug": "wages-too-low-for-30-rule",
+      "title": "Wages in America Are Too Low for the 30% Rule to Work for Renters Anymore",
+      "url": "https://www.realtor.com/advice/rent/wages-in-america-are-too-low-for-the-30-rule-to-work-for-renters-anymore/",
+      "publishedAt": "2026-06-18T14:16:58.561Z",
+      "signature": "4de35e5b25f69140"
+    },
+    {
+      "slug": "new-outlook-slow-performance",
+      "title": "Microsoft new Outlook takes 10 seconds to do what Outlook Classic does instantly",
+      "url": "https://www.windowslatest.com/2026/06/15/microsofts-new-outlook-takes-10-seconds-to-do-what-outlook-classic-does-instantly-on-windows/",
+      "publishedAt": "2026-06-18T18:10:41.224Z",
+      "signature": "20bf67a23a5c29f8"
+    },
+    {
+      "slug": "swiss-parliament-lifts-ban-on-nuclear-power",
+      "title": "Swiss parliament lifts ban on new nuclear power plants",
+      "url": "https://www.bluewin.ch/en/news/switzerland/parliament-lifts-ban-on-new-nuclear-power-plants-3257535.html",
+      "publishedAt": "2026-06-18T19:32:20.733Z",
+      "signature": "79d2966cf28e43f6"
+    },
+    {
+      "slug": "ubiquiti-enterprise-nas",
+      "title": "Ubiquiti: Enterprise NAS, Built on ZFS",
+      "url": "https://blog.ui.com/article/introducing-enterprise-nas",
+      "publishedAt": "2026-06-18T21:26:04.060Z",
+      "signature": "0e7af70181b56567"
+    },
+    {
+      "slug": "craigslist-founder-philanthropy",
+      "title": "The founder of Craigslist has given away half a billion dollars",
+      "url": "https://www.independent.co.uk/us/money/craigslist-multimillionaire-craig-newmark-b2980681.html",
+      "publishedAt": "2026-06-18T23:51:33.692Z",
+      "signature": "963661448af47d34"
+    },
+    {
+      "slug": "windows-2000-ui",
+      "title": "What was nice about the UI of Windows 2000",
+      "url": "https://movq.de/blog/postings/2026-06-16/0/POSTING-en.html",
+      "publishedAt": "2026-06-19T05:01:07.541Z",
+      "signature": "eff469e745fd0f38"
+    },
+    {
+      "slug": "elkjop-forced-consent-fine",
+      "title": "I told them forced consent was unlawful. 5 years later it cost Elkjop €1.8M",
+      "url": "https://www.thatprivacyguy.com/blog/elkjop-forced-consent-fine/",
+      "publishedAt": "2026-06-19T09:51:46.814Z",
+      "signature": "36cb2ba470c9725d"
+    },
+    {
+      "slug": "the-airpods-effect",
+      "title": "The AirPods Effect",
+      "url": "https://www.theescapenewsletter.com/p/the-airpods-effect",
+      "publishedAt": "2026-06-19T13:40:37.118Z",
+      "signature": "8ffdfe3556f373e2"
+    },
+    {
+      "slug": "the-economy-cant-see",
+      "title": "The room the economy can't see",
+      "url": "https://wilsoniumite.com/2026/06/19/the-room-the-economy-cant-see/",
+      "publishedAt": "2026-06-19T16:36:29.612Z",
+      "signature": "feeb4903f6f93ea7"
+    },
+    {
+      "slug": "english-vocabulary-test",
+      "title": "How many of the 170k English words do you know?",
+      "url": "https://vocabowl-870366514258.us-west1.run.app/",
+      "publishedAt": "2026-06-19T19:02:36.527Z",
+      "signature": "bcbde0044238e268"
+    },
+    {
+      "slug": "ai-eroding-human-skills",
+      "title": "Is AI ruining our skills? Early results are in – and they're not good",
+      "url": "https://www.nature.com/articles/d41586-026-01947-1",
+      "publishedAt": "2026-06-19T21:16:09.535Z",
+      "signature": "d8757839cc486633"
+    },
+    {
+      "slug": "hyundai-buys-boston-dynamics",
+      "title": "Hyundai buys Boston Dynamics",
+      "url": "https://startupfortune.com/hyundai-takes-full-control-of-boston-dynamics-as-softbank-exits-for-325-million/",
+      "publishedAt": "2026-06-19T23:05:56.843Z",
+      "signature": "d0bf8b385eec6684"
+    },
+    {
+      "slug": "norway-bans-ai-in-elementary-schools",
+      "title": "Norway imposes near ban on AI in elementary school",
+      "url": "https://www.reuters.com/technology/norway-imposes-near-ban-ai-elementary-school-2026-06-19/",
+      "publishedAt": "2026-06-20T04:14:44.125Z",
+      "signature": "eccc5f6dee915c48"
+    },
+    {
+      "slug": "iran-strait-of-hormuz-insurance",
+      "title": "Iran requires insurance on ships using Strait of Hormuz, fees likely to follow",
+      "url": "https://www.lloydslist.com/LL1157571/Iran-imposes-mandatory-insurance-on-ships-transiting-Strait-of-Hormuz-with-fees-likely-to-follow",
+      "publishedAt": "2026-06-20T08:25:42.835Z",
+      "signature": "34e7af3b9dce3507"
+    },
+    {
+      "slug": "memory-shortage-coding-efficiency",
+      "title": "Ask HN: Will programmers write more efficient code during the memory shortage?",
+      "url": "https://news.ycombinator.com/item?id=48604232",
+      "publishedAt": "2026-06-20T11:23:57.270Z",
+      "signature": "d31fdb53e531cd44"
+    },
+    {
+      "slug": "real-id-internet-traffic",
+      "title": "Think of the children: How to force real ID for all internet traffic (2023)",
+      "url": "https://nochan.net/b/Internet-Crap/20230829-Think-Of-The-Children/",
+      "publishedAt": "2026-06-20T14:18:29.303Z",
+      "signature": "18d71425b5972ed1"
+    },
+    {
+      "slug": "uk-vpn-ban-for-under-16s",
+      "title": "VPN ban update for UK households as government looks at 'age-gate'",
+      "url": "https://www.birminghammail.co.uk/news/midlands-news/vpn-ban-update-uk-households-34141063",
+      "publishedAt": "2026-06-20T16:25:50.886Z",
+      "signature": "c022d253cab57f46"
+    },
+    {
+      "slug": "european-social-stack",
+      "title": "The European Social Stack",
+      "url": "https://european.social",
+      "publishedAt": "2026-06-20T18:19:29.646Z",
+      "signature": "75d586d34cc0668e"
+    },
+    {
+      "slug": "bun-shared-memory-threads",
+      "title": "Bun has an open PR adding shared-memory threads to JavaScriptCore",
+      "url": "https://github.com/oven-sh/WebKit/pull/249",
+      "publishedAt": "2026-06-20T20:21:39.939Z",
+      "signature": "e1b832c15ce73f2d"
+    },
+    {
+      "slug": "wholesale-plagiarism-of-obscure-sorrows",
+      "title": "The Wholesale Plagiarism of Obscure Sorrows",
+      "url": "https://waxy.org/2026/06/the-wholesale-plagiarism-of-obscure-sorrows/",
+      "publishedAt": "2026-06-20T22:16:52.113Z",
+      "signature": "3c3840831ea1a533"
+    },
+    {
+      "slug": "tesla-autopilot-crash-texas",
+      "title": "Tesla allegedly in autopilot mode crashes into Texas house, woman killed",
+      "url": "https://abcnews.com/US/tesla-allegedly-autopilot-mode-crashes-texas-house-woman/story?id=134062374",
+      "publishedAt": "2026-06-21T00:15:43.954Z",
+      "signature": "8271d1f0dd63cbdb"
+    },
+    {
+      "slug": "white-house-delays-voting-machine-report",
+      "title": "White House delays US voting-machine vulnerability report",
+      "url": "https://www.reuters.com/world/white-house-delays-release-us-voting-machine-study-midterms-near-2026-06-19/",
+      "publishedAt": "2026-06-21T06:10:31.867Z",
+      "signature": "bce3ded82e29e029"
+    },
+    {
+      "slug": "news-fatigue-human-brain",
+      "title": "Your brain was never designed for this much bad news",
+      "url": "https://www.sciencedaily.com/releases/2026/06/260614012006.htm",
+      "publishedAt": "2026-06-21T10:36:42.958Z",
+      "signature": "395615cdc4d488b0"
+    },
+    {
+      "slug": "google-hits-50-ipv6",
+      "title": "Google Hits 50% IPv6",
+      "url": "https://blog.apnic.net/2026/04/28/google-hits-50-ipv6/",
+      "publishedAt": "2026-06-21T13:12:56.835Z",
+      "signature": "4960d8337cc0cc83"
+    },
+    {
+      "slug": "anthropic-id-verification",
+      "title": "Anthropic to Require ID Verification for Certain Capabilities Starting July 8",
+      "url": "https://old.reddit.com/r/ClaudeAI/comments/1ubm53n/official_anthropic_to_require_identity/",
+      "publishedAt": "2026-06-21T16:00:09.032Z",
+      "signature": "d794ff6a279bab72"
+    },
+    {
+      "slug": "atproto-identity-ownership",
+      "title": "Who Owns Your ATProto Identity? Hint: It's Probably Not You",
+      "url": "https://kevinak.se/blog/who-actually-owns-your-atproto-identity-hint-its-probably-not-you",
+      "publishedAt": "2026-06-21T17:48:52.825Z",
+      "signature": "e47521eb156ca375"
+    },
+    {
+      "slug": "prefer-duplication-over-wrong-abstraction",
+      "title": "Prefer duplication over the wrong abstraction (2016)",
+      "url": "https://sandimetz.com/blog/2016/1/20/the-wrong-abstraction",
+      "publishedAt": "2026-06-21T19:53:33.820Z",
+      "signature": "bd5bc4e519de7d26"
+    },
+    {
+      "slug": "anthropic-claude-identity-verification",
+      "title": "Identity verification on Claude",
+      "url": "https://support.claude.com/en/articles/14328960-identity-verification-on-claude",
+      "publishedAt": "2026-06-21T21:13:32.072Z",
+      "signature": "0168d21e4be9dc78"
+    },
+    {
+      "slug": "who-controls-your-atproto-identity",
+      "title": "Who owns your ATProto identity?",
+      "url": "https://kevinak.se/blog/who-actually-owns-your-atproto-identity-hint-its-probably-not-you",
+      "publishedAt": "2026-06-21T21:21:50.882Z",
+      "signature": "b02a17bff3f81c8d"
+    }
+  ]
+}

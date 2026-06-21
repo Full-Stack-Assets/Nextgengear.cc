@@ -1,0 +1,56 @@
+---
+title: "Google Chrome Update Ends Ad Blockers"
+description: "Google Chrome's update will end ad blockers"
+date: "2026-06-16T21:12:14.412Z"
+category: "engineering"
+tags: 
+  - "google"
+  - "chrome"
+  - "adblockers"
+  - "manifestv3"
+hero: 
+  url: "https://images.pexels.com/photos/106341/pexels-photo-106341.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+  alt: "Samsung tablet on desk showing Google homepage, perfect for technology-related content."
+  credit: "AS Photography"
+  creditUrl: "https://www.pexels.com/@asphotography"
+sources: 
+  - title: "Google Chrome update will close the door on ad blockers"
+    url: "https://9to5google.com/2026/06/15/google-chromes-next-update-will-mark-the-end-of-popular-ad-blockers/"
+  - title: "Google Chrome's next update will mark the end of popular ad blockers"
+    url: "https://9to5google.com/2026/06/15/google-chromes-next-update-will-mark-the-end-of-popular-ad-blockers/"
+  - title: "Google's Next Chrome Update Will Finally Kill Support for Ad Blockers"
+    url: "https://www.pcmag.com/news/googles-next-chrome-update-will-finally-kill-support-for-ad-blockers"
+  - title: "Google Chrome's Next Update Will Mark the End of Popular Ad Blockers - Slashdot"
+    url: "https://tech.slashdot.org/story/26/06/15/205219/google-chromes-next-update-will-mark-the-end-of-popular-ad-blockers"
+  - title: "Google Chrome to End Ad Blockers in Next Update, Cites Security Risks With Extension"
+    url: "https://www.itechpost.com/articles/236333/20260615/google-chrome-end-ad-blockers-next-update-cites-security-risks-extension.htm"
+---
+
+Google Chrome's next update will mark the end of popular ad blockers. The move to Manifest V3 for extensions is closing its final loophole and, with it, bringing the end of many ad blocker tools. This change will impact users who rely on ad blockers to block ads on websites. 
+<Callout type="takeaway">Google Chrome's update to Manifest V3 will end support for ad blockers.</Callout>
+## What happened
+Google Chrome’s move to Manifest V3 for extensions has been in the works for years. The move has been criticized for breaking most ad blockers due to the new permissions structure and Google’s focus on privacy. A Chromium commit removes support for the "kExtensionManifestV2Disabled" flag, which was referred to as dead code since Chrome no longer supports Manifest V2 extensions.
+The change is set to roll out across two consecutive Chrome releases, first starting with Chrome 150, which is expected to arrive by the end of June, and will remove the primary technical workaround that power users had kept in their toolkit. Chrome 151, expected by next month, will then remove the remaining flags, including "ExtensionManifestV2Unsupported," "ExtensionManifestV2Availability," and "AllowLegacyMV2Extensions."
+## Why it matters
+The impacts of the change will be felt broadly by users who rely on ad blockers. Ad blockers built on the older standard relied on a feature called "webRequest" that allowed them to intercept and cancel network requests before they loaded. Manifest V3 replaced that with a more limited alternative called "declarativeNetRequest," which gives the browser more control over what extensions can and cannot do.
+<ProsCons>
+   <Pros>
+      <li>Improved security</li>
+      <li>Better performance</li>
+      <li>More control over extensions</li>
+   </Pros>
+   <Cons>
+      <li>End of popular ad blockers</li>
+      <li>Limited filtering capabilities</li>
+      <li>Impact on users who rely on ad blockers</li>
+   </Cons>
+</ProsCons>
+## How to think about it
+Users who rely on ad blockers should consider alternative solutions, such as switching browsers or using different ad blockers that are compatible with Manifest V3. Developers should also consider the implications of the change and how it will impact their extensions.
+<Callout type="warning">Users should be aware of the limitations of Manifest V3 and the impact on ad blockers.</Callout>
+## FAQ
+<FAQ>
+   <Question q="What is happening to ad blockers in Google Chrome?">Ad blockers in Google Chrome will no longer be supported due to the update to Manifest V3.</Question>
+   <Question q="What is Manifest V3?">Manifest V3 is a new framework for extensions in Google Chrome that replaces the older Manifest V2 standard.</Question>
+   <Question q="What are the implications of the change for users?">The change will impact users who rely on ad blockers, as they will need to find alternative solutions or switch browsers.</Question>
+</FAQ>

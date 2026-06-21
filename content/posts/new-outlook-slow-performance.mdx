@@ -1,0 +1,63 @@
+---
+title: "New Outlook Takes 10 Seconds to Open Emails"
+description: "Microsoft's new Outlook is slower than Outlook Classic"
+date: "2026-06-18T18:10:41.223Z"
+category: "engineering"
+tags: 
+  - "microsoft"
+  - "outlook"
+  - "performance"
+  - "email"
+  - "windows"
+hero: 
+  url: "https://images.pexels.com/photos/27136444/pexels-photo-27136444.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+  alt: "Black and white shot of modern buildings in Hamburg, showcasing sleek architectural design and reflections."
+  credit: "Wolfgang Weiser"
+  creditUrl: "https://www.pexels.com/@wolfgang-weiser-467045605"
+sources: 
+  - title: "Microsoft new Outlook takes 10 seconds to do what Outlook Classic does instantly"
+    url: "https://www.windowslatest.com/2026/06/15/microsofts-new-outlook-takes-10-seconds-to-do-what-outlook-classic-does-instantly-on-windows/"
+  - title: "Microsoft's new Outlook takes 10 seconds to do what Outlook Classic does instantly on Windows"
+    url: "https://www.windowslatest.com/2026/06/15/microsofts-new-outlook-takes-10-seconds-to-do-what-outlook-classic-does-instantly-on-windows/"
+  - title: "Microsoft new Outlook takes 10 seconds to do what Outlook Classic does instantly | Hacker News"
+    url: "https://news.ycombinator.com/item?id=48584207"
+  - title: "New Outlook Is Slow and a Memory Hog: More Reasons to Avoid It"
+    url: "https://office-watch.com/2026/new-outlook-slow-memory-hog/"
+---
+
+The new Outlook for Windows has a significant performance issue when handling notifications. Clicking a notification for a new email takes around 10 seconds to open the specific email, while Outlook Classic does it almost instantly. This problem arises because the new Outlook is built on WebView2, a Chromium-based rendering engine, which requires a browser-like process chain to initialize or resume its web layer, authenticate, load the relevant mail thread, and render it.
+
+<Callout type="takeaway"> The new Outlook's slow performance is due to its web-based architecture, which leads to a 10-second delay when opening emails from notifications.</Callout>
+
+## What happened
+Microsoft's new Outlook has been found to have a notification problem that is hard to ignore. When a new email arrives in Windows 11, a notification banner appears, and clicking it is supposed to take the user straight to that message. However, the new Outlook opens the app, loads the full inbox, and then takes around 10 seconds before the specific email from the notification shows up on screen. In contrast, Outlook Classic opens the specific email almost instantly.
+
+The new Outlook is built on Microsoft Edge's WebView2 runtime, which is a Chromium-based rendering engine. Every time the user interacts with the app, including clicking a notification, a browser-like process chain has to do the work. The app has to initialize or resume its web layer, authenticate, load the relevant mail thread, and render it, all through that web engine.
+
+## Why it matters
+The slow performance of the new Outlook matters because it affects the user experience. The 10-second delay when opening emails from notifications can be frustrating, especially when compared to the instant response of Outlook Classic. This issue may lead to user dissatisfaction and potentially drive them to seek alternative email clients.
+
+<ProsCons>
+   <Pros>
+      <li>The new Outlook has improved in real ways since its launch.</li>
+      <li>It now opens almost as fast as Outlook Classic from a cold start.</li>
+      <li>Microsoft is working on improving the performance of the new Outlook.</li>
+   </Pros>
+   <Cons>
+      <li>The new Outlook takes 10 seconds to open emails from notifications.</li>
+      <li>It uses more memory and CPU than Outlook Classic.</li>
+      <li>The web-based architecture of the new Outlook may lead to performance issues.</li>
+   </Cons>
+</ProsCons>
+
+## How to think about it
+When evaluating the new Outlook, consider the trade-offs between its web-based architecture and the potential performance issues. While the new Outlook may offer some benefits, such as improved launch times, its slow performance when handling notifications is a significant drawback. Users should weigh the importance of instant email access against the potential benefits of the new Outlook.
+
+<Callout type="warning"> Be aware that the new Outlook's performance issues may not be easily fixed with an app update, as they are inherent to its web-based architecture.</Callout>
+
+## FAQ
+<FAQ>
+   <Question q="What is the main cause of the new Outlook's slow performance?">The main cause of the new Outlook's slow performance is its web-based architecture, which requires a browser-like process chain to initialize or resume its web layer, authenticate, load the relevant mail thread, and render it.</Question>
+   <Question q="How does the new Outlook's performance compare to Outlook Classic?">The new Outlook takes around 10 seconds to open emails from notifications, while Outlook Classic does it almost instantly. Additionally, the new Outlook uses more memory and CPU than Outlook Classic.</Question>
+   <Question q="Is Microsoft working on improving the performance of the new Outlook?">Yes, Microsoft is working on improving the performance of the new Outlook, but the web-based architecture may limit the extent of these improvements.</Question>
+</FAQ>

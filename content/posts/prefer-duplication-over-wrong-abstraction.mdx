@@ -1,0 +1,60 @@
+---
+title: "Prefer Duplication Over Wrong Abstraction"
+description: "Duplication is far cheaper than wrong abstraction"
+date: "2026-06-21T19:53:33.819Z"
+category: "engineering"
+tags: 
+  - "abstraction"
+  - "duplication"
+  - "code quality"
+  - "software development"
+hero: 
+  url: "https://images.pexels.com/photos/21847196/pexels-photo-21847196.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+  alt: "A captivating abstract image featuring a blend of woven textures with soft, muted colors."
+  credit: "Robert Clark"
+  creditUrl: "https://www.pexels.com/@robert-clark-504241532"
+sources: 
+  - title: "Prefer duplication over the wrong abstraction (2016)"
+    url: "https://sandimetz.com/blog/2016/1/20/the-wrong-abstraction"
+  - title: "The Wrong Abstraction — Sandi Metz"
+    url: "https://sandimetz.com/blog/2016/1/20/the-wrong-abstraction"
+  - title: "Prefer duplication over the wrong abstraction | Hacker News"
+    url: "https://news.ycombinator.com/item?id=12061453"
+  - title: "prefer duplication over the wrong abstraction"
+    url: "https://puntoblogspot.blogspot.com/2018/11/prefer-duplication-over-wrong.html?m=1"
+  - title: "Prefer duplication over the wrong abstraction - José Coelho"
+    url: "http://josecoelho.com/Software-Engineer/Prefer-duplication-over-the-wrong-abstraction"
+---
+
+The concept of preferring duplication over the wrong abstraction has been a topic of discussion in the software development community. This idea suggests that duplicating code can be more beneficial than creating an abstraction that does not fully fit the requirements. The wrong abstraction can lead to complicated and incomprehensible code, making it harder to maintain and modify. 
+   Sandi Metz's talk at RailsConf 2014 emphasized the importance of avoiding the wrong abstraction, stating that duplication is far cheaper than the wrong abstraction. This idea has been supported by various developers, who have shared their experiences with the consequences of wrong abstractions. 
+   <Callout type="takeaway">Prefer duplication over the wrong abstraction to avoid complicated and incomprehensible code.</Callout>
+   ## What happened
+   The problem of wrong abstractions arises when developers try to extract duplication from code and create a new abstraction. This abstraction may seem perfect at first, but as new requirements emerge, it becomes necessary to modify the abstraction to accommodate these changes. The abstraction becomes increasingly complex, leading to code that is difficult to understand and maintain. 
+   The pressure to preserve existing code and avoid wasting effort can lead developers to retain the wrong abstraction, even when it no longer serves its purpose. This can result in a codebase that is hard to comprehend and modify. 
+   The concept of preferring duplication over the wrong abstraction is not about avoiding abstraction altogether but about creating abstractions that are meaningful and effective.
+   ## Why it matters
+   The wrong abstraction can have significant consequences, including making code harder to maintain and modify. It can also lead to a codebase that is inflexible and resistant to change. On the other hand, duplicating code can make it easier to modify and maintain, as each piece of code can be changed independently without affecting other parts of the system. 
+   The idea of preferring duplication over the wrong abstraction is not about being lazy or avoiding abstraction; it is about creating code that is maintainable, flexible, and easy to understand.
+   <ProsCons>
+      <Pros>
+         <li>Improves code maintainability</li>
+         <li>Reduces complexity</li>
+         <li>Enhances flexibility</li>
+      </Pros>
+      <Cons>
+         <li>May lead to code duplication</li>
+         <li>Requires careful consideration of abstractions</li>
+         <li>Can be challenging to determine the right level of abstraction</li>
+      </Cons>
+   </ProsCons>
+   ## How to think about it
+   When considering abstraction, it is essential to think about the logic behind it and whether it truly represents the requirements of the system. Abstractions should be created when they are meaningful and effective, not just for the sake of avoiding duplication. 
+   Developers should strive to create abstractions that are easy to understand and modify, and that do not introduce unnecessary complexity. This requires careful consideration of the trade-offs between duplication and abstraction.
+   <Callout type="warning">Be cautious when creating abstractions, as the wrong abstraction can lead to complicated and incomprehensible code.</Callout>
+   ## FAQ
+   <FAQ>
+      <Question q="What is the wrong abstraction?">The wrong abstraction refers to an abstraction that does not fully fit the requirements of the system, leading to complicated and incomprehensible code.</Question>
+      <Question q="Why is duplication preferred over the wrong abstraction?">Duplication is preferred because it can make code easier to maintain and modify, whereas the wrong abstraction can lead to a codebase that is inflexible and resistant to change.</Question>
+      <Question q="How can I determine the right level of abstraction?">The right level of abstraction can be determined by carefully considering the requirements of the system and creating abstractions that are meaningful and effective.</Question>
+   </FAQ>
