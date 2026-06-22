@@ -1,168 +1,50 @@
-# Security Remediation: Leaked API Keys in Git History
+# Security Remediation: Exposed API Keys
 
-## Summary
-GitScan detected sensitive API keys (Groq, Brave, Pexels, and GitHub) leaked in the `.env.local` file that was committed to the repository history.
+> Incident record. **Contains no key values by design.** Do not paste real
+> credentials into this file or any tracked file.
 
-## Affected Commits
-- **File**: `.env.local`
-- **Initial Commit**: `baba6e4` (Create .env.local)
-- **Merge Commit**: `997e65f` (Merge pull request #1)
-- **Removed From Tracking**: `a6e6bb9` (Remove .env.local from git tracking)
+## What happened
+API keys were committed to version control in plaintext (originally via a
+`SECURITY_REMEDIATION.md` that embedded live values, and — per the original
+report — a `.env.local` in a related project). Anything ever pushed to a remote
+must be treated as permanently compromised.
 
-## Leaked Credentials (REDACTED)
-The following credentials were exposed in commit `997e65f`:
-- `GROQ_API_KEY`: `gsk_********************************BAl`
-- `BRAVE_API_KEY`: `***REMOVED***`
-- `PEXELS_API_KEY`: `***REMOVED***`
-- `GITHUB_TOKEN`: `***REMOVED***75yylY93BXTt_***` (partially redacted)
-- `CRON_SECRET`: `***REMOVED***`
+## Status in THIS repository (`Full-Stack-Assets/nextgengear.cc`)
+- `.env.local` was **never committed** here (`git log --all --full-history -- .env.local` returns nothing).
+- `.env.local` is correctly listed in `.gitignore`; only `.env.example` (placeholders) is tracked.
+- The previous version of this file contained plaintext keys and remains in
+  pre-removal git history (initial commit) until history is rewritten or the
+  keys are rotated.
 
-## Current Status
-✅ The `.env.local` file has been removed from the repository (commit `a6e6bb9`)
-✅ The `.env.local` file is properly listed in `.gitignore`
-❌ The sensitive data still exists in the Git history
-❌ The API keys have not been rotated yet
+## Required action — ROTATE FIRST (only this truly fixes it)
+Revoke and reissue every exposed credential. File/branch/history cleanup is
+secondary and does **not** neutralize a key that was already pushed.
 
-## Required Actions
+| Credential | Revoke at |
+|---|---|
+| Groq API key | https://console.groq.com/keys |
+| Brave Search API key | https://api.search.brave.com/app/keys |
+| Pexels API key | https://www.pexels.com/api/ |
+| GitHub PAT | https://github.com/settings/tokens |
+| `CRON_SECRET` | regenerate: `openssl rand -hex 32`, then update the deploy env |
 
-### 1. IMMEDIATELY Revoke and Rotate All API Keys
+After rotating, update the new values in your deployment environment
+(Vercel/Cloudflare) and your local `.env.local` only — never a tracked file.
 
-#### Groq API Key
-1. Visit https://console.groq.com/keys
-2. Delete the compromised key: `***REMOVED***`
-3. Generate a new API key
-4. Update your `.env.local` file with the new key
-
-#### Brave Search API Key
-1. Visit https://api.search.brave.com/app/keys
-2. Revoke the key: `***REMOVED***`
-3. Generate a new API key
-4. Update your `.env.local` file with the new key
-
-#### Pexels API Key
-1. Visit https://www.pexels.com/api/
-2. Revoke the key: `***REMOVED***`
-3. Generate a new API key
-4. Update your `.env.local` file with the new key
-
-#### GitHub Personal Access Token
-1. Visit https://github.com/settings/tokens
-2. Find and delete the token starting with `***REMOVED***...`
-3. Create a new fine-grained personal access token with Contents: Read/Write permissions
-4. Update your `.env.local` file with the new token
-
-#### CRON_SECRET
-1. Generate a new secret: `openssl rand -hex 32`
-2. Update your `.env.local` file
-3. Update the secret in your deployment environment (Vercel/Cloudflare)
-
-### 2. Clean Git History (IMPORTANT)
-
-The sensitive data still exists in the Git history and can be accessed by anyone who clones the repository. You must rewrite the Git history to completely remove it.
-
-#### Option A: Using git-filter-repo (Recommended)
+## Optional history cleanup (after rotation)
+If you still want the old values gone from git history, rewrite it on this repo:
 
 ```bash
-# Install git-filter-repo
 pip3 install git-filter-repo
-
-# Clone a fresh copy of the repository
-git clone https://github.com/Full-Stack-Assets/Antforms.git antforms-clean
-cd antforms-clean
-
-# Remove .env.local from all commits in history
-git filter-repo --path .env.local --invert-paths
-
-# Force push to all branches (THIS WILL REWRITE HISTORY)
-git remote add origin https://github.com/Full-Stack-Assets/Antforms.git
-git push origin --force --all
-git push origin --force --tags
+git filter-repo --path SECURITY_REMEDIATION.md --invert-paths   # purge old versions
+# then force-push; coordinate with anyone who has clones/forks
 ```
 
-#### Option B: Using BFG Repo-Cleaner
+This is destructive and rewrites shared history — do it deliberately, and only
+after the keys are rotated.
 
-```bash
-# Download BFG
-wget https://repo1.maven.org/maven2/com/madgag/bfg/1.14.0/bfg-1.14.0.jar
-
-# Clone a fresh mirror of the repository
-git clone --mirror https://github.com/Full-Stack-Assets/Antforms.git
-
-# Remove .env.local from history
-java -jar bfg-1.14.0.jar --delete-files .env.local Antforms.git
-
-# Clean up and push
-cd Antforms.git
-git reflog expire --expire=now --all && git gc --prune=now --aggressive
-git push --force
-```
-
-⚠️ **WARNING**: Rewriting Git history is a destructive operation. Ensure:
-1. All team members are notified before you force-push
-2. All open pull requests are merged or closed first
-3. Team members will need to re-clone the repository after the history rewrite
-4. Any forks of the repository will still contain the sensitive data
-
-### 3. Update Deployment Environments
-
-After rotating all keys, update them in your deployment environments:
-
-#### Vercel
-1. Go to your project settings
-2. Navigate to Environment Variables
-3. Update all the rotated API keys
-4. Redeploy the application
-
-#### Cloudflare Pages
-1. Go to Settings → Environment Variables
-2. Update all the rotated API keys
-3. Create a new deployment
-
-### 4. Verify the Fix
-
-After completing the above steps:
-
-1. Check that `.env.local` is not in the repository:
-   ```bash
-   git log --all --full-history -- .env.local
-   # Should return no results
-   ```
-
-2. Verify `.env.local` is in `.gitignore`:
-   ```bash
-   git check-ignore .env.local
-   # Should output: .env.local
-   ```
-
-3. Mark the finding as resolved on GitScan:
-   https://gitscan.ai/resolve?finding=gs_50fae1adedf1d181
-
-## Prevention Measures
-
-To prevent future credential leaks:
-
-1. ✅ `.env.local` is already in `.gitignore` - DO NOT remove this entry
-2. Always use `.env.example` as a template with placeholder values
-3. Never commit actual credentials to version control
-4. Consider using a pre-commit hook to scan for secrets:
-   ```bash
-   pip install pre-commit
-   # Add gitleaks or similar tool to .pre-commit-config.yaml
-   ```
-5. Use secret scanning tools:
-   - GitHub's secret scanning (enable in repository settings)
-   - GitGuardian
-   - TruffleHog
-
-## Timeline
-- Initial leak: `baba6e4` (committed .env.local with real credentials)
-- Merged to main: `997e65f`
-- Removed from tracking: `a6e6bb9` (April 19, 2026)
-- GitScan alert: April 19, 2026
-- This remediation document: April 19, 2026
-
-## References
-- GitScan Issue: https://github.com/Full-Stack-Assets/Antforms/issues/[ISSUE_NUMBER]
-- git-filter-repo: https://github.com/newren/git-filter-repo
-- BFG Repo-Cleaner: https://rtyley.github.io/bfg-repo-cleaner/
-- GitHub: Removing sensitive data from a repository: https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository
+## Prevention
+- Keep `.env.local` in `.gitignore` (already done). Never commit real secrets.
+- Use `.env.example` placeholders only.
+- Add a pre-commit secret scanner (gitleaks / trufflehog) and enable GitHub
+  secret scanning + push protection on the repo.
