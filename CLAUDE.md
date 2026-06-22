@@ -171,7 +171,7 @@ Action's own git step does the commit/push.
 
 ## Git workflow
 
-- Active development branch for this task: `claude/claude-md-docs-3gxd6p`.
 - The hourly bot commits to `main` as `trendblog-bot`. Human/agent changes should
-  go on a feature branch and push with `git push -u origin <branch>`.
+  go on a feature branch (don't commit straight to `main`) and push with
+  `git push -u origin <branch>`.
 - Do **not** open a pull request unless explicitly asked.
