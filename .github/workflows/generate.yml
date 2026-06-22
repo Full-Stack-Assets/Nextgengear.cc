@@ -75,22 +75,72 @@ jobs:
             exit 0
           fi
 
+          jobs:
+  generate-post:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: hourly-post-generation-${{ github.ref }}
+      cancel-in-progress: false
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # ... your existing setup/build/generation steps ...
+
+      - name: Commit and push generated post safely
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          branch="${GITHUB_REF_NAME:-main}"
+
+          # Always start from freshest remote tip to avoid stale-SHA rebases.
+          git fetch origin "${branch}"
+          git checkout -B "${branch}" "origin/${branch}"
+
+          # Re-run generation here if needed, or ensure generation happened after checkout reset.
+          # npm run generate:hourly
+
+          # Stage ONLY generated artifacts that this workflow owns.
+          # Adjust these paths to match your actual outputs.
+          git add content/posts/
+
+          # Optional: if you maintain a generated index/log, add it explicitly:
+          # git add content/topic-log.json
+
+          if git diff --cached --quiet; then
+            echo "No new post generated — nothing to commit."
+            exit 0
+          fi
+
+          # Guardrail: fail if anything outside owned paths changed.
+          # This prevents accidental conflicts like SECURITY_REMEDIATION.md.
+          if ! git diff --name-only | grep -E '^(content/posts/|content/topic-log\.json)$' >/dev/null 2>&1; then
+            echo "Unexpected unstaged/staged changes detected outside generated paths:"
+            git status --porcelain
+            echo "Refusing to commit to avoid unrelated merge conflicts."
+            exit 1
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git commit -m "post: $(date -u +%Y-%m-%dT%H:00Z) hourly dispatch"
 
-          # The remote may have advanced since checkout (concurrent runs,
-          # re-runs on a stale SHA, or other merges to main). Rebase onto the
-          # latest remote state and retry the push so a moved ref doesn't fail
-          # the whole run. The topic-log merge driver resolves the only file
-          # that two runs can both touch.
-          branch="${GITHUB_REF_NAME:-main}"
-          for attempt in 1 2 3 4 5; do
-            if git push origin "HEAD:${branch}"; then
-              echo "Pushed on attempt ${attempt}."
-              # Trigger a Vercel production redeploy for the new post. Non-fatal:
-              # the commit is already pushed, so a hook hiccup must not fail the run.
-              if [ -n "${VERCEL_DEPLOY_HOOK_URL}" ] && [ "${branch}" = "${PRODUCTION_BRANCH}" ]; then
-                echo "Triggering Vercel deploy hook…"
-                if curl -fsS -m 30 --retry 3 -X POST "${VERCEL_DEPLOY_HOOK_URL}" >/dev/null; then
+          # Single push should now succeed because we rebased by reset to origin/<branch> first.
+          git push origin "HEAD:${branch}"
+
+      - name: Trigger Vercel deploy hook (non-fatal)
+        if: ${{ env.VERCEL_DEPLOY_HOOK_URL != '' && github.ref_name == env.PRODUCTION_BRANCH }}
+        shell: bash
+        run: |
+          if curl -fsS -m 30 --retry 3 -X POST "${VERCEL_DEPLOY_HOOK_URL}" > /dev/null; then
+            echo "Vercel redeploy triggered."
+          else
+            echo "Vercel deploy hook call failed (non-fatal)." >&2
+          fi
                   echo "Vercel redeploy triggered."
                 else
                   echo "Vercel deploy hook call failed (non-fatal)." >&2
