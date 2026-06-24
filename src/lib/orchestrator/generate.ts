@@ -7,7 +7,12 @@ const LLM_MODEL = siteConfig.llm.model;
 const LLM_KEY_ENV = siteConfig.llm.apiKeyEnv;
 
 /** How many times to ask the model before giving up on a structurally valid post. */
-const MAX_GENERATION_ATTEMPTS = 3;
+const MAX_GENERATION_ATTEMPTS = 5;
+
+/** Pause helper for backing off between retries. */
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
 /**
  * Collapse whitespace and truncate to at most `max` chars at a word boundary,
@@ -172,6 +177,9 @@ export async function generate(bundle: ResearchBundle): Promise<GeneratedPost> {
     } catch (err) {
       // Rate limit / 5xx / network blip — worth another attempt.
       lastError = err instanceof Error ? err.message : String(err);
+      if (attempt < MAX_GENERATION_ATTEMPTS) {
+        await sleep(Math.min(30_000, 1000 * 2 ** attempt));
+      }
       continue;
     }
 
@@ -196,7 +204,7 @@ export async function generate(bundle: ResearchBundle): Promise<GeneratedPost> {
   }
 
   throw new Error(
-    `Groq output failed validation after ${MAX_GENERATION_ATTEMPTS} attempts: ${lastError}`
+    `LLM output failed validation after ${MAX_GENERATION_ATTEMPTS} attempts: ${lastError}`
   );
 }
 

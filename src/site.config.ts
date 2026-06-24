@@ -36,7 +36,7 @@ export const siteConfig = {
   // ── Engine: writer LLM (Google Gemini, OpenAI-compatible) ─────
   llm: {
     endpoint: 'https://generativelanguage.googleapis.com/v1beta/openai/chat/completions',
-    model: 'gemini-flash-latest',
+    model: 'gemini-2.5-flash',
     apiKeyEnv: 'GEMINI_API_KEY',
   },
 
