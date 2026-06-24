@@ -13,13 +13,38 @@ export const siteConfig = {
 
   // ── Niche sources ─────────────────────────────────────────────
   sources: {
-    subreddits: ['gadgets', 'technology', 'apple', 'Android', 'headphones', 'smarthome'],
+    // Broadened to target consumer electronics and computers/devices news:
+    // phones, laptops & PCs, components (CPU/GPU), tablets, wearables, audio,
+    // and smart-home gear.
+    subreddits: [
+      'gadgets',
+      'technology',
+      'apple',
+      'Android',
+      'headphones',
+      'smarthome',
+      'hardware',
+      'buildapc',
+      'laptops',
+      'electronics',
+      'wearables',
+      'tablets',
+      'mac',
+      'computers',
+    ],
     rssFeeds: [
       'https://www.engadget.com/rss.xml',
       'https://gizmodo.com/rss',
       'https://www.androidpolice.com/feed/',
       'https://9to5mac.com/feed/',
       'https://www.gsmarena.com/rss-news-reviews.php3',
+      'https://www.theverge.com/rss/index.xml',
+      'https://www.tomshardware.com/feeds/all',
+      'https://www.cnet.com/rss/news/',
+      'https://www.techradar.com/rss',
+      'https://arstechnica.com/gadgets/feed/',
+      'https://www.digitaltrends.com/feed/',
+      'https://www.pcworld.com/index.rss',
     ],
     braveQueries: [
       'new smartphone release',
@@ -27,6 +52,25 @@ export const siteConfig = {
       'wireless earbuds launch',
       'smart home device',
       'wearable tech announcement',
+      'new laptop release',
+      'consumer electronics news',
+      'PC hardware launch',
+      'graphics card release',
+      'new processor announcement',
+      'tablet release',
+      'smartwatch launch',
+      'tech product launch',
+    ],
+    // Google Trends' "Trending now" feed is general-interest; only surface a
+    // trend whose term or related headlines match one of these niche keywords.
+    // Cheap, lowercased substring match (see googletrends.ts).
+    trendsKeywords: [
+      'gadget', 'gadgets', 'smartphone', 'phone', 'iphone', 'android', 'pixel', 'galaxy',
+      'laptop', 'macbook', 'pc', 'desktop', 'computer', 'chromebook', 'tablet', 'ipad',
+      'cpu', 'gpu', 'graphics card', 'processor', 'chip', 'intel', 'amd', 'nvidia', 'snapdragon', 'apple silicon',
+      'headphones', 'earbuds', 'airpods', 'speaker', 'soundbar', 'smartwatch', 'wearable', 'fitness tracker',
+      'smart home', 'router', 'monitor', 'ssd', 'consumer electronics', 'wireless', 'usb-c', 'charger',
+      'samsung', 'apple', 'google', 'sony', 'lenovo', 'dell', 'asus', 'microsoft', 'ces', 'gadget review',
     ],
   },
 
