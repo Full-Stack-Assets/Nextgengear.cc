@@ -49,7 +49,8 @@ export function normalizeTags(tags: string[]): string[] {
  * fences (```json … ```) or add a prose preamble — a trivially recoverable
  * wrapper that should never burn all three retries. Strip a surrounding fence,
  * and if the result still doesn't parse, fall back to the outermost
- * brace-delimited span. A clean response is returned unchanged.
+ * brace-delimited span. An already-valid response is returned trimmed but
+ * otherwise intact (trimming is parse-neutral).
  */
 export function extractJson(raw: string): string {
   let s = raw.trim();
@@ -181,7 +182,7 @@ export async function generate(bundle: ResearchBundle): Promise<GeneratedPost> {
       lastError = 'response was not valid JSON';
       // Surface a snippet so a recurring failure is diagnosable from CI logs
       // without echoing a full (possibly large) response.
-      console.warn(`generate: non-JSON response (attempt ${attempt}): ${content.slice(0, 200).replace(/\s+/g, ' ')}`);
+      console.warn(`generate: non-JSON response (attempt ${attempt}): ${content.replace(/\s+/g, ' ').trim().slice(0, 200)}`);
       continue;
     }
 
