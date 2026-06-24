@@ -24,12 +24,24 @@ interface OpenverseResponse {
   results?: OpenverseResult[];
 }
 
+// Tags/categories too generic to make a meaningful image search; skipped when
+// building queries so the hero reflects the article's actual subject.
+const GENERIC_TERMS = new Set([
+  'news', 'opinion', 'explainers', 'explainer', 'tech', 'technology',
+  'culture', 'reviews', 'review', 'general', 'misc', 'update', 'updates',
+]);
+
 /**
  * Pick a banner image for a post. Provider is set in site.config.ts:
  *   'pexels'    — best quality, needs PEXELS_API_KEY (falls back to Openverse)
  *   'openverse' — keyless, commercial-licensed open media
  *   'none'      — no hero image
- * Any failure degrades to a keyless source, then to no image.
+ *
+ * To keep the hero relevant to the article, we build an ordered list of
+ * candidate queries (most specific → broadest) and try each until a provider
+ * returns a match — so an accurate, specific image wins when one exists, but we
+ * still degrade to a broader (and finally keyless) source rather than no image.
+ * Every outcome is logged so image relevance can be monitored from CI logs.
  */
 export async function pickImage(post: GeneratedPost): Promise<Hero> {
   // The `as const` config gives imageProvider a literal type; assert to the
@@ -38,28 +50,57 @@ export async function pickImage(post: GeneratedPost): Promise<Hero> {
   const provider = siteConfig.imageProvider as ImageProvider;
   if (provider === 'none') return emptyHero();
 
-  const query = buildQuery(post);
+  const queries = buildQueries(post);
+  const usePexels = provider === 'pexels' && !!process.env.PEXELS_API_KEY;
 
-  if (provider === 'pexels' && process.env.PEXELS_API_KEY) {
-    const fromPexels = await pexels(post, query).catch((e) => {
-      console.warn('[image] pexels failed, falling back:', e);
+  for (const query of queries) {
+    if (usePexels) {
+      const fromPexels = await pexels(post, query).catch((e) => {
+        console.warn('[image] pexels failed, falling back:', e);
+        return null;
+      });
+      if (fromPexels) return logHero(post, 'pexels', query, fromPexels);
+    }
+
+    const fromOpenverse = await openverse(post, query).catch((e) => {
+      console.warn('[image] openverse failed:', e);
       return null;
     });
-    if (fromPexels) return fromPexels;
+    if (fromOpenverse) return logHero(post, 'openverse', query, fromOpenverse);
   }
 
-  const fromOpenverse = await openverse(post, query).catch((e) => {
-    console.warn('[image] openverse failed:', e);
-    return null;
-  });
-  return fromOpenverse ?? emptyHero();
+  // Monitoring: a post that ends up with no hero is surfaced loudly so it can
+  // be caught and re-imaged rather than silently shipping a blank banner.
+  console.warn(
+    `[image] NO image found for "${post.slug}" — tried: ${queries.map((q) => `"${q}"`).join(', ')}. Hero left empty.`
+  );
+  return emptyHero();
 }
 
-function buildQuery(post: GeneratedPost): string {
-  const terms = [...post.tags, post.category].filter(
-    (t) => !['news', 'opinion', 'tech', 'technology'].includes(t.toLowerCase())
-  );
-  return (terms[0] ?? post.tags[0] ?? post.category ?? 'news').replace(/-/g, ' ');
+/**
+ * Ordered candidate queries, most specific (most accurate) first, broadening to
+ * keep the hit-rate high. Drops hyphens, generic terms, and duplicates.
+ */
+export function buildQueries(post: GeneratedPost): string[] {
+  const clean = (s: string) => s.replace(/-/g, ' ').trim();
+  const tags = (post.tags ?? []).filter((t) => t && !GENERIC_TERMS.has(t.toLowerCase()));
+  const cat = post.category && !GENERIC_TERMS.has(post.category.toLowerCase()) ? post.category : '';
+
+  const candidates = [
+    tags.slice(0, 2).join(' '), // two strongest tags → specific, on-subject
+    tags[0] ?? '', // single strongest tag
+    cat, // the category
+    post.tags?.[0] ?? post.category ?? 'news', // last-resort, even if generic
+  ];
+
+  return [...new Set(candidates.map(clean).filter(Boolean))];
+}
+
+function logHero(post: GeneratedPost, provider: string, query: string, hero: Hero): Hero {
+  // Monitoring: one structured line per post so image source/relevance is
+  // auditable from the generation logs.
+  console.log(`[image] ${post.slug}: provider=${provider} query="${query}" → ${hero.url.slice(0, 100)}`);
+  return hero;
 }
 
 function emptyHero(): Hero {
