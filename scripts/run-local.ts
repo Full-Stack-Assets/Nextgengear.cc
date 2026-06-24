@@ -96,7 +96,15 @@ async function main() {
   }
 }
 
-main().catch((err) => {
-  console.error(err);
-  process.exit(1);
-});
+main()
+  .then(() => {
+    // Force a clean exit. The pipeline pulls in dependencies (esbuild's service
+    // process, youtubei.js, etc.) that can leave open handles keeping the event
+    // loop alive long after the work is done — without this the script hangs
+    // until the Action's job timeout cancels it, skipping the commit step.
+    process.exit(0);
+  })
+  .catch((err) => {
+    console.error(err);
+    process.exit(1);
+  });
