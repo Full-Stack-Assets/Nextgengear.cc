@@ -43,6 +43,34 @@ export function normalizeTags(tags: string[]): string[] {
     .slice(0, 6);
 }
 
+/**
+ * Pull the JSON object out of an LLM response. Models intermittently ignore the
+ * `response_format: json_object` hint and wrap the object in markdown code
+ * fences (```json … ```) or add a prose preamble — a trivially recoverable
+ * wrapper that should never burn all three retries. Strip a surrounding fence,
+ * and if the result still doesn't parse, fall back to the outermost
+ * brace-delimited span. A clean response is returned unchanged.
+ */
+export function extractJson(raw: string): string {
+  let s = raw.trim();
+
+  // Strip a single wrapping ```json … ``` (or bare ``` … ```) fence.
+  const fenced = s.match(/^```(?:json)?\s*([\s\S]*?)\s*```$/i);
+  if (fenced) s = fenced[1].trim();
+
+  // Already valid? Use as-is.
+  try {
+    JSON.parse(s);
+    return s;
+  } catch {
+    // Otherwise grab the outermost { … } span and let the caller parse it.
+    const first = s.indexOf('{');
+    const last = s.lastIndexOf('}');
+    if (first !== -1 && last > first) return s.slice(first, last + 1);
+    return s;
+  }
+}
+
 // Self-healing contract. Length/shape overshoots that can be safely coerced are
 // repaired by transforms (so a too-long description or a messy slug never throws
 // — note `.max()` would fire *before* a transform, so it's deliberately gone).
@@ -148,9 +176,12 @@ export async function generate(bundle: ResearchBundle): Promise<GeneratedPost> {
 
     let parsed: unknown;
     try {
-      parsed = JSON.parse(content);
+      parsed = JSON.parse(extractJson(content));
     } catch {
       lastError = 'response was not valid JSON';
+      // Surface a snippet so a recurring failure is diagnosable from CI logs
+      // without echoing a full (possibly large) response.
+      console.warn(`generate: non-JSON response (attempt ${attempt}): ${content.slice(0, 200).replace(/\s+/g, ' ')}`);
       continue;
     }
 
