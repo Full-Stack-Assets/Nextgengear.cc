@@ -84,6 +84,15 @@ export const siteConfig = {
     apiKeyEnv: 'GEMINI_API_KEY',
   },
 
+  // Automatic failover: when Gemini returns transient 5xx / "overloaded" (503)
+  // errors, generate.ts retries the request against this OpenAI-compatible
+  // backup. Skipped when GROQ_API_KEY isn't set. Groq's free tier is fast.
+  llmFallback: {
+    endpoint: 'https://api.groq.com/openai/v1/chat/completions',
+    model: 'llama-3.3-70b-versatile',
+    apiKeyEnv: 'GROQ_API_KEY',
+  },
+
   // ── Engine: hero images ('pexels' | 'openverse' | 'none') ─────
   imageProvider: 'pexels',
 } as const;
