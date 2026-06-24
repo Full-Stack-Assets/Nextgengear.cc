@@ -21,7 +21,7 @@ site-specific lives in **`src/site.config.ts`**. The npm package is still named
 - **Next.js 15** (App Router, React 19) — static-leaning blog, reads MDX from disk
 - **TinaCMS 3** — optional visual editor at `/admin`, schema mirrors the pipeline's frontmatter
 - **TypeScript** (strict), **Tailwind CSS 3**
-- **LLM writer** — OpenAI-compatible endpoint; default **Google Gemini** (`gemini-flash-latest`), swappable to Groq / OpenRouter via `site.config.ts`
+- **LLM writer** — OpenAI-compatible endpoint; default **Google Gemini** (`gemini-2.5-flash` — a stable GA model; the `gemini-flash-latest` alias was returning 503 "model is overloaded" under free-tier load), swappable to Groq / OpenRouter via `site.config.ts`
 - **GitHub Actions** — the hourly scheduler (NOT Vercel cron — Hobby plan caps cron at daily)
 - Content is committed as `.mdx` files; there is **no database**.
 
