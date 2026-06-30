@@ -69,11 +69,12 @@ in `generate.ts` and validated by `PostSchema` (zod):
 4. `## Why it matters`
 5. `<ProsCons>` with `<Pros>`/`<Cons>` (3+ `<li>` each)
 6. `## How to think about it`
+6b. `<BuyBox product="…" />` — *optional*, only for posts centered on a specific buyable product (affiliate CTA → tagged Amazon search link via `src/lib/affiliate.ts`)
 7. `<Callout type="warning">` — *optional*, only when warranted
 8. `## FAQ` → `<FAQ>` with exactly 3 `<Question q="…">` entries
 
 The components are implemented in `src/components/mdx/index.tsx` (`Callout`,
-`ProsCons`, `Pros`, `Cons`, `FAQ`, `Question`, exported as `mdxComponents`) and
+`ProsCons`, `Pros`, `Cons`, `FAQ`, `Question`, `BuyBox`, exported as `mdxComponents`) and
 styled by `.prose-editorial` rules in `src/app/globals.css`. The same shape is
 mirrored in the TinaCMS rich-text templates (`tina/config.ts`).
 

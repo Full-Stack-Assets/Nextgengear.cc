@@ -103,6 +103,15 @@ export default defineConfig({
                 label: 'Question',
                 fields: [{ name: 'q', label: 'Question', type: 'string' }],
               },
+              {
+                name: 'BuyBox',
+                label: 'Buy box (affiliate)',
+                fields: [
+                  { name: 'product', label: 'Product name', type: 'string' },
+                  { name: 'query', label: 'Search override (optional)', type: 'string' },
+                  { name: 'cta', label: 'Button text (optional)', type: 'string' },
+                ],
+              },
             ],
           },
         ],

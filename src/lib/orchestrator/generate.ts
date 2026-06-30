@@ -144,6 +144,8 @@ BODY STRUCTURE (mandatory, in this order):
 6. ## How to think about it
    Practical guidance or a framework. Prose only.
 
+6b. <BuyBox product="Exact Product Name" /> — INCLUDE this ONLY when the post centers on a specific, purchasable consumer product (a phone, laptop, headphone, wearable, etc.). Use the product's exact real name as it appears in the research; never invent a model name or number. Place it right after "How to think about it". Omit it entirely for news, rumors, industry analysis, or anything not tied to one buyable product. At most one BuyBox per post.
+
 7. <Callout type="warning"> … </Callout> — IF there are meaningful caveats, risks, or things the reader should NOT do. Omit this block if nothing warrants a warning.
 
 8. ## FAQ

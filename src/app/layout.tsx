@@ -7,6 +7,7 @@ import { SITE_URL, SITE_NAME, SITE_DESCRIPTION, websiteJsonLd } from '@/lib/stru
 import { SubscribeForm } from '@/components/SubscribeForm';
 import { AdSlot } from '@/components/AdSlot';
 import { ADSENSE_CLIENT, ADSENSE_SLOT_FOOTER } from '@/lib/ads';
+import { AFFILIATE_ENABLED, AFFILIATE_DISCLOSURE } from '@/lib/affiliate';
 import { siteConfig } from '@/site.config';
 import './globals.css';
 
@@ -129,6 +130,11 @@ function Footer() {
           <Link href="/about" className="underline hover:text-accent">Read how this works</Link> —
           corrections are welcome.
         </p>
+        {AFFILIATE_ENABLED && (
+          <p className="mt-3 max-w-3xl text-xs leading-relaxed text-muted/80">
+            {AFFILIATE_DISCLOSURE}
+          </p>
+        )}
       </div>
     </footer>
   );

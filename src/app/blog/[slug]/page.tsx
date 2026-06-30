@@ -7,6 +7,8 @@ import { mdxComponents } from '@/components/mdx';
 import { articleJsonLd, faqJsonLd, breadcrumbJsonLd, SITE_URL, SITE_NAME } from '@/lib/structured-data';
 import { AdSlot } from '@/components/AdSlot';
 import { ADSENSE_SLOT_IN_ARTICLE } from '@/lib/ads';
+import { SubscribeForm } from '@/components/SubscribeForm';
+import { amazonSearchUrl, isShoppableCategory, AFFILIATE_DISCLOSURE } from '@/lib/affiliate';
 
 export const revalidate = 300;
 
@@ -137,6 +139,28 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
         className="my-12 block text-center"
       />
 
+      {/* Contextual shop link — only for buyable product categories, so the
+          back catalog earns affiliate revenue without per-post curation. */}
+      {isShoppableCategory(frontmatter.category) && (
+        <aside className="my-12 border border-accent/40 bg-accent/5 p-5">
+          <div className="mb-1 text-[10px] font-bold uppercase tracking-[0.2em] text-accent">
+            Shop this
+          </div>
+          <div className="font-display text-lg font-semibold leading-snug">
+            Looking to buy? Compare prices and current deals on Amazon.
+          </div>
+          <a
+            href={amazonSearchUrl(frontmatter.title)}
+            target="_blank"
+            rel="noopener noreferrer sponsored nofollow"
+            className="mt-3 inline-block border border-accent bg-accent px-4 py-2 text-sm font-semibold text-paper transition-colors hover:bg-transparent hover:text-accent"
+          >
+            Search on Amazon →
+          </a>
+          <p className="mt-3 text-xs leading-relaxed text-ink/55">{AFFILIATE_DISCLOSURE}</p>
+        </aside>
+      )}
+
       {/* Sources */}
       {frontmatter.sources?.length > 0 && (
         <section className="mt-16 border-t-2 border-ink pt-8">
@@ -155,6 +179,21 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
           </ol>
         </section>
       )}
+
+      {/* End-of-article newsletter CTA — captures engaged readers at the point
+          they've finished a piece, the highest-intent moment to subscribe. */}
+      <section className="mt-16 border-2 border-ink bg-ink/[0.03] p-6 sm:p-8">
+        <div className="font-display text-2xl font-black leading-tight">
+          Stay ahead of the gear curve
+        </div>
+        <p className="mt-2 max-w-xl text-ink/70">
+          Get the week&rsquo;s most important gadget news and reviews in one short email.
+          Free, and no spam.
+        </p>
+        <div className="mt-4">
+          <SubscribeForm />
+        </div>
+      </section>
 
       {/* Tags */}
       {frontmatter.tags?.length > 0 && (
@@ -198,7 +237,7 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
       {/* Back link */}
       <div className="mt-16 border-t border-ink/20 pt-8">
         <Link href="/" className="inline-flex items-center gap-2 font-display font-semibold text-accent hover:gap-3 transition-all">
-          ← Back to Wire and Logic
+          ← Back to {SITE_NAME}
         </Link>
       </div>
     </article>

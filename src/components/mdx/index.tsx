@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import { amazonSearchUrl, AFFILIATE_DISCLOSURE } from '@/lib/affiliate';
 
 type CalloutType = 'takeaway' | 'warning' | 'note';
 
@@ -72,6 +73,43 @@ export function Question({ q, children }: { q: string; children: ReactNode }) {
   );
 }
 
+/**
+ * A product call-to-action with an affiliate link. `product` is the exact name
+ * the writer mentions; the link is an Amazon search for that name (never a
+ * hallucinated ASIN), tagged with the configured Associate id. `query` lets the
+ * author override the search terms. An FTC disclosure is shown inline, before
+ * the link, so it is clear and conspicuous.
+ */
+export function BuyBox({
+  product,
+  query,
+  cta = 'Check price on Amazon',
+}: {
+  product: string;
+  query?: string;
+  cta?: string;
+}) {
+  if (!product) return null;
+  const href = amazonSearchUrl(query || product);
+  return (
+    <aside className="my-10 border border-accent/40 bg-accent/5 p-5">
+      <div className="mb-1 text-[10px] font-bold uppercase tracking-[0.2em] text-accent">
+        Where to buy
+      </div>
+      <div className="font-display text-lg font-semibold leading-snug">{product}</div>
+      <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer sponsored nofollow"
+        className="mt-3 inline-block border border-accent bg-accent px-4 py-2 text-sm font-semibold text-paper no-underline transition-colors hover:bg-transparent hover:text-accent"
+      >
+        {cta} →
+      </a>
+      <p className="mt-3 text-xs leading-relaxed text-ink/55">{AFFILIATE_DISCLOSURE}</p>
+    </aside>
+  );
+}
+
 export const mdxComponents = {
   Callout,
   ProsCons,
@@ -79,4 +117,5 @@ export const mdxComponents = {
   Cons,
   FAQ,
   Question,
+  BuyBox,
 };
