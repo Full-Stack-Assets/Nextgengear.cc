@@ -45,7 +45,7 @@ function replaceHero(
     `  creditUrl: ${q(hero.creditUrl)}`;
   // Match the existing 4-line hero block; ` *` (literal spaces) so it never
   // crosses a line boundary and only the hero block is touched.
-  const re = /hero:\n *url:.*\n *alt:.*\n *credit:.*\n *creditUrl:.*/;
+  const re = /hero: *\n *url:.*\n *alt:.*\n *credit:.*\n *creditUrl:.*/;
   if (!re.test(raw)) return null;
   return raw.replace(re, block);
 }
