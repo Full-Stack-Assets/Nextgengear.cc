@@ -4,6 +4,10 @@ name: Re-image Posts
 # using the pipeline's pickImage() (content-accurate query + provider chain).
 # Pexels is used when PEXELS_API_KEY is set; otherwise the keyless Openverse.
 on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/reimage-now'
   workflow_dispatch:
     inputs:
       mode:
@@ -36,7 +40,8 @@ jobs:
         env:
           PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
         run: |
-          if [ "${{ github.event.inputs.mode }}" = "missing" ]; then
+          MODE="${{ github.event.inputs.mode || 'all' }}"
+          if [ "$MODE" = "missing" ]; then
             npx tsx scripts/reimage.ts --missing
           else
             npx tsx scripts/reimage.ts
