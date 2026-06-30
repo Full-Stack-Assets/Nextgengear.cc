@@ -3,6 +3,11 @@ name: Seed Posts
 # Bulk-generate unique posts in one run — useful for bootstrapping a new site
 # or backfilling on-niche content after a niche pivot.
 on:
+  # workflow_dispatch requires repo admin; push trigger allows CI bots to kick a run.
+  push:
+    branches: [main]
+    paths:
+      - '.github/seed-now'
   workflow_dispatch:
     inputs:
       count:
@@ -56,9 +61,9 @@ jobs:
           MASTODON_ACCESS_TOKEN: ${{ secrets.MASTODON_ACCESS_TOKEN }}
           DEVTO_API_KEY: ${{ secrets.DEVTO_API_KEY }}
         run: |
-          COUNT="${{ github.event.inputs.count }}"
-          MAX="${{ github.event.inputs.max_attempts }}"
-          npx tsx scripts/seed.ts --count="${COUNT:-30}" --max-attempts="${MAX:-120}"
+          COUNT="${{ github.event.inputs.count || '30' }}"
+          MAX="${{ github.event.inputs.max_attempts || '120' }}"
+          npx tsx scripts/seed.ts --count="${COUNT}" --max-attempts="${MAX}"
 
       - name: Commit, push, and optionally trigger Vercel
         env:
@@ -80,8 +85,8 @@ jobs:
             exit 0
           fi
 
-          COUNT="${{ github.event.inputs.count }}"
-          git commit -m "seed: bulk generate ${COUNT:-30} posts"
+          COUNT="${{ github.event.inputs.count || '30' }}"
+          git commit -m "seed: bulk generate ${COUNT} posts"
 
           branch="${GITHUB_REF_NAME:-main}"
 
