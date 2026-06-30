@@ -150,6 +150,45 @@ Dedup uses a sorted-token fingerprint of the title, so "GPT-5 released today" an
 
 ---
 
+## Monetization
+
+Two revenue layers ship with the engine; both are off until you configure them.
+
+### Display ads — Google AdSense
+
+Set `NEXT_PUBLIC_ADSENSE_CLIENT` (or `adsenseClient` in `site.config.ts`) to your
+publisher id. That single value:
+
+- loads the AdSense script site-wide (so **Auto ads** work once you enable them in
+  the AdSense dashboard under **Ads → By site**),
+- emits the `google-adsense-account` verification meta tag, and
+- **serves `/ads.txt` automatically** — the route at `src/app/ads.txt/route.ts`
+  derives the required line (`google.com, pub-…, DIRECT, f08c47fec0942fa0`) from
+  the publisher id, so you never hand-maintain the file. Verify it's live at
+  `https://<your-domain>/ads.txt` after deploy; AdSense will warn if it can't find it.
+
+For manual ad units, also set `NEXT_PUBLIC_ADSENSE_SLOT_IN_ARTICLE` and
+`NEXT_PUBLIC_ADSENSE_SLOT_FOOTER` to your ad-unit ids.
+
+> **Heads-up:** this is AI-generated content. AdSense reviews against a
+> "scaled content" policy and may reject or hold approval — the disclosures on
+> `/about` and per post are there to help, but approval isn't guaranteed.
+
+### Affiliate links — Amazon Associates
+
+Set `NEXT_PUBLIC_AMAZON_ASSOCIATE_TAG` (or `affiliate.amazonTag` in
+`site.config.ts`). `<BuyBox>` blocks and the category-gated "Shop this" links then
+carry your tag. See `src/lib/affiliate.ts`.
+
+### Consent (EU/UK)
+
+A lightweight consent banner (`src/components/ConsentBanner.tsx`) wires **Google
+Consent Mode v2** — ad/analytics storage default to *denied* until the visitor
+accepts. For full EEA/UK compliance Google still requires a **certified CMP**;
+the built-in banner is a sensible default, not a substitute for one.
+
+---
+
 ## Troubleshooting
 
 **"no items from any source"** — all six sources failed. Usually a network blip; check logs. Try `pnpm generate --dry` after a minute.

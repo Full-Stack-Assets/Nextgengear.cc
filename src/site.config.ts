@@ -77,6 +77,14 @@ export const siteConfig = {
   // ── Ads ───────────────────────────────────────────────────────
   adsenseClient: 'ca-pub-4655488107179825',
 
+  // ── Affiliate ─────────────────────────────────────────────────
+  // Amazon Associates store/tracking id (a public value). Override per-deploy
+  // with NEXT_PUBLIC_AMAZON_ASSOCIATE_TAG. Leave blank to render product links
+  // without commission attribution. See src/lib/affiliate.ts.
+  affiliate: {
+    amazonTag: '',
+  },
+
   // ── Engine: writer LLM (Google Gemini, OpenAI-compatible) ─────
   llm: {
     endpoint: 'https://generativelanguage.googleapis.com/v1beta/openai/chat/completions',
