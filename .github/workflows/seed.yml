@@ -1,0 +1,107 @@
+name: Seed Posts
+
+# Bulk-generate unique posts in one run — useful for bootstrapping a new site
+# or backfilling on-niche content after a niche pivot.
+on:
+  workflow_dispatch:
+    inputs:
+      count:
+        description: "Number of unique posts to generate"
+        type: number
+        default: 30
+      max_attempts:
+        description: "Max pipeline attempts before giving up (default: count × 4)"
+        type: number
+        default: 120
+
+concurrency:
+  group: seed-posts
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  seed:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Run seed
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          BRAVE_API_KEY: ${{ secrets.BRAVE_API_KEY }}
+          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+          REDDIT_CLIENT_ID: ${{ secrets.REDDIT_CLIENT_ID }}
+          REDDIT_CLIENT_SECRET: ${{ secrets.REDDIT_CLIENT_SECRET }}
+          BLUESKY_HANDLE: ${{ secrets.BLUESKY_HANDLE }}
+          BLUESKY_APP_PASSWORD: ${{ secrets.BLUESKY_APP_PASSWORD }}
+          MASTODON_INSTANCE_URL: ${{ secrets.MASTODON_INSTANCE_URL }}
+          MASTODON_ACCESS_TOKEN: ${{ secrets.MASTODON_ACCESS_TOKEN }}
+          DEVTO_API_KEY: ${{ secrets.DEVTO_API_KEY }}
+        run: |
+          COUNT="${{ github.event.inputs.count }}"
+          MAX="${{ github.event.inputs.max_attempts }}"
+          npx tsx scripts/seed.ts --count="${COUNT:-30}" --max-attempts="${MAX:-120}"
+
+      - name: Commit, push, and optionally trigger Vercel
+        env:
+          VERCEL_DEPLOY_HOOK_URL: ${{ secrets.VERCEL_DEPLOY_HOOK_URL }}
+          PRODUCTION_BRANCH: main
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          git config user.name "astrokobi-bot"
+          git config user.email "bot@astrokobi.com"
+
+          git config merge.topiclog.name "union topic log entries"
+          git config merge.topiclog.driver "node scripts/merge-topic-log.mjs %O %A %B"
+
+          git add content/
+          if git diff --cached --quiet; then
+            echo "No new posts generated — nothing to commit."
+            exit 0
+          fi
+
+          COUNT="${{ github.event.inputs.count }}"
+          git commit -m "seed: bulk generate ${COUNT:-30} posts"
+
+          branch="${GITHUB_REF_NAME:-main}"
+
+          for attempt in 1 2 3 4 5; do
+            if git push origin "HEAD:${branch}"; then
+              echo "Pushed on attempt ${attempt}."
+
+              if [[ -n "${VERCEL_DEPLOY_HOOK_URL:-}" && "${branch}" == "${PRODUCTION_BRANCH}" ]]; then
+                echo "Triggering Vercel deploy hook..."
+                curl -fsS -m 30 --retry 3 -X POST "${VERCEL_DEPLOY_HOOK_URL}" >/dev/null || \
+                  echo "Vercel deploy hook call failed (non-fatal)." >&2
+              fi
+
+              exit 0
+            fi
+
+            echo "Push rejected (attempt ${attempt}); rebasing onto origin/${branch}..."
+            git fetch origin "${branch}"
+            git rebase "origin/${branch}" || git rebase --abort || true
+          done
+
+          echo "Failed to push after multiple attempts." >&2
+          exit 1
