@@ -5,6 +5,7 @@ import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { SITE_URL, SITE_NAME, SITE_DESCRIPTION, websiteJsonLd } from '@/lib/structured-data';
 import { SubscribeForm } from '@/components/SubscribeForm';
+import { ConsentBanner } from '@/components/ConsentBanner';
 import { AdSlot } from '@/components/AdSlot';
 import { ADSENSE_CLIENT, ADSENSE_SLOT_FOOTER } from '@/lib/ads';
 import { AFFILIATE_ENABLED, AFFILIATE_DISCLOSURE } from '@/lib/affiliate';
@@ -49,12 +50,22 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body className="relative">
         {ADSENSE_CLIENT && (
-          <Script
-            async
-            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT}`}
-            crossOrigin="anonymous"
-            strategy="afterInteractive"
-          />
+          <>
+            {/* Google Consent Mode v2 defaults — must run BEFORE the AdSense
+                script so nothing is stored until the visitor consents. Honors a
+                previously-saved choice so returning visitors aren't re-gated. */}
+            <Script id="consent-default" strategy="beforeInteractive">
+              {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+var c='denied';try{var s=localStorage.getItem('consent-v1');if(s==='granted')c='granted';}catch(e){}
+gtag('consent','default',{ad_storage:c,ad_user_data:c,ad_personalization:c,analytics_storage:c,wait_for_update:500});`}
+            </Script>
+            <Script
+              async
+              src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT}`}
+              crossOrigin="anonymous"
+              strategy="afterInteractive"
+            />
+          </>
         )}
         <script
           type="application/ld+json"
@@ -63,6 +74,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Header />
         <main className="relative z-10">{children}</main>
         <Footer />
+        {ADSENSE_CLIENT && <ConsentBanner />}
         <Analytics />
         <SpeedInsights />
       </body>
