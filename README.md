@@ -1,4 +1,4 @@
-# Wire and Logic
+# NextGenGear.cc
 
 A self-hosted, zero-cost trend blog. A scheduled job runs every hour, picks the highest-signal story from seven sources, researches it, writes a structured MDX post, and commits it to GitHub. The Next.js site auto-deploys.
 
