@@ -3,8 +3,13 @@
 # Build script that handles TinaCMS configuration gracefully
 # If TinaCMS credentials are not provided, we skip the TinaCMS cloud build
 
+# Fail the script when any build step fails — without this, a failed
+# `next build` still printed "completed successfully" and exited 0, letting a
+# broken build look green to CI/deploy hooks.
+set -euo pipefail
+
 # Check if TinaCMS credentials are set
-if [ -z "$NEXT_PUBLIC_TINA_CLIENT_ID" ] || [ -z "$TINA_TOKEN" ]; then
+if [ -z "${NEXT_PUBLIC_TINA_CLIENT_ID:-}" ] || [ -z "${TINA_TOKEN:-}" ]; then
   echo "⚠️  TinaCMS credentials not found. Skipping TinaCMS cloud build..."
   echo "ℹ️  TinaCMS will run in self-hosted mode (local filesystem editing)"
 else

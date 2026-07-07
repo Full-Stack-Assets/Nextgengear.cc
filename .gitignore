@@ -9,3 +9,7 @@ admin
 *.log
 .vercel
 .wrangler
+
+# TypeScript incremental build cache — machine-local, churns on every tsc run
+tsconfig.tsbuildinfo
+*.tsbuildinfo
