@@ -120,6 +120,12 @@ npm run lint             # next lint
 npm run generate -- --dry   # dry run: print the post, write nothing
 npm run generate            # real local run: writes content/posts/*.mdx + updates topic log + syndicates
 npm run digest              # newsletter weekly digest
+
+npm test                    # Vitest: core-logic unit tests + all-content MDX compile check
+npm run test:watch          # watch mode
+npm run typecheck           # tsc --noEmit
+npm run validate:content    # compile every content/posts/*.mdx (finds build-breaking posts fast)
+npm run sanitize            # normalize existing posts' MDX in place (maintenance)
 ```
 
 `scripts/run-local.ts` is the generation entrypoint the Action calls
@@ -166,6 +172,16 @@ Action's own git step does the commit/push.
   unrecoverable post-generation failure should throw.
 - **Test generation locally with `--dry` first** so you don't write junk MDX into
   `content/posts/`.
+- **Run `npm test` before pushing.** Unit tests live beside the code as
+  `*.test.ts` under `src/lib/`; `tests/content-compiles.test.ts` compiles every
+  post so a malformed MDX file (which aborts the whole `next build`) is caught in
+  CI on the exact file. Add/extend tests when you touch scoring, the writer
+  contract, serialization, or affiliate logic. CI (`.github/workflows/ci.yml`)
+  gates PRs on typecheck + tests + build. See `docs/testing-and-ci.md`.
+- **Guarding content quality:** malformed generated MDX is caught in two places —
+  `checkMdxStructure` in `generate.ts` (rejects unbalanced tags → LLM retry) and
+  `sanitizeBody` in `serialize.ts` (normalizes recoverable patterns before
+  writing). `npm run sanitize` re-runs the latter over the whole catalog.
 - Follow the existing code style: strict TypeScript, the file-level comment style
   already present in `orchestrator/*`, and zod for any new structured-output
   validation.
