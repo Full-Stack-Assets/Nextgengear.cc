@@ -1,4 +1,5 @@
 import type { AdapterResult, SyndicationPost } from './types';
+import { SITE_NAME } from '@/lib/structured-data';
 
 /**
  * Cross-post to DEV.to with a canonical URL pointing back to the original, so
@@ -18,7 +19,7 @@ export async function crossPostToDevTo(
 
   const bodyMarkdown =
     `${extractLead(post.body)}\n\n` +
-    `*Originally published on [Wire and Logic](${canonicalUrl}). ` +
+    `*Originally published on [${SITE_NAME}](${canonicalUrl}). ` +
     `[Read the full post →](${canonicalUrl})*`;
 
   const res = await fetch('https://dev.to/api/articles', {

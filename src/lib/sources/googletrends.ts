@@ -48,7 +48,7 @@ export async function parseTrendsXml(xml: string): Promise<RawItem[]> {
 
 async function fetchText(url: string): Promise<string> {
   const res = await fetch(url, {
-    headers: { 'user-agent': 'Mozilla/5.0 (compatible; WireAndLogicBot/1.0)' },
+    headers: { 'user-agent': 'Mozilla/5.0 (compatible; TrendBlogBot/1.0)' },
   });
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
   return res.text();
