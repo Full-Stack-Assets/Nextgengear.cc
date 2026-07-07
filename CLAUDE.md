@@ -116,6 +116,9 @@ npm run dev              # tinacms dev wrapper around `next dev` → localhost:3
 npm run build            # bash scripts/build.sh (Tina cloud build only if creds set, then `next build`)
 npm start                # serve the production build
 npm run lint             # next lint
+npm run typecheck        # tsc --noEmit (CI gate)
+npm test                 # vitest run — unit suite over the pipeline's pure logic (CI gate)
+npm run test:watch       # vitest in watch mode while developing
 
 npm run generate -- --dry   # dry run: print the post, write nothing
 npm run generate            # real local run: writes content/posts/*.mdx + updates topic log + syndicates
@@ -148,6 +151,9 @@ Action's own git step does the commit/push.
   optionally fires `VERCEL_DEPLOY_HOOK_URL`. A `concurrency` group prevents
   overlapping ticks. Add pipeline secrets under repo Settings → Secrets → Actions.
 - `.github/workflows/newsletter.yml` — newsletter digest workflow.
+- `.github/workflows/test.yml` — **CI gate** on PRs + pushes to `main`: runs
+  `npm run typecheck` and `npm test`. Ignores `content/**` so bot post commits
+  don't trigger it. See `docs/TESTING.md`.
 
 ## Conventions for making changes
 
@@ -158,12 +164,25 @@ Action's own git step does the commit/push.
   `src/components/mdx/index.tsx`, the `.prose-editorial` styles, and the TinaCMS
   rich-text templates in `tina/config.ts`.
 - **Adding a source:** create `src/lib/sources/<name>.ts` exporting
-  `fetch<Name>(): Promise<RawItem[]>`, add it to the `Promise.all` in
-  `pipeline.ts` (wrapped in `.catch(() => [])`), and add its weight in
-  `score.ts`.
+  `fetch<Name>(): Promise<RawItem[]>`, add its literal to the `source` union in
+  `orchestrator/types.ts`, add it to the `Promise.all` in `pipeline.ts` (wrapped
+  in `.catch(() => [])`), and add its weight in `score.ts`'s `SOURCE_WEIGHT`
+  (**required** — a missing weight makes `popularity` `NaN`). Factor the
+  raw-response → `RawItem[]` mapping into an exported pure function (like
+  `lobstersToRawItems` / `toRawItems`) and unit-test it. Niche-agnostic
+  aggregators (Hacker News, Lobsters) must self-filter against
+  `siteConfig.sources.trendsKeywords` so off-niche stories can't win — see
+  `sources/lobsters.ts`.
+- **Network calls** should go through `fetchWithRetry` / `fetchJson`
+  (`src/lib/http.ts`) for a timeout + bounded backoff on 429/5xx/network blips.
+  Callers keep their own `.catch(() => [])` — the helper improves the odds
+  before that fallback ever fires.
 - **Failure handling philosophy:** sources, syndication, and deploy hooks must
   fail soft (return empty / log a warning) — never abort the run. Only an
   unrecoverable post-generation failure should throw.
+- **Add unit tests for new pure logic** (scoring, schema transforms, serialize,
+  source mapping) under a `__tests__/` folder — see `docs/TESTING.md`. The CI
+  gate (`typecheck` + `test`) runs on every PR.
 - **Test generation locally with `--dry` first** so you don't write junk MDX into
   `content/posts/`.
 - Follow the existing code style: strict TypeScript, the file-level comment style
