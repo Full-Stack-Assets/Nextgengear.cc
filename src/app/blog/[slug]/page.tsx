@@ -9,6 +9,7 @@ import { AdSlot } from '@/components/AdSlot';
 import { ADSENSE_SLOT_IN_ARTICLE } from '@/lib/ads';
 import { SubscribeForm } from '@/components/SubscribeForm';
 import { amazonSearchUrl, isShoppableCategory, AFFILIATE_DISCLOSURE } from '@/lib/affiliate';
+import { splitForMidArticleAd } from '@/lib/split-article';
 
 export const revalidate = 300;
 
@@ -113,6 +114,8 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
           <img
             src={frontmatter.hero.url}
             alt={frontmatter.hero.alt}
+            fetchPriority="high"
+            decoding="async"
             className="aspect-video w-full object-cover"
           />
           {frontmatter.hero.credit && (
@@ -126,12 +129,34 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
         </figure>
       )}
 
-      {/* Body */}
-      <div className="prose-editorial">
-        <MDXRemote source={body} components={mdxComponents} />
-      </div>
+      {/* Body — split at the contract's "How to think about it" boundary so a
+          mid-article ad can sit between the halves; falls back to a single
+          render when the post can't be split safely (see split-article.ts). */}
+      {(() => {
+        const halves = splitForMidArticleAd(body);
+        return (
+          <>
+            <div className="prose-editorial">
+              <MDXRemote source={halves[0]} components={mdxComponents} />
+            </div>
+            {halves.length === 2 && (
+              <>
+                <AdSlot
+                  slot={ADSENSE_SLOT_IN_ARTICLE}
+                  format="fluid"
+                  layout="in-article"
+                  className="my-10 block text-center"
+                />
+                <div className="prose-editorial">
+                  <MDXRemote source={halves[1]} components={mdxComponents} />
+                </div>
+              </>
+            )}
+          </>
+        );
+      })()}
 
-      {/* In-article ad (renders only when AdSense is configured) */}
+      {/* In-article ad after the body (renders only when AdSense is configured) */}
       <AdSlot
         slot={ADSENSE_SLOT_IN_ARTICLE}
         format="fluid"

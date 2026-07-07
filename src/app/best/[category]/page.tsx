@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import { listPosts } from '@/lib/posts';
 import { isShoppableCategory } from '@/lib/affiliate';
-import { SITE_NAME, SITE_URL } from '@/lib/structured-data';
+import { SITE_NAME, SITE_URL, itemListJsonLd } from '@/lib/structured-data';
 
 export const revalidate = 300;
 
@@ -51,9 +51,15 @@ export default async function BestCategoryPage({ params }: { params: Promise<{ c
   const name = label(category);
   const year = new Date().getFullYear();
   const featured = posts.slice(0, 12);
+  const itemList = itemListJsonLd(`Best ${name} in ${year}`, featured);
 
   return (
     <div className="mx-auto max-w-3xl px-6 py-16">
+      {/* Structured data — escape `<` so titles can't break out of the script */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(itemList).replace(/</g, '\\u003c') }}
+      />
       <div className="mb-10 border-b-2 border-ink pb-6">
         <div className="text-xs uppercase tracking-[0.3em] text-muted">Buying guide</div>
         <h1 className="mt-2 font-display text-4xl sm:text-5xl font-black leading-tight">

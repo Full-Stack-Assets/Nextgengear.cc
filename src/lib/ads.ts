@@ -10,3 +10,6 @@ export const ADSENSE_CLIENT =
 
 export const ADSENSE_SLOT_IN_ARTICLE = process.env.NEXT_PUBLIC_ADSENSE_SLOT_IN_ARTICLE;
 export const ADSENSE_SLOT_FOOTER = process.env.NEXT_PUBLIC_ADSENSE_SLOT_FOOTER;
+// Listing-surface unit (home / category / tag pages), shown between content
+// sections. Like the others, unset ⇒ the slot renders nothing.
+export const ADSENSE_SLOT_LISTING = process.env.NEXT_PUBLIC_ADSENSE_SLOT_LISTING;

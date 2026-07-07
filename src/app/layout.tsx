@@ -102,6 +102,7 @@ function Header() {
           {siteConfig.navCategories.map((c) => (
             <Link key={c} href={`/categories/${c}`} className="hover:text-accent transition-colors">{navLabel(c)}</Link>
           ))}
+          <Link href="/best" className="hover:text-accent transition-colors">Guides</Link>
           <Link href="/about" className="hover:text-accent transition-colors">About</Link>
           <Link href="/stats" className="hover:text-accent transition-colors">Stats</Link>
           <a href="/feed.xml" className="hover:text-accent transition-colors" title="RSS Feed">

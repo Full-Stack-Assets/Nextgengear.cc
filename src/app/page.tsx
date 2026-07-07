@@ -1,11 +1,19 @@
 import Link from 'next/link';
 import { listPosts } from '@/lib/posts';
+import { isShoppableCategory } from '@/lib/affiliate';
+import { AdSlot } from '@/components/AdSlot';
+import { ADSENSE_SLOT_LISTING } from '@/lib/ads';
 
 export const revalidate = 300; // re-check content every 5 minutes
 
 export default async function HomePage() {
   const posts = await listPosts();
   const [lead, ...rest] = posts;
+  // Buyer-intent hubs that actually have coverage — drives affiliate traffic
+  // from the highest-traffic page. Empty when no shoppable posts exist yet.
+  const guideCategories = Array.from(
+    new Set(posts.map((p) => p.frontmatter.category).filter(isShoppableCategory))
+  );
 
   return (
     <div className="mx-auto max-w-6xl px-6 py-10 sm:py-16">
@@ -16,6 +24,7 @@ export default async function HomePage() {
       ) : (
         <>
           {lead && <LeadStory post={lead} />}
+          {guideCategories.length > 0 && <GuidesStrip categories={guideCategories} />}
           {rest.length > 0 && (
             <div className="mt-20">
               <SectionRule label="More dispatches" />
@@ -24,10 +33,46 @@ export default async function HomePage() {
                   <PostCard key={p.slug} post={p} />
                 ))}
               </div>
+              {/* Listing ad after the grid (renders only when configured). */}
+              <AdSlot slot={ADSENSE_SLOT_LISTING} format="auto" className="mt-16 block" />
             </div>
           )}
         </>
       )}
+    </div>
+  );
+}
+
+/** Human-friendly category label, e.g. "smarthome" → "Smart Home". */
+function guideLabel(category: string): string {
+  const special: Record<string, string> = { smarthome: 'Smart Home' };
+  return special[category] ?? category[0].toUpperCase() + category.slice(1);
+}
+
+/**
+ * Top-picks module: links the home page into the /best buying-guide hubs, the
+ * site's affiliate landing pages. Pure internal links — no ad markup.
+ */
+function GuidesStrip({ categories }: { categories: string[] }) {
+  return (
+    <div className="mt-14 border-y border-ink/20 py-5">
+      <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
+        <span className="font-display text-xs font-bold uppercase tracking-[0.3em] text-muted">
+          Buying guides
+        </span>
+        {categories.map((c) => (
+          <Link
+            key={c}
+            href={`/best/${c}`}
+            className="text-sm font-semibold text-accent hover:underline"
+          >
+            Best {guideLabel(c)} →
+          </Link>
+        ))}
+        <Link href="/best" className="text-sm text-muted hover:text-accent transition-colors">
+          All guides
+        </Link>
+      </div>
     </div>
   );
 }
@@ -72,6 +117,8 @@ function LeadStory({ post }: { post: Awaited<ReturnType<typeof listPosts>>[numbe
             <img
               src={frontmatter.hero.url}
               alt={frontmatter.hero.alt}
+              fetchPriority="high"
+              decoding="async"
               className="h-full w-full object-cover transition-transform duration-700 hover:scale-[1.03]"
             />
           </Link>
@@ -106,6 +153,8 @@ function PostCard({ post }: { post: Awaited<ReturnType<typeof listPosts>>[number
           <img
             src={frontmatter.hero.url}
             alt={frontmatter.hero.alt}
+            loading="lazy"
+            decoding="async"
             className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
           />
         </Link>

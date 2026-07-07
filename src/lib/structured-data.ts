@@ -62,7 +62,7 @@ export function faqJsonLd(post: Post): Record<string, unknown> | null {
 
 /**
  * Site-level JSON-LD (WebSite + the Organization that publishes it). Rendered
- * once site-wide so search/answer engines can resolve "Wire and Logic" as an
+ * once site-wide so search/answer engines can resolve the site name as an
  * entity rather than re-deriving it per page.
  */
 export function websiteJsonLd(): Record<string, unknown> {
@@ -73,6 +73,27 @@ export function websiteJsonLd(): Record<string, unknown> {
     url: SITE_URL,
     description: SITE_DESCRIPTION,
     publisher: { '@type': 'Organization', name: SITE_NAME, url: SITE_URL },
+  };
+}
+
+/**
+ * ItemList JSON-LD for curated list pages (the /best buying-guide hubs). This
+ * is an accurate representation — a ranked list of our own article URLs — and
+ * deliberately NOT Product schema: we hold no price/offer/rating data, and
+ * emitting Product (or aggregateRating) we can't back would risk a manual
+ * action rather than a rich result.
+ */
+export function itemListJsonLd(name: string, posts: Post[]): Record<string, unknown> {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name,
+    itemListElement: posts.map((p, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: p.frontmatter.title,
+      url: `${SITE_URL}/blog/${p.slug}`,
+    })),
   };
 }
 

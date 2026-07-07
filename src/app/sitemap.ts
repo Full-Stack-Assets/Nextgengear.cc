@@ -22,15 +22,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.5,
   }));
 
-  // Buyer-intent hub pages — only for buyable product categories that have posts.
-  const hubEntries: MetadataRoute.Sitemap = categories
-    .filter(isShoppableCategory)
-    .map((c) => ({
+  // Buyer-intent hub pages — only for buyable product categories that have
+  // posts — plus the /best index that links them together.
+  const hubEntries: MetadataRoute.Sitemap = [
+    { url: `${siteUrl}/best`, lastModified: new Date(), changeFrequency: 'daily' as const, priority: 0.6 },
+    ...categories.filter(isShoppableCategory).map((c) => ({
       url: `${siteUrl}/best/${c}`,
       lastModified: new Date(),
-      changeFrequency: 'daily',
+      changeFrequency: 'daily' as const,
       priority: 0.7,
-    }));
+    })),
+  ];
 
   return [
     { url: siteUrl, lastModified: new Date(), changeFrequency: 'daily', priority: 1.0 },
