@@ -1,4 +1,5 @@
 import type { RawItem } from '../orchestrator/types';
+import { fetchJson } from '../http';
 import { siteConfig } from '@/site.config';
 
 interface BraveNewsResult {
@@ -28,36 +29,40 @@ export async function fetchBraveNews(): Promise<RawItem[]> {
       url.searchParams.set('count', '10');
       url.searchParams.set('freshness', 'pd'); // past day
 
-      const res = await fetch(url, {
+      const json = await fetchJson<{ results?: BraveNewsResult[] }>(url, {
         headers: { 'x-subscription-token': key, accept: 'application/json' },
+        timeoutMs: 10_000,
       });
-      if (!res.ok) continue;
-
-      const json = (await res.json()) as { results?: BraveNewsResult[] };
-      for (const r of json.results ?? []) {
-        items.push({
-          id: `brave:${Buffer.from(r.url).toString('base64url').slice(0, 32)}`,
-          source: 'bravenews',
-          title: r.title,
-          url: r.url,
-          author: r.meta_url?.hostname,
-          publishedAt: parseRelativeAge(r.page_age ?? r.age),
-          summary: r.description,
-          tags: [q],
-        });
-      }
+      items.push(...braveResultsToRawItems(json.results ?? [], q));
     } catch (err) {
-      console.warn(`[brave] "${q}" failed:`, err);
+      console.warn(`[brave] "${q}" failed:`, err instanceof Error ? err.message : err);
     }
   }
   return items;
 }
 
 /**
+ * Map Brave news results to RawItems for a given query. Pure and exported so it
+ * can be unit-tested without a network call.
+ */
+export function braveResultsToRawItems(results: BraveNewsResult[], query: string): RawItem[] {
+  return results.map<RawItem>((r) => ({
+    id: `brave:${Buffer.from(r.url).toString('base64url').slice(0, 32)}`,
+    source: 'bravenews',
+    title: r.title,
+    url: r.url,
+    author: r.meta_url?.hostname,
+    publishedAt: parseRelativeAge(r.page_age ?? r.age),
+    summary: r.description,
+    tags: [query],
+  }));
+}
+
+/**
  * Brave returns `page_age` / `age` as relative strings like "2 hours ago",
  * "3 days ago", "January 15, 2025". Try to parse to ISO; fall back to now.
  */
-function parseRelativeAge(age: string | undefined): string {
+export function parseRelativeAge(age: string | undefined): string {
   if (!age) return new Date().toISOString();
 
   // Try as an absolute date first ("January 15, 2025")

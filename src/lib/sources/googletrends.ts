@@ -1,5 +1,6 @@
 import Parser from 'rss-parser';
 import type { RawItem } from '../orchestrator/types';
+import { fetchWithRetry } from '../http';
 
 // Google Trends' "Trending now" feed for the US. No API key needed.
 const TRENDS_RSS = 'https://trends.google.com/trending/rss?geo=US';
@@ -47,7 +48,8 @@ export async function parseTrendsXml(xml: string): Promise<RawItem[]> {
 }
 
 async function fetchText(url: string): Promise<string> {
-  const res = await fetch(url, {
+  const res = await fetchWithRetry(url, {
+    timeoutMs: 10_000,
     headers: { 'user-agent': 'Mozilla/5.0 (compatible; WireAndLogicBot/1.0)' },
   });
   if (!res.ok) throw new Error(`HTTP ${res.status}`);

@@ -34,7 +34,7 @@ Tests live in `__tests__/` folders next to the code they cover and are named
 | Generate | `src/lib/orchestrator/__tests__/generate.test.ts` | `clampMeta`, `slugify`, `normalizeTags`, `extractJson`, and `PostSchema` heal-vs-reject behavior |
 | Posts | `src/lib/__tests__/posts.test.ts` | `relatedPosts` ranking (shared tags → category → recency) |
 | HTTP | `src/lib/__tests__/http.test.ts` | `fetchWithRetry` timeout/backoff/retry semantics, `fetchJson` |
-| Sources | `src/lib/sources/__tests__/lobsters.test.ts` | `lobstersToRawItems` mapping + niche filtering |
+| Sources | `src/lib/sources/__tests__/*.test.ts` | Exported pure mappers for each wired source — `reddit`, `rss`, `youtube`, `bravenews`, `googletrends`, `lobsters` — covering field mapping, skip rules, caps, and niche filtering |
 | MDX guard | `src/lib/orchestrator/__tests__/validate.test.ts` | `validateMdx` accepts well-formed bodies and rejects the real-world break patterns (unclosed `<Cons>`, unterminated `q="…"`, truncated `<FAQ>`) |
 
 ## Content validation
