@@ -1,12 +1,14 @@
 import type { RawItem } from '../orchestrator/types';
+import { fetchWithRetry, fetchJson } from '../http';
 import { siteConfig } from '@/site.config';
 
 const SUBREDDITS = siteConfig.sources.subreddits;
+const USER_AGENT = 'trendblog:v0.1.0 (by /u/trendblog)';
 
 /**
  * Reddit requires OAuth2 "application only" auth for server-side requests.
  * This is free and doesn't require a Reddit user account to act on behalf of.
- * 
+ *
  * Create a "script" app at https://www.reddit.com/prefs/apps
  * and set REDDIT_CLIENT_ID and REDDIT_CLIENT_SECRET in .env.
  */
@@ -22,14 +24,15 @@ async function getAccessToken(): Promise<string | null> {
     return cachedToken.token;
   }
 
-  const res = await fetch('https://www.reddit.com/api/v1/access_token', {
+  const res = await fetchWithRetry('https://www.reddit.com/api/v1/access_token', {
     method: 'POST',
     headers: {
-      'authorization': `Basic ${Buffer.from(`${clientId}:${clientSecret}`).toString('base64')}`,
+      authorization: `Basic ${Buffer.from(`${clientId}:${clientSecret}`).toString('base64')}`,
       'content-type': 'application/x-www-form-urlencoded',
-      'user-agent': 'trendblog:v0.1.0 (by /u/trendblog)',
+      'user-agent': USER_AGENT,
     },
     body: 'grant_type=client_credentials',
+    timeoutMs: 10_000,
   });
 
   if (!res.ok) {
@@ -53,48 +56,51 @@ export async function fetchReddit(): Promise<RawItem[]> {
   }
 
   const items: RawItem[] = [];
-  const ua = 'trendblog:v0.1.0 (by /u/trendblog)';
 
   for (const sub of SUBREDDITS) {
     try {
-      const res = await fetch(
+      const json = await fetchJson<RedditListing>(
         `https://oauth.reddit.com/r/${sub}/top?t=day&limit=15`,
         {
-          headers: {
-            'authorization': `Bearer ${token}`,
-            'user-agent': ua,
-          },
+          headers: { authorization: `Bearer ${token}`, 'user-agent': USER_AGENT },
+          timeoutMs: 10_000,
         }
       );
-      if (!res.ok) {
-        console.warn(`[reddit] r/${sub} returned ${res.status}`);
-        continue;
-      }
-      const json = (await res.json()) as {
-        data: { children: Array<{ data: RedditPost }> };
-      };
-
-      for (const child of json.data.children) {
-        const p = child.data;
-        if (p.stickied || p.over_18) continue;
-        items.push({
-          id: `reddit:${p.id}`,
-          source: 'reddit',
-          title: p.title,
-          url: p.url_overridden_by_dest ?? `https://reddit.com${p.permalink}`,
-          author: p.author,
-          publishedAt: new Date(p.created_utc * 1000).toISOString(),
-          summary: p.selftext?.slice(0, 500),
-          upvotes: p.ups,
-          comments: p.num_comments,
-          tags: [sub],
-        });
-      }
+      items.push(...redditListingToRawItems(json, sub));
     } catch (err) {
-      console.warn(`[reddit] ${sub} failed:`, err);
+      console.warn(`[reddit] ${sub} failed:`, err instanceof Error ? err.message : err);
     }
   }
   return items;
+}
+
+/**
+ * Map a Reddit `/top` listing to RawItems, skipping stickied/NSFW posts. Pure
+ * and exported so it can be unit-tested without hitting the Reddit API.
+ */
+export function redditListingToRawItems(json: RedditListing, sub: string): RawItem[] {
+  const out: RawItem[] = [];
+  for (const child of json?.data?.children ?? []) {
+    const p = child?.data;
+    if (!p || p.stickied || p.over_18) continue;
+    out.push({
+      id: `reddit:${p.id}`,
+      source: 'reddit',
+      title: p.title,
+      url: p.url_overridden_by_dest ?? `https://reddit.com${p.permalink}`,
+      author: p.author,
+      publishedAt: new Date(p.created_utc * 1000).toISOString(),
+      summary: p.selftext?.slice(0, 500),
+      upvotes: p.ups,
+      comments: p.num_comments,
+      tags: [sub],
+    });
+  }
+  return out;
+}
+
+interface RedditListing {
+  data: { children: Array<{ data: RedditPost }> };
 }
 
 interface RedditPost {

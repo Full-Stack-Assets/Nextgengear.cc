@@ -3,6 +3,7 @@ import { fetchRss } from '../sources/rss';
 import { fetchYouTube } from '../sources/youtube';
 import { fetchBraveNews } from '../sources/bravenews';
 import { fetchGoogleTrends } from '../sources/googletrends';
+import { fetchLobsters } from '../sources/lobsters';
 import { score, dedupe, pickWinner, signature } from './score';
 import { research } from './research';
 import { generate } from './generate';
@@ -38,18 +39,21 @@ export async function runPipeline(opts: PipelineOptions = {}): Promise<PipelineR
   try {
     // ── 1. Gather ─────────────────────────────────────────────────
     const doneGather = t('gather');
-    const [reddit, rss, yt, brave, trends] = await Promise.all([
+    const [reddit, rss, yt, brave, trends, lobsters] = await Promise.all([
       fetchReddit().catch((e) => { console.warn('reddit', e); return [] as RawItem[]; }),
       fetchRss().catch((e) => { console.warn('rss', e); return [] as RawItem[]; }),
       fetchYouTube().catch((e) => { console.warn('yt', e); return [] as RawItem[]; }),
       fetchBraveNews().catch((e) => { console.warn('brave', e); return [] as RawItem[]; }),
       fetchGoogleTrends().catch((e) => { console.warn('googletrends', e); return [] as RawItem[]; }),
+      fetchLobsters().catch((e) => { console.warn('lobsters', e); return [] as RawItem[]; }),
     ]);
     // Hacker News and DEV.to are niche-agnostic (general tech-news) sources, so
     // they injected off-niche winners on this niche site. Excluded here so only
-    // on-niche stories (Reddit / RSS / Brave / YouTube / Google Trends — all
-    // configured for this site's niche in siteConfig.sources) can win.
-    const allItems = [...reddit, ...rss, ...yt, ...brave, ...trends];
+    // on-niche stories can win. Lobsters is niche-agnostic too, but its source
+    // module self-filters against siteConfig.sources.trendsKeywords, so every
+    // item it returns is already on-niche (Reddit / RSS / Brave / YouTube /
+    // Google Trends are all niche-configured in siteConfig.sources).
+    const allItems = [...reddit, ...rss, ...yt, ...brave, ...trends, ...lobsters];
     doneGather();
 
     if (allItems.length === 0) {
