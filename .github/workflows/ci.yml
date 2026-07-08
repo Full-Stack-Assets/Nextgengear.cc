@@ -1,0 +1,45 @@
+name: CI
+
+# Quality gate for human/agent changes: typecheck, unit tests, and a full
+# production build on every PR and every non-main branch push. The hourly
+# content bot commits straight to main (content only, no code), so main pushes
+# are intentionally excluded to avoid burning minutes on generated posts.
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches-ignore: [main]
+
+# Cancel superseded runs on the same ref (e.g. rapid re-pushes to a PR branch).
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Unit tests
+        run: npm test
+
+      - name: Build
+        run: npm run build

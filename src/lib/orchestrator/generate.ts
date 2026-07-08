@@ -106,6 +106,36 @@ export const PostSchema = z.object({
   body: z.string().min(800),
 });
 
+/** Paired MDX components the writer must open and close in balance. */
+const PAIRED_TAGS = ['Callout', 'ProsCons', 'Pros', 'Cons', 'FAQ', 'Question'] as const;
+
+/**
+ * Lightweight structural check on the generated MDX body. A single malformed
+ * post (unbalanced <Cons>, a <Question q="…" missing its closing quote, etc.)
+ * throws at build time and takes the whole static export — and the live site —
+ * down. This runs in-process with no MDX compiler dependency, so it works inside
+ * the tsx pipeline; a failure is fed back to the model as a retry reason exactly
+ * like a schema miss. Returns an error string, or null when the body is sound.
+ */
+export function checkMdxStructure(body: string): string | null {
+  for (const tag of PAIRED_TAGS) {
+    // Opening tags that are NOT self-closed (`<Tag … />`).
+    const opens = (body.match(new RegExp(`<${tag}\\b(?![^>]*/>)`, 'g')) ?? []).length;
+    const closes = (body.match(new RegExp(`</${tag}>`, 'g')) ?? []).length;
+    if (opens !== closes) {
+      return `unbalanced <${tag}> tags: ${opens} opening vs ${closes} closing`;
+    }
+  }
+  // Every <Question …> opener must carry a well-formed q="…" that closes on the
+  // same line — an unterminated attribute is the other recurring build-breaker.
+  for (const opener of body.match(/<Question\b[^>]*>/g) ?? []) {
+    if (!/^<Question\s+q="[^"\n]*"\s*>$/.test(opener)) {
+      return `malformed <Question> opening tag: ${opener.slice(0, 80)}`;
+    }
+  }
+  return null;
+}
+
 const SYSTEM_PROMPT = `You are a senior writer producing a single blog post in MDX format for ${siteConfig.audience}.
 
 Your output MUST be a valid JSON object with exactly these fields — nothing else, no prose, no code fences:
@@ -225,16 +255,14 @@ export async function generate(bundle: ResearchBundle): Promise<GeneratedPost> {
 
     const result = PostSchema.safeParse(parsed);
     if (result.success) {
-      // Final gate: the body must actually compile as MDX (what the site build
-      // does). Validate the *sanitized* body — that's the exact string serialize
-      // will commit. A failure feeds the compiler's reason back so the model can
-      // fix the offending tag instead of shipping a build-breaking post.
-      const mdxCheck = await validateMdx(sanitizeBody(result.data.body));
-      if (mdxCheck.ok) {
+      // Guard against structurally broken MDX slipping through to a commit —
+      // the schema only checks the body's length, not its tag balance.
+      const structureError = checkMdxStructure(result.data.body);
+      if (!structureError) {
         return finalize(result.data, bundle);
       }
-      lastError = `body is not valid MDX — ${mdxCheck.error}`;
-      console.warn(`generate: MDX validation failed (attempt ${attempt}): ${mdxCheck.error}`);
+      lastError = `body — ${structureError}`;
+      console.warn(`generate: rejected post with malformed MDX (attempt ${attempt}): ${structureError}`);
       continue;
     }
     lastError = result.error.issues

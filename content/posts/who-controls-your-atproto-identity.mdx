@@ -70,13 +70,7 @@ Do not use default, third-party hosted PDS accounts for sensitive developer work
 ## FAQ
 
 <FAQ>
-  <Question q="Can a PDS operator actually post or commit code as me?">
-    Yes. Because the PDS holds your active signing key by default, any action the operator takes on your behalf is cryptographically valid and indistinguishable from your own actions across all ATProto applications.
-  </Question>
-  <Question q="How does ATProto identity differ from traditional platforms like GitHub?">
-    On traditional platforms, compromising your account does not give the host your private SSH or GPG keys used for local git commits. On ATProto, the PDS manages the keys for all integrated services, meaning a host compromise affects your social media, git repositories, and blogs simultaneously.
-  </Question>
-  <Question q="Is it possible to secure my identity without self-hosting a PDS?">
-    Yes. You can enroll a self-controlled backup rotation key with higher priority than your PDS's key. This allows you to cryptographically reclaim your DID and point it to a new PDS if your current provider is compromised or acts maliciously.
-  </Question>
+  <Question q="Can a PDS operator actually post or commit code as me?">Yes. Because the PDS holds your active signing key by default, any action the operator takes on your behalf is cryptographically valid and indistinguishable from your own actions across all ATProto applications.</Question>
+  <Question q="How does ATProto identity differ from traditional platforms like GitHub?">On traditional platforms, compromising your account does not give the host your private SSH or GPG keys used for local git commits. On ATProto, the PDS manages the keys for all integrated services, meaning a host compromise affects your social media, git repositories, and blogs simultaneously.</Question>
+  <Question q="Is it possible to secure my identity without self-hosting a PDS?">Yes. You can enroll a self-controlled backup rotation key with higher priority than your PDS's key. This allows you to cryptographically reclaim your DID and point it to a new PDS if your current provider is compromised or acts maliciously.</Question>
 </FAQ>

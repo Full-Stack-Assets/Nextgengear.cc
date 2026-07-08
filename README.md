@@ -189,6 +189,26 @@ the built-in banner is a sensible default, not a substitute for one.
 
 ---
 
+## Testing & CI
+
+```bash
+npm test                 # Vitest: core-logic unit tests + all-content MDX compile check
+npm run typecheck        # tsc --noEmit
+npm run validate:content # compile every post (finds build-breaking MDX fast)
+npm run sanitize         # normalize existing posts' MDX in place (maintenance)
+```
+
+Unit tests sit beside the code (`src/lib/**/*.test.ts`) and cover scoring/dedupe,
+the writer contract (schema self-heal + MDX structure guard), serialization, and
+affiliate logic. `tests/content-compiles.test.ts` compiles **every** post — one
+test per file — because a single malformed post aborts the whole `next build` and
+takes the site down; this catches it in CI on the exact file instead.
+
+`.github/workflows/ci.yml` runs `typecheck → test → build` on every PR and
+non-main branch push. Full details in [`docs/testing-and-ci.md`](docs/testing-and-ci.md).
+
+---
+
 ## Troubleshooting
 
 **"no items from any source"** — all six sources failed. Usually a network blip; check logs. Try `pnpm generate --dry` after a minute.
