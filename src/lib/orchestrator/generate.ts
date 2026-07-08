@@ -1,6 +1,8 @@
 import { z } from 'zod';
 import type { ResearchBundle, GeneratedPost } from './types';
 import { siteConfig } from '@/site.config';
+import { sanitizeBody } from './serialize';
+import { validateMdx } from './validate';
 
 type LlmProvider = { endpoint: string; model: string; apiKeyEnv: string };
 
@@ -223,7 +225,17 @@ export async function generate(bundle: ResearchBundle): Promise<GeneratedPost> {
 
     const result = PostSchema.safeParse(parsed);
     if (result.success) {
-      return finalize(result.data, bundle);
+      // Final gate: the body must actually compile as MDX (what the site build
+      // does). Validate the *sanitized* body — that's the exact string serialize
+      // will commit. A failure feeds the compiler's reason back so the model can
+      // fix the offending tag instead of shipping a build-breaking post.
+      const mdxCheck = await validateMdx(sanitizeBody(result.data.body));
+      if (mdxCheck.ok) {
+        return finalize(result.data, bundle);
+      }
+      lastError = `body is not valid MDX — ${mdxCheck.error}`;
+      console.warn(`generate: MDX validation failed (attempt ${attempt}): ${mdxCheck.error}`);
+      continue;
     }
     lastError = result.error.issues
       .map((i) => `${i.path.join('.') || 'root'} — ${i.message}`)
