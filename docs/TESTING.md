@@ -35,6 +35,14 @@ Tests live in `__tests__/` folders next to the code they cover and are named
 | Posts | `src/lib/__tests__/posts.test.ts` | `relatedPosts` ranking (shared tags → category → recency) |
 | HTTP | `src/lib/__tests__/http.test.ts` | `fetchWithRetry` timeout/backoff/retry semantics, `fetchJson` |
 | Sources | `src/lib/sources/__tests__/lobsters.test.ts` | `lobstersToRawItems` mapping + niche filtering |
+| MDX guard | `src/lib/orchestrator/__tests__/validate.test.ts` | `validateMdx` accepts well-formed bodies and rejects the real-world break patterns (unclosed `<Cons>`, unterminated `q="…"`, truncated `<FAQ>`) |
+
+## Content validation
+
+Separately from the unit suite, `npm run validate:content` compiles **every**
+`content/posts/*.mdx` with the real MDX engine and fails if any is malformed.
+It's the safety net behind the in-pipeline `validateMdx` guard and runs in CI via
+`.github/workflows/content-check.yml` on content changes.
 
 ## Conventions for new tests
 

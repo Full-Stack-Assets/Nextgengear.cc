@@ -88,6 +88,15 @@ recoverable overshoots instead of throwing; only genuinely unrepairable misses
 the model. Don't add `.max()` before a transform — it fires first and defeats
 the heal.
 
+**MDX compile guard:** after `PostSchema` accepts a post, `generate.ts` runs the
+(sanitized) body through the real MDX compiler (`validateMdx` in
+`orchestrator/validate.ts`, using `next-mdx-remote`) before committing. A body
+that won't compile (unclosed `<Cons>`, unterminated `q="…"`, truncated `<FAQ>`)
+feeds the compiler's reason back into the retry loop instead of shipping a post
+that breaks the site build. `scripts/validate-content.mjs` (`npm run
+validate:content`, and the `content-check.yml` workflow) is the safety net over
+already-committed posts.
+
 ## Site structure (`src/app/`)
 
 - `page.tsx` — home/listing · `blog/[slug]/page.tsx` — article
@@ -119,6 +128,7 @@ npm run lint             # next lint
 npm run typecheck        # tsc --noEmit (CI gate)
 npm test                 # vitest run — unit suite over the pipeline's pure logic (CI gate)
 npm run test:watch       # vitest in watch mode while developing
+npm run validate:content # compile every content/posts/*.mdx (catches malformed posts)
 
 npm run generate -- --dry   # dry run: print the post, write nothing
 npm run generate            # real local run: writes content/posts/*.mdx + updates topic log + syndicates
@@ -154,6 +164,9 @@ Action's own git step does the commit/push.
 - `.github/workflows/test.yml` — **CI gate** on PRs + pushes to `main`: runs
   `npm run typecheck` and `npm test`. Ignores `content/**` so bot post commits
   don't trigger it. See `docs/TESTING.md`.
+- `.github/workflows/content-check.yml` — compiles every `content/posts/**` MDX
+  file (`npm run validate:content`) on content changes + PRs, so a malformed post
+  is caught in CI rather than breaking the Vercel/`next build` prerender.
 
 ## Conventions for making changes
 
