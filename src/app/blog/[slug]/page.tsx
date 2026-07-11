@@ -142,7 +142,7 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
       {/* Contextual shop link — only for buyable product categories, so the
           back catalog earns affiliate revenue without per-post curation. */}
       {isShoppableCategory(frontmatter.category) && (
-        <aside className="my-12 rounded-xl border border-accent/30 bg-gradient-to-br from-accent/[0.06] to-accent/[0.02] p-6 shadow-card">
+        <aside className="my-12 rounded-xl border border-accent/30 bg-gradient-to-br from-accent/[0.06] via-violet/[0.04] to-accent/[0.02] p-6 shadow-card">
           <div className="mb-1 text-[10px] font-bold uppercase tracking-[0.2em] text-accent-deep">
             Shop this
           </div>
@@ -153,7 +153,7 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
             href={amazonSearchUrl(frontmatter.title)}
             target="_blank"
             rel="noopener noreferrer sponsored nofollow"
-            className="mt-4 inline-block rounded-lg bg-accent px-5 py-2.5 text-sm font-semibold text-white shadow-card transition-colors hover:bg-accent-deep"
+            className="mt-4 inline-block rounded-lg bg-gradient-to-r from-accent to-violet px-5 py-2.5 text-sm font-semibold text-white shadow-card transition-shadow hover:shadow-prism"
           >
             Search on Amazon →
           </a>

@@ -4,7 +4,7 @@ import { amazonSearchUrl, AFFILIATE_DISCLOSURE } from '@/lib/affiliate';
 type CalloutType = 'takeaway' | 'warning' | 'note';
 
 const CALLOUT_CONFIG: Record<CalloutType, { label: string; bg: string; border: string; accent: string }> = {
-  takeaway: { label: 'Takeaway', bg: 'bg-accent/[0.06]', border: 'border-accent', accent: 'text-accent-deep' },
+  takeaway: { label: 'Takeaway', bg: 'bg-gradient-to-br from-accent/[0.07] to-violet/[0.05]', border: 'border-accent', accent: 'text-accent-deep' },
   warning:  { label: 'Watch out', bg: 'bg-amber-50', border: 'border-amber-500', accent: 'text-amber-700' },
   note:     { label: 'Note', bg: 'bg-surface', border: 'border-rule', accent: 'text-muted' },
 };
@@ -92,7 +92,7 @@ export function BuyBox({
   if (!product) return null;
   const href = amazonSearchUrl(query || product);
   return (
-    <aside className="my-10 rounded-xl border border-accent/30 bg-gradient-to-br from-accent/[0.06] to-accent/[0.02] p-6 shadow-card">
+    <aside className="my-10 rounded-xl border border-accent/30 bg-gradient-to-br from-accent/[0.06] via-violet/[0.04] to-accent/[0.02] p-6 shadow-card">
       <div className="mb-1 text-[10px] font-bold uppercase tracking-[0.2em] text-accent-deep">
         Where to buy
       </div>
@@ -101,7 +101,7 @@ export function BuyBox({
         href={href}
         target="_blank"
         rel="noopener noreferrer sponsored nofollow"
-        className="mt-4 inline-block rounded-lg bg-accent px-5 py-2.5 text-sm font-semibold text-white no-underline shadow-card transition-colors hover:bg-accent-deep"
+        className="mt-4 inline-block rounded-lg bg-gradient-to-r from-accent to-violet px-5 py-2.5 text-sm font-semibold text-white no-underline shadow-card transition-shadow hover:shadow-prism"
       >
         {cta} →
       </a>

@@ -46,7 +46,7 @@ export default async function StatsPage() {
       {/* Header */}
       <div className="mb-12 border-b border-rule pb-6">
         <div className="text-xs uppercase tracking-[0.3em] text-muted">Meta</div>
-        <h1 className="mt-2 font-display text-5xl font-black">Stats</h1>
+        <h1 className="mt-2 font-display text-5xl font-bold tracking-tight text-gradient">Stats</h1>
         <p className="mt-2 text-muted">
           Pipeline telemetry and content breakdown.
         </p>
@@ -117,7 +117,7 @@ export default async function StatsPage() {
           <p className="mt-4 text-muted">
             No topics logged yet. Run{' '}
             <code className="rounded-md border border-rule bg-surface px-2 py-0.5 text-sm">
-              pnpm generate
+              npm run generate
             </code>{' '}
             to populate.
           </p>
@@ -172,7 +172,7 @@ export default async function StatsPage() {
 function Stat({ label, value }: { label: string; value: number | string }) {
   return (
     <div className="rounded-xl border border-rule bg-white p-5 shadow-card">
-      <div className="font-display text-3xl font-black text-accent">{value}</div>
+      <div className="font-display text-3xl font-bold text-accent">{value}</div>
       <div className="mt-1 text-[10px] uppercase tracking-[0.2em] text-muted">
         {label}
       </div>

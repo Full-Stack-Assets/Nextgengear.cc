@@ -49,7 +49,7 @@ function Masthead() {
       </div>
       <h1 className="mt-6 max-w-3xl font-display text-5xl sm:text-6xl font-bold leading-[1.02] tracking-tight">
         {firstWord}.{' '}
-        <span className="text-accent">{restWords.join('. ')}{restWords.length > 0 ? '.' : ''}</span>
+        <span className="text-gradient">{restWords.join('. ')}{restWords.length > 0 ? '.' : ''}</span>
       </h1>
       <p className="mt-5 max-w-2xl text-lg leading-relaxed text-muted">
         {siteConfig.description}
@@ -62,7 +62,7 @@ function SectionRule({ label }: { label: string }) {
   return (
     <div className="flex items-center gap-4">
       <span className="font-display text-xs font-bold uppercase tracking-[0.3em] text-accent">{label}</span>
-      <div className="h-px flex-1 bg-rule" />
+      <div className="h-px flex-1 rule-gradient" />
     </div>
   );
 }
@@ -70,7 +70,7 @@ function SectionRule({ label }: { label: string }) {
 function LeadStory({ post }: { post: Awaited<ReturnType<typeof listPosts>>[number] }) {
   const { slug, frontmatter, readingTimeMin } = post;
   return (
-    <article className="group grid gap-0 overflow-hidden rounded-2xl border border-rule bg-white shadow-card transition-shadow duration-300 hover:shadow-card-hover sm:grid-cols-5">
+    <article className="card-prism group grid gap-0 overflow-hidden rounded-2xl shadow-card sm:grid-cols-5">
       {frontmatter.hero?.url && (
         <div className="sm:col-span-3 aspect-[4/3] overflow-hidden bg-surface">
           <Link href={`/blog/${slug}`}>
@@ -105,7 +105,7 @@ function LeadStory({ post }: { post: Awaited<ReturnType<typeof listPosts>>[numbe
 function PostCard({ post }: { post: Awaited<ReturnType<typeof listPosts>>[number] }) {
   const { slug, frontmatter, readingTimeMin } = post;
   return (
-    <article className="group flex flex-col overflow-hidden rounded-xl border border-rule bg-white shadow-card transition-all duration-300 hover:-translate-y-0.5 hover:shadow-card-hover">
+    <article className="card-prism group flex flex-col overflow-hidden rounded-xl shadow-card hover:-translate-y-0.5">
       {frontmatter.hero?.url && (
         <Link href={`/blog/${slug}`} className="block aspect-[16/10] overflow-hidden bg-surface">
           {/* eslint-disable-next-line @next/next/no-img-element */}

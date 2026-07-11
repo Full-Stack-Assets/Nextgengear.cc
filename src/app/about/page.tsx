@@ -9,7 +9,7 @@ export default function AboutPage() {
     <div className="mx-auto max-w-2xl px-6 py-16">
       <div className="mb-10 border-b border-rule pb-6">
         <div className="text-xs uppercase tracking-[0.3em] text-muted">About</div>
-        <h1 className="mt-2 font-display text-5xl font-black">How this works</h1>
+        <h1 className="mt-2 font-display text-5xl font-bold tracking-tight text-gradient">How this works</h1>
       </div>
 
       <div className="prose-editorial">

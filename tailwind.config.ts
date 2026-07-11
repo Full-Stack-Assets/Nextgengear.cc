@@ -19,6 +19,7 @@ const config: Config = {
         surface: '#f4f6fa',  // subtle raised/alt background
         accent: '#2563eb',   // electric blue — 4.5:1+ on white (WCAG AA)
         'accent-deep': '#1d4ed8',
+        violet: '#7c3aed',   // gradient partner to accent (blue → violet)
         muted: '#5b6472',    // secondary text — AA on white
         rule: '#e2e8f0',     // hairline borders
         // Intermediate zinc shade used by the VaporLoop demo (/vaporloop)
@@ -27,6 +28,7 @@ const config: Config = {
       boxShadow: {
         card: '0 1px 2px rgba(15, 23, 42, 0.05), 0 4px 12px rgba(15, 23, 42, 0.05)',
         'card-hover': '0 2px 4px rgba(15, 23, 42, 0.06), 0 12px 28px rgba(15, 23, 42, 0.12)',
+        prism: '0 2px 4px rgba(15, 23, 42, 0.06), 0 16px 36px rgba(37, 99, 235, 0.14), 0 8px 24px rgba(124, 58, 237, 0.10)',
       },
       typography: {
         DEFAULT: {
