@@ -23,7 +23,7 @@ This is the only file you must edit. Set:
   pulls from. Pick ones that match the niche; this is what the site writes about.
 - **Ads** — `adsenseClient` (your own `ca-pub-…`), or `''` to stay ad-free.
 - **Engine (optional)** — `llm` (the writer's OpenAI-compatible endpoint, model,
-  and which env var holds its key — defaults to **Groq** (`llama-3.3-70b-versatile`,
+  and which env var holds its key — defaults to **Groq** (`openai/gpt-oss-120b`,
   with a smaller Groq model as automatic fallback); swap to OpenRouter or another
   OpenAI-compatible provider via the commented examples) and `imageProvider` (`'pexels'`
   needs a key, `'openverse'` is keyless, `'none'` for no images).
