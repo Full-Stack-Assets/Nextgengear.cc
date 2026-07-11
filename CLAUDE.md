@@ -21,7 +21,7 @@ site-specific lives in **`src/site.config.ts`**. The npm package is still named
 - **Next.js 15** (App Router, React 19) — static-leaning blog, reads MDX from disk
 - **TinaCMS 3** — optional visual editor at `/admin`, schema mirrors the pipeline's frontmatter
 - **TypeScript** (strict), **Tailwind CSS 3**
-- **LLM writer** — OpenAI-compatible endpoint; default **Google Gemini** (`gemini-2.5-flash` — a stable GA model; the `gemini-flash-latest` alias was returning 503 "model is overloaded" under free-tier load), swappable to Groq / OpenRouter via `site.config.ts`
+- **LLM writer** — OpenAI-compatible endpoint; default **Groq** (`llama-3.3-70b-versatile`, with `llama-3.1-8b-instant` as the automatic `llmFallback` on the same key — Gemini was dropped after persistent free-tier 503 "model overloaded" failures), swappable to OpenRouter etc. via `site.config.ts`
 - **GitHub Actions** — the hourly scheduler (NOT Vercel cron — Hobby plan caps cron at daily)
 - Content is committed as `.mdx` files; there is **no database**.
 
@@ -153,7 +153,7 @@ Action's own git step does the commit/push.
   `adsenseClient`, the `llm` endpoint/model/key-env, and `imageProvider`. To
   re-niche or re-brand the site, edit this file (see `CREATE-A-SITE.md`).
 - **`.env.example`** lists every env var. Key ones: the LLM key matching
-  `llm.apiKeyEnv` (`GEMINI_API_KEY` by default), `BRAVE_API_KEY`,
+  `llm.apiKeyEnv` (`GROQ_API_KEY` by default), `BRAVE_API_KEY`,
   `PEXELS_API_KEY`, `REDDIT_CLIENT_ID/SECRET`, `GITHUB_TOKEN`/`OWNER`/`REPO`/`BRANCH`,
   `CRON_SECRET`, optional syndication / newsletter / AdSense vars.
 - Any unset source/integration is **skipped gracefully**, never fatal.

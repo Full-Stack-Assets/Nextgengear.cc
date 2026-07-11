@@ -35,7 +35,6 @@ jobs:
       - name: Run backfill
         env:
           # Must match llm.apiKeyEnv / source config in src/site.config.ts
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
           # Required: these evergreen topics have no source URL, so research
