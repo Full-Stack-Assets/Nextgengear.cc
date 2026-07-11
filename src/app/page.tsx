@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { listPosts } from '@/lib/posts';
+import { siteConfig } from '@/site.config';
 
 export const revalidate = 300; // re-check content every 5 minutes
 
@@ -36,17 +37,23 @@ function Masthead() {
   const today = new Date().toLocaleDateString('en-US', {
     weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
   });
+  const [firstWord, ...restWords] = siteConfig.tagline.split(' · ');
   return (
-    <div className="mb-16 flex flex-col gap-3 border-b-2 border-ink pb-8 sm:flex-row sm:items-end sm:justify-between">
-      <div>
-        <div className="text-xs uppercase tracking-[0.3em] text-muted">Vol. 1 · Issue {Math.floor((Date.now() - new Date('2025-01-01').getTime()) / 86400000) + 1}</div>
-        <h1 className="mt-2 font-display text-5xl sm:text-6xl font-black leading-none tracking-tight">
-          What shipped.<br /><span className="text-accent">What matters.</span>
-        </h1>
+    <div className="mb-16 border-b border-rule pb-10">
+      <div className="flex items-center justify-between gap-4">
+        <div className="inline-flex items-center gap-2 rounded-full border border-rule bg-surface px-3 py-1 text-[11px] font-medium uppercase tracking-[0.18em] text-muted">
+          <span className="h-1.5 w-1.5 rounded-full bg-accent" aria-hidden />
+          Updated hourly
+        </div>
+        <div className="hidden sm:block text-xs uppercase tracking-widest text-muted">{today}</div>
       </div>
-      <div className="text-right text-xs uppercase tracking-widest text-muted">
-        {today}
-      </div>
+      <h1 className="mt-6 max-w-3xl font-display text-5xl sm:text-6xl font-bold leading-[1.02] tracking-tight">
+        {firstWord}.{' '}
+        <span className="text-accent">{restWords.join('. ')}{restWords.length > 0 ? '.' : ''}</span>
+      </h1>
+      <p className="mt-5 max-w-2xl text-lg leading-relaxed text-muted">
+        {siteConfig.description}
+      </p>
     </div>
   );
 }
@@ -54,9 +61,8 @@ function Masthead() {
 function SectionRule({ label }: { label: string }) {
   return (
     <div className="flex items-center gap-4">
-      <div className="h-px flex-1 bg-ink/20" />
-      <span className="font-display text-xs font-bold uppercase tracking-[0.3em] text-muted">{label}</span>
-      <div className="h-px flex-1 bg-ink/20" />
+      <span className="font-display text-xs font-bold uppercase tracking-[0.3em] text-accent">{label}</span>
+      <div className="h-px flex-1 bg-rule" />
     </div>
   );
 }
@@ -64,30 +70,30 @@ function SectionRule({ label }: { label: string }) {
 function LeadStory({ post }: { post: Awaited<ReturnType<typeof listPosts>>[number] }) {
   const { slug, frontmatter, readingTimeMin } = post;
   return (
-    <article className="grid gap-8 sm:grid-cols-5">
+    <article className="group grid gap-0 overflow-hidden rounded-2xl border border-rule bg-white shadow-card transition-shadow duration-300 hover:shadow-card-hover sm:grid-cols-5">
       {frontmatter.hero?.url && (
-        <div className="sm:col-span-3 aspect-[4/3] overflow-hidden bg-ink/5">
+        <div className="sm:col-span-3 aspect-[4/3] overflow-hidden bg-surface">
           <Link href={`/blog/${slug}`}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={frontmatter.hero.url}
               alt={frontmatter.hero.alt}
-              className="h-full w-full object-cover transition-transform duration-700 hover:scale-[1.03]"
+              className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
             />
           </Link>
         </div>
       )}
-      <div className="sm:col-span-2 flex flex-col justify-center">
-        <Link href={`/categories/${frontmatter.category}`} className="mb-3 inline-block self-start border border-accent px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.2em] text-accent hover:bg-accent hover:text-paper transition-colors">
+      <div className="sm:col-span-2 flex flex-col justify-center p-7 sm:p-9">
+        <Link href={`/categories/${frontmatter.category}`} className="mb-4 inline-block self-start rounded-full bg-accent/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-accent-deep transition-colors hover:bg-accent hover:text-white">
           {frontmatter.category}
         </Link>
-        <Link href={`/blog/${slug}`} className="group">
-          <h2 className="font-display text-3xl sm:text-4xl font-black leading-[1.05] tracking-tight group-hover:text-accent transition-colors">
+        <Link href={`/blog/${slug}`}>
+          <h2 className="font-display text-3xl sm:text-4xl font-bold leading-[1.08] tracking-tight transition-colors group-hover:text-accent">
             {frontmatter.title}
           </h2>
         </Link>
-        <p className="mt-4 text-lg leading-relaxed text-ink/75">{frontmatter.description}</p>
-        <div className="mt-5 text-xs uppercase tracking-widest text-muted">
+        <p className="mt-4 text-base leading-relaxed text-muted">{frontmatter.description}</p>
+        <div className="mt-5 text-xs font-medium uppercase tracking-widest text-muted">
           {new Date(frontmatter.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
           {' · '} {readingTimeMin} min read
         </div>
@@ -99,9 +105,9 @@ function LeadStory({ post }: { post: Awaited<ReturnType<typeof listPosts>>[numbe
 function PostCard({ post }: { post: Awaited<ReturnType<typeof listPosts>>[number] }) {
   const { slug, frontmatter, readingTimeMin } = post;
   return (
-    <article className="group flex flex-col">
+    <article className="group flex flex-col overflow-hidden rounded-xl border border-rule bg-white shadow-card transition-all duration-300 hover:-translate-y-0.5 hover:shadow-card-hover">
       {frontmatter.hero?.url && (
-        <Link href={`/blog/${slug}`} className="mb-4 block aspect-[16/10] overflow-hidden bg-ink/5">
+        <Link href={`/blog/${slug}`} className="block aspect-[16/10] overflow-hidden bg-surface">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={frontmatter.hero.url}
@@ -110,18 +116,20 @@ function PostCard({ post }: { post: Awaited<ReturnType<typeof listPosts>>[number
           />
         </Link>
       )}
-      <div className="mb-2 text-[10px] font-bold uppercase tracking-[0.2em] text-accent">
-        {frontmatter.category}
-      </div>
-      <Link href={`/blog/${slug}`}>
-        <h3 className="font-display text-xl font-semibold leading-tight group-hover:text-accent transition-colors">
-          {frontmatter.title}
-        </h3>
-      </Link>
-      <p className="mt-2 text-sm text-ink/70 line-clamp-2">{frontmatter.description}</p>
-      <div className="mt-3 text-[11px] uppercase tracking-widest text-muted">
-        {new Date(frontmatter.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
-        {' · '} {readingTimeMin} min
+      <div className="flex flex-1 flex-col p-5">
+        <div className="mb-2 text-[10px] font-bold uppercase tracking-[0.2em] text-accent-deep">
+          {frontmatter.category}
+        </div>
+        <Link href={`/blog/${slug}`}>
+          <h3 className="font-display text-xl font-semibold leading-snug tracking-tight transition-colors group-hover:text-accent">
+            {frontmatter.title}
+          </h3>
+        </Link>
+        <p className="mt-2 text-sm leading-relaxed text-muted line-clamp-2">{frontmatter.description}</p>
+        <div className="mt-auto pt-4 text-[11px] font-medium uppercase tracking-widest text-muted">
+          {new Date(frontmatter.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+          {' · '} {readingTimeMin} min
+        </div>
       </div>
     </article>
   );
@@ -129,10 +137,10 @@ function PostCard({ post }: { post: Awaited<ReturnType<typeof listPosts>>[number
 
 function EmptyState() {
   return (
-    <div className="border-2 border-dashed border-ink/25 py-24 text-center">
+    <div className="rounded-2xl border-2 border-dashed border-rule bg-surface/50 py-24 text-center">
       <div className="font-display text-3xl font-bold">Nothing published yet.</div>
       <p className="mt-3 text-muted">
-        Run <code className="rounded bg-ink/10 px-2 py-0.5 text-sm">pnpm generate</code> or wait for the next cron tick.
+        Run <code className="rounded-md bg-white px-2 py-0.5 text-sm border border-rule">npm run generate</code> or wait for the next cron tick.
       </p>
     </div>
   );

@@ -54,7 +54,7 @@ export default async function BestCategoryPage({ params }: { params: Promise<{ c
 
   return (
     <div className="mx-auto max-w-3xl px-6 py-16">
-      <div className="mb-10 border-b-2 border-ink pb-6">
+      <div className="mb-10 border-b border-rule pb-6">
         <div className="text-xs uppercase tracking-[0.3em] text-muted">Buying guide</div>
         <h1 className="mt-2 font-display text-4xl sm:text-5xl font-black leading-tight">
           The Best {name} in {year}
@@ -86,7 +86,7 @@ export default async function BestCategoryPage({ params }: { params: Promise<{ c
         ))}
       </ol>
 
-      <div className="mt-12 border-t border-ink/20 pt-8 text-sm">
+      <div className="mt-12 border-t border-rule pt-8 text-sm">
         <Link href={`/categories/${category}`} className="font-display font-semibold text-accent hover:underline">
           Browse all {name.toLowerCase()} coverage →
         </Link>

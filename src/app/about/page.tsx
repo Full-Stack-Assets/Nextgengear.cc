@@ -7,7 +7,7 @@ export const metadata = { title: 'About' };
 export default function AboutPage() {
   return (
     <div className="mx-auto max-w-2xl px-6 py-16">
-      <div className="mb-10 border-b-2 border-ink pb-6">
+      <div className="mb-10 border-b border-rule pb-6">
         <div className="text-xs uppercase tracking-[0.3em] text-muted">About</div>
         <h1 className="mt-2 font-display text-5xl font-black">How this works</h1>
       </div>

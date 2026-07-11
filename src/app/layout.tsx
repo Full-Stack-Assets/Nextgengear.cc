@@ -87,17 +87,17 @@ function Header() {
   const brandLast = words.pop();
   const brandLead = words.join(' ');
   return (
-    <header className="relative z-20 border-b border-ink/20">
-      <div className="mx-auto flex max-w-6xl items-end justify-between px-6 py-6">
+    <header className="sticky top-0 z-30 border-b border-rule bg-white/80 backdrop-blur-md supports-[backdrop-filter]:bg-white/70">
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
         <Link href="/" className="group">
-          <div className="font-display text-3xl font-black tracking-tight leading-none">
+          <div className="font-display text-2xl font-bold tracking-tight leading-none">
             {brandLead ? `${brandLead} ` : ''}<span className="text-accent">{brandLast}</span>
           </div>
-          <div className="mt-1 text-[10px] uppercase tracking-[0.2em] text-muted">
+          <div className="mt-1 text-[10px] font-medium uppercase tracking-[0.22em] text-muted">
             {siteConfig.tagline}
           </div>
         </Link>
-        <nav className="hidden sm:flex items-center gap-6 text-sm font-medium">
+        <nav className="hidden sm:flex items-center gap-6 text-sm font-medium text-ink/80">
           <Link href="/" className="hover:text-accent transition-colors">Latest</Link>
           {siteConfig.navCategories.map((c) => (
             <Link key={c} href={`/categories/${c}`} className="hover:text-accent transition-colors">{navLabel(c)}</Link>
@@ -115,10 +115,10 @@ function Header() {
 
 function Footer() {
   return (
-    <footer className="relative z-10 mt-32 border-t border-ink/20">
-      <div className="mx-auto max-w-6xl px-6 py-10 text-sm text-muted">
+    <footer className="relative z-10 mt-32 border-t border-rule bg-surface/60">
+      <div className="mx-auto max-w-6xl px-6 py-12 text-sm text-muted">
         <AdSlot slot={ADSENSE_SLOT_FOOTER} format="auto" className="mb-8 block" />
-        <div className="mb-8 flex flex-col gap-4 border-b border-ink/15 pb-8 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mb-8 flex flex-col gap-4 border-b border-rule pb-8 sm:flex-row sm:items-center sm:justify-between">
           <div className="max-w-md">
             <div className="font-display text-base font-semibold text-ink">Get the weekly dispatch</div>
             <p className="mt-1">The week’s highest-signal stories, synthesized. No spam.</p>
