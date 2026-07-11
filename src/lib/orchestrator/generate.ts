@@ -13,9 +13,18 @@ type LlmProvider = { endpoint: string; model: string; apiKeyEnv: string };
 const PRIMARY_LLM: LlmProvider = siteConfig.llm;
 const FALLBACK_LLM: LlmProvider | undefined = (siteConfig as { llmFallback?: LlmProvider }).llmFallback;
 
-/** A transient provider error worth failing over to the backup LLM for. */
+/**
+ * A provider error worth failing over to the backup LLM for: transient
+ * availability blips (429/5xx, "overloaded"), and 413 "request too large" —
+ * Groq rejects any single request whose input + requested output exceeds the
+ * model's free-tier TPM budget at admission, so retrying the same model can
+ * never succeed but a fallback model with a higher TPM cap can.
+ */
 function isAvailabilityError(msg: string): boolean {
-  return /API error (?:429|5\d\d)\b/.test(msg) || /overloaded|unavailable|high demand/i.test(msg);
+  return (
+    /API error (?:413|429|5\d\d)\b/.test(msg) ||
+    /overloaded|unavailable|high demand|too large|Request too large|413/i.test(msg)
+  );
 }
 
 /** How many times to ask the model before giving up on a structurally valid post. */
@@ -285,7 +294,10 @@ async function callLlm(provider: LlmProvider, key: string, userPrompt: string): 
     body: JSON.stringify({
       model: provider.model,
       temperature: 0.5,
-      max_tokens: 4096,
+      // Groq's free tier admits a request only if input + max_tokens fits the
+      // model's TPM budget (8K for gpt-oss-120b). With the trimmed research
+      // prompt (~3.5-4K tokens) this keeps a single request under that cap.
+      max_tokens: 3584,
       response_format: { type: 'json_object' },
       messages: [
         { role: 'system', content: SYSTEM_PROMPT },
@@ -327,14 +339,14 @@ function buildUserPrompt(bundle: ResearchBundle): string {
     .map(
       (a, i) => `### Source ${i + 1}: ${a.title}
 URL: ${a.url}
-${a.content.slice(0, 4000)}`
+${a.content.slice(0, 2400)}`
     )
     .join('\n\n');
 
   const transcriptBlock = transcripts.length
     ? '\n\n## Video transcripts\n' +
       transcripts
-        .map((t) => `### ${t.title}\n${t.text.slice(0, 3000)}`)
+        .map((t) => `### ${t.title}\n${t.text.slice(0, 1600)}`)
         .join('\n\n')
     : '';
 
