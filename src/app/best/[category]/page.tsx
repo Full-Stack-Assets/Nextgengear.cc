@@ -54,9 +54,9 @@ export default async function BestCategoryPage({ params }: { params: Promise<{ c
 
   return (
     <div className="mx-auto max-w-3xl px-6 py-16">
-      <div className="mb-10 border-b-2 border-ink pb-6">
+      <div className="mb-10 border-b border-rule pb-6">
         <div className="text-xs uppercase tracking-[0.3em] text-muted">Buying guide</div>
-        <h1 className="mt-2 font-display text-4xl sm:text-5xl font-black leading-tight">
+        <h1 className="mt-2 font-display text-4xl sm:text-5xl font-bold tracking-tight leading-tight text-gradient">
           The Best {name} in {year}
         </h1>
         <p className="mt-4 text-lg text-ink/70">
@@ -69,7 +69,7 @@ export default async function BestCategoryPage({ params }: { params: Promise<{ c
       <ol className="space-y-8">
         {featured.map((p, i) => (
           <li key={p.slug} className="flex gap-4">
-            <span className="font-display text-2xl font-black text-accent/40 leading-none pt-1">
+            <span className="font-display text-2xl font-bold text-accent/40 leading-none pt-1">
               {String(i + 1).padStart(2, '0')}
             </span>
             <Link href={`/blog/${p.slug}`} className="group block flex-1">
@@ -86,7 +86,7 @@ export default async function BestCategoryPage({ params }: { params: Promise<{ c
         ))}
       </ol>
 
-      <div className="mt-12 border-t border-ink/20 pt-8 text-sm">
+      <div className="mt-12 border-t border-rule pt-8 text-sm">
         <Link href={`/categories/${category}`} className="font-display font-semibold text-accent hover:underline">
           Browse all {name.toLowerCase()} coverage →
         </Link>

@@ -2,123 +2,197 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
-
+/* Fonts are self-hosted via next/font in src/app/layout.tsx, which defines
+   --font-display / --font-body / --font-mono on <html>. */
 :root {
-  --font-display: 'Fraunces', 'Times New Roman', serif;
-  --font-body: 'Inter', system-ui, sans-serif;
-  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --c-ink: #0f172a;
+  --c-accent: #2563eb;
+  --c-violet: #7c3aed;
+  --c-muted: #5b6472;
+  --c-rule: #e2e8f0;
+  --grad-accent: linear-gradient(120deg, var(--c-accent) 0%, var(--c-violet) 100%);
 }
 
 html {
-  background: #f6f3ec;
-  color: #0a0a0a;
-  font-family: var(--font-body);
+  background: #ffffff;
+  color: var(--c-ink);
+  font-family: var(--font-body), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  scroll-behavior: smooth;
+}
+
+/* Users who opt out of motion get instant jumps instead of smooth scrolling. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }
 
 body {
-  background-image:
-    radial-gradient(at 0% 0%, rgba(255, 91, 31, 0.04) 0%, transparent 50%),
-    radial-gradient(at 100% 100%, rgba(10, 10, 10, 0.03) 0%, transparent 50%);
   min-height: 100vh;
 }
 
-/* Subtle paper grain */
+/* Layered page background: soft prismatic gradient mesh + fine dot-grid.
+   Pure CSS, static (no motion), sits behind everything (content is z-10+). */
 body::before {
   content: '';
   position: fixed;
   inset: 0;
+  z-index: 0;
   pointer-events: none;
-  z-index: 1;
-  opacity: 0.35;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.08 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  mix-blend-mode: multiply;
+  background:
+    radial-gradient(52rem 34rem at 12% -6%, rgba(37, 99, 235, 0.09), transparent 60%),
+    radial-gradient(46rem 30rem at 88% -4%, rgba(124, 58, 237, 0.08), transparent 60%),
+    radial-gradient(40rem 28rem at 55% 8%, rgba(34, 211, 238, 0.06), transparent 65%),
+    radial-gradient(60rem 44rem at 50% 115%, rgba(124, 58, 237, 0.05), transparent 70%);
+}
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: radial-gradient(rgba(15, 23, 42, 0.07) 1px, transparent 1px);
+  background-size: 22px 22px;
+  mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.25) 40rem, rgba(0, 0, 0, 0.15));
 }
 
 ::selection {
-  background: #ff5b1f;
-  color: #f6f3ec;
+  background: var(--c-accent);
+  color: #ffffff;
 }
 
-/* Display serif utility */
+/* Electric-blue → violet gradient text (hero headlines, brand mark). */
+.text-gradient {
+  background-image: var(--grad-accent);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Product/post card: elevated shadow + gradient ring on hover. */
+.card-prism {
+  border: 1px solid var(--c-rule);
+  background: #ffffff;
+  transition: border-color 250ms ease, box-shadow 300ms ease, transform 300ms ease, background 250ms ease;
+}
+.card-prism:hover {
+  border-color: transparent;
+  background:
+    linear-gradient(#ffffff, #ffffff) padding-box,
+    linear-gradient(135deg, rgba(37, 99, 235, 0.75), rgba(124, 58, 237, 0.75)) border-box;
+  box-shadow:
+    0 2px 4px rgba(15, 23, 42, 0.06),
+    0 16px 36px rgba(37, 99, 235, 0.14),
+    0 8px 24px rgba(124, 58, 237, 0.10);
+}
+
+/* Thin gradient hairline (section rules, header underline). */
+.rule-gradient {
+  background-image: linear-gradient(to right, rgba(37, 99, 235, 0.55), rgba(124, 58, 237, 0.35), transparent);
+}
+
+/* Sharp geometric display face for headlines */
 .font-display {
-  font-family: var(--font-display);
-  font-optical-sizing: auto;
-  letter-spacing: -0.02em;
+  font-family: var(--font-display), system-ui, sans-serif;
+  letter-spacing: -0.025em;
 }
 
 /* Prose overrides for MDX body */
 .prose-editorial {
-  font-size: 1.125rem;
-  line-height: 1.7;
-  color: #1a1a1a;
+  font-size: 1.0625rem;
+  line-height: 1.75;
+  color: #1e293b;
 }
 .prose-editorial p {
   margin: 1.25em 0;
 }
 .prose-editorial h2 {
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 2rem;
-  line-height: 1.15;
-  letter-spacing: -0.02em;
-  margin-top: 2.75em;
+  font-family: var(--font-display), system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 1.75rem;
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+  margin-top: 2.5em;
   margin-bottom: 0.6em;
-  color: #0a0a0a;
+  padding-top: 0.75em;
+  border-top: 1px solid var(--c-rule);
+  color: var(--c-ink);
 }
 .prose-editorial h2::before {
-  content: '§';
-  color: #ff5b1f;
-  margin-right: 0.4em;
-  font-weight: 900;
+  content: '//';
+  color: var(--c-accent);
+  margin-right: 0.45em;
+  font-weight: 700;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.8em;
 }
 .prose-editorial h3 {
-  font-family: var(--font-display);
+  font-family: var(--font-display), system-ui, sans-serif;
   font-weight: 600;
-  font-size: 1.4rem;
+  font-size: 1.3rem;
+  letter-spacing: -0.02em;
   margin-top: 2em;
+  color: var(--c-ink);
 }
 .prose-editorial a {
-  color: #ff5b1f;
+  color: var(--c-accent);
+  font-weight: 500;
   text-decoration: underline;
   text-underline-offset: 3px;
   text-decoration-thickness: 1px;
+  text-decoration-color: rgba(37, 99, 235, 0.35);
+  transition: text-decoration-color 150ms ease;
 }
 .prose-editorial a:hover {
+  text-decoration-color: var(--c-accent);
   text-decoration-thickness: 2px;
 }
 .prose-editorial code {
-  font-family: var(--font-mono);
-  font-size: 0.9em;
-  background: rgba(10, 10, 10, 0.06);
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.875em;
+  background: #f1f5f9;
+  border: 1px solid var(--c-rule);
   padding: 0.15em 0.4em;
-  border-radius: 2px;
+  border-radius: 6px;
 }
 .prose-editorial pre {
-  background: #0a0a0a;
-  color: #f6f3ec;
+  background: #0f172a;
+  color: #e2e8f0;
   padding: 1.25rem;
-  border-radius: 2px;
+  border-radius: 12px;
   overflow-x: auto;
-  font-size: 0.9rem;
-  line-height: 1.5;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  margin: 1.75em 0;
+}
+.prose-editorial pre code {
+  background: transparent;
+  border: 0;
+  padding: 0;
 }
 .prose-editorial blockquote {
-  border-left: 3px solid #ff5b1f;
+  border-left: 3px solid var(--c-accent);
   padding-left: 1.25rem;
   font-style: italic;
-  color: #3a3a3a;
+  color: #475569;
   margin: 1.75em 0;
 }
 .prose-editorial ul, .prose-editorial ol {
   padding-left: 1.5rem;
   margin: 1em 0;
 }
-.prose-editorial ul li { list-style: none; position: relative; padding-left: 1rem; }
+.prose-editorial ul li { list-style: none; position: relative; padding-left: 1.1rem; }
 .prose-editorial ul li::before {
   content: '';
-  position: absolute; left: 0; top: 0.7em;
-  width: 0.5rem; height: 1px; background: #ff5b1f;
+  position: absolute; left: 0; top: 0.65em;
+  width: 0.45rem; height: 0.45rem;
+  border-radius: 2px;
+  background: var(--c-accent);
+  opacity: 0.7;
+}
+.prose-editorial img {
+  border-radius: 12px;
+  max-width: 100%;
 }

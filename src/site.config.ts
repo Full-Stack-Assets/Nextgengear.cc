@@ -85,19 +85,21 @@ export const siteConfig = {
     amazonTag: '',
   },
 
-  // ── Engine: writer LLM (Google Gemini, OpenAI-compatible) ─────
+  // ── Engine: writer LLM (Groq, OpenAI-compatible) ──────────────
   llm: {
-    endpoint: 'https://generativelanguage.googleapis.com/v1beta/openai/chat/completions',
-    model: 'gemini-2.5-flash',
-    apiKeyEnv: 'GEMINI_API_KEY',
+    endpoint: 'https://api.groq.com/openai/v1/chat/completions',
+    model: 'openai/gpt-oss-120b',
+    apiKeyEnv: 'GROQ_API_KEY',
   },
 
-  // Automatic failover: when Gemini returns transient 5xx / "overloaded" (503)
-  // errors, generate.ts retries the request against this OpenAI-compatible
-  // backup. Skipped when GROQ_API_KEY isn't set. Groq's free tier is fast.
+  // Automatic failover: if the primary Groq model is rate-limited, errors, or
+  // rejects a request as over its 8K tokens-per-minute free-tier budget (413
+  // "request too large"), generate.ts retries against this model on the same
+  // key. Llama-4 Scout has a 30K TPM free-tier cap, so failover has real
+  // headroom instead of hitting the same 8K ceiling as gpt-oss.
   llmFallback: {
     endpoint: 'https://api.groq.com/openai/v1/chat/completions',
-    model: 'llama-3.3-70b-versatile',
+    model: 'meta-llama/llama-4-scout-17b-16e-instruct',
     apiKeyEnv: 'GROQ_API_KEY',
   },
 

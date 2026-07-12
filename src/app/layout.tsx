@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { Space_Grotesk, Inter, JetBrains_Mono } from 'next/font/google';
 import Link from 'next/link';
 import Script from 'next/script';
 import { Analytics } from '@vercel/analytics/next';
@@ -11,6 +12,28 @@ import { ADSENSE_CLIENT, ADSENSE_SLOT_FOOTER } from '@/lib/ads';
 import { AFFILIATE_ENABLED, AFFILIATE_DISCLOSURE } from '@/lib/affiliate';
 import { siteConfig } from '@/site.config';
 import './globals.css';
+
+/* Self-hosted at build time via next/font — replaces the old render-blocking
+   Google Fonts @import in globals.css. Each exposes a CSS variable consumed by
+   globals.css and the Tailwind fontFamily tokens. */
+const fontDisplay = Space_Grotesk({
+  subsets: ['latin'],
+  weight: ['500', '600', '700'],
+  variable: '--font-display',
+  display: 'swap',
+});
+const fontBody = Inter({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-body',
+  display: 'swap',
+});
+const fontMono = JetBrains_Mono({
+  subsets: ['latin'],
+  weight: ['400', '500'],
+  variable: '--font-mono',
+  display: 'swap',
+});
 
 /** Short categories (AI, DIY) read better uppercased; longer ones title-cased. */
 function navLabel(c: string): string {
@@ -47,7 +70,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${fontDisplay.variable} ${fontBody.variable} ${fontMono.variable}`}>
       <body className="relative">
         {ADSENSE_CLIENT && (
           <>
@@ -87,17 +110,17 @@ function Header() {
   const brandLast = words.pop();
   const brandLead = words.join(' ');
   return (
-    <header className="relative z-20 border-b border-ink/20">
-      <div className="mx-auto flex max-w-6xl items-end justify-between px-6 py-6">
+    <header className="sticky top-0 z-30 border-b border-rule bg-white/80 backdrop-blur-md supports-[backdrop-filter]:bg-white/70">
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
         <Link href="/" className="group">
-          <div className="font-display text-3xl font-black tracking-tight leading-none">
-            {brandLead ? `${brandLead} ` : ''}<span className="text-accent">{brandLast}</span>
+          <div className="font-display text-2xl font-bold tracking-tight leading-none">
+            {brandLead ? `${brandLead} ` : ''}<span className="text-gradient">{brandLast}</span>
           </div>
-          <div className="mt-1 text-[10px] uppercase tracking-[0.2em] text-muted">
+          <div className="mt-1 text-[10px] font-medium uppercase tracking-[0.22em] text-muted">
             {siteConfig.tagline}
           </div>
         </Link>
-        <nav className="hidden sm:flex items-center gap-6 text-sm font-medium">
+        <nav className="hidden sm:flex items-center gap-6 text-sm font-medium text-ink/80">
           <Link href="/" className="hover:text-accent transition-colors">Latest</Link>
           {siteConfig.navCategories.map((c) => (
             <Link key={c} href={`/categories/${c}`} className="hover:text-accent transition-colors">{navLabel(c)}</Link>
@@ -115,10 +138,10 @@ function Header() {
 
 function Footer() {
   return (
-    <footer className="relative z-10 mt-32 border-t border-ink/20">
-      <div className="mx-auto max-w-6xl px-6 py-10 text-sm text-muted">
+    <footer className="relative z-10 mt-32 border-t border-rule bg-surface/60">
+      <div className="mx-auto max-w-6xl px-6 py-12 text-sm text-muted">
         <AdSlot slot={ADSENSE_SLOT_FOOTER} format="auto" className="mb-8 block" />
-        <div className="mb-8 flex flex-col gap-4 border-b border-ink/15 pb-8 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mb-8 flex flex-col gap-4 border-b border-rule pb-8 sm:flex-row sm:items-center sm:justify-between">
           <div className="max-w-md">
             <div className="font-display text-base font-semibold text-ink">Get the weekly dispatch</div>
             <p className="mt-1">The week’s highest-signal stories, synthesized. No spam.</p>

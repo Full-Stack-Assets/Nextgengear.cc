@@ -4,26 +4,26 @@ import { amazonSearchUrl, AFFILIATE_DISCLOSURE } from '@/lib/affiliate';
 type CalloutType = 'takeaway' | 'warning' | 'note';
 
 const CALLOUT_CONFIG: Record<CalloutType, { label: string; bg: string; border: string; accent: string }> = {
-  takeaway: { label: 'Takeaway', bg: 'bg-accent/5', border: 'border-accent', accent: 'text-accent' },
-  warning:  { label: 'Watch out', bg: 'bg-ink/[0.04]', border: 'border-ink', accent: 'text-ink' },
-  note:     { label: 'Note', bg: 'bg-ink/[0.03]', border: 'border-muted', accent: 'text-muted' },
+  takeaway: { label: 'Takeaway', bg: 'bg-gradient-to-br from-accent/[0.07] to-violet/[0.05]', border: 'border-accent', accent: 'text-accent-deep' },
+  warning:  { label: 'Watch out', bg: 'bg-amber-50', border: 'border-amber-500', accent: 'text-amber-700' },
+  note:     { label: 'Note', bg: 'bg-surface', border: 'border-rule', accent: 'text-muted' },
 };
 
 export function Callout({ type = 'note', children }: { type?: CalloutType; children: ReactNode }) {
   const c = CALLOUT_CONFIG[type];
   return (
-    <aside className={`my-8 border-l-4 ${c.border} ${c.bg} pl-5 pr-5 py-4`}>
+    <aside className={`my-8 rounded-xl border-l-4 ${c.border} ${c.bg} pl-5 pr-5 py-4`}>
       <div className={`mb-1 text-[10px] font-bold uppercase tracking-[0.2em] ${c.accent}`}>
         {c.label}
       </div>
-      <div className="font-display text-lg leading-snug">{children}</div>
+      <div className="font-display text-lg font-medium leading-snug text-ink">{children}</div>
     </aside>
   );
 }
 
 export function ProsCons({ children }: { children: ReactNode }) {
   return (
-    <div className="my-10 grid gap-4 border border-ink/20 bg-paper sm:grid-cols-2 sm:gap-0">
+    <div className="my-10 grid gap-0 overflow-hidden rounded-xl border border-rule bg-white shadow-card sm:grid-cols-2">
       {children}
     </div>
   );
@@ -31,8 +31,8 @@ export function ProsCons({ children }: { children: ReactNode }) {
 
 export function Pros({ children }: { children: ReactNode }) {
   return (
-    <div className="border-t-4 border-accent p-6 sm:border-r sm:border-r-ink/20 sm:border-t-4">
-      <div className="mb-3 flex items-center gap-2 font-display text-sm font-bold uppercase tracking-widest text-accent">
+    <div className="border-t-4 border-emerald-500 bg-emerald-50/40 p-6 sm:border-r sm:border-r-rule">
+      <div className="mb-3 flex items-center gap-2 font-display text-sm font-bold uppercase tracking-widest text-emerald-700">
         <span className="text-lg leading-none">+</span> Pros
       </div>
       <ul className="space-y-2 text-base">{children}</ul>
@@ -42,8 +42,8 @@ export function Pros({ children }: { children: ReactNode }) {
 
 export function Cons({ children }: { children: ReactNode }) {
   return (
-    <div className="border-t-4 border-ink p-6">
-      <div className="mb-3 flex items-center gap-2 font-display text-sm font-bold uppercase tracking-widest text-ink">
+    <div className="border-t-4 border-rose-500 bg-rose-50/40 p-6">
+      <div className="mb-3 flex items-center gap-2 font-display text-sm font-bold uppercase tracking-widest text-rose-700">
         <span className="text-lg leading-none">–</span> Cons
       </div>
       <ul className="space-y-2 text-base">{children}</ul>
@@ -53,7 +53,7 @@ export function Cons({ children }: { children: ReactNode }) {
 
 export function FAQ({ children }: { children: ReactNode }) {
   return (
-    <div className="my-10 divide-y divide-ink/15 border-t border-b border-ink/20">
+    <div className="my-10 divide-y divide-rule overflow-hidden rounded-xl border border-rule bg-white shadow-card">
       {children}
     </div>
   );
@@ -61,14 +61,14 @@ export function FAQ({ children }: { children: ReactNode }) {
 
 export function Question({ q, children }: { q: string; children: ReactNode }) {
   return (
-    <details className="group py-5">
+    <details className="group px-5 py-5 transition-colors open:bg-surface/60">
       <summary className="flex cursor-pointer items-start justify-between gap-4 list-none">
         <span className="font-display text-lg font-semibold leading-snug">{q}</span>
         <span className="mt-1 shrink-0 text-accent font-mono text-xl leading-none transition-transform group-open:rotate-45">
           +
         </span>
       </summary>
-      <div className="mt-3 text-[17px] leading-relaxed text-ink/85">{children}</div>
+      <div className="mt-3 text-[16px] leading-relaxed text-ink/85">{children}</div>
     </details>
   );
 }
@@ -92,8 +92,8 @@ export function BuyBox({
   if (!product) return null;
   const href = amazonSearchUrl(query || product);
   return (
-    <aside className="my-10 border border-accent/40 bg-accent/5 p-5">
-      <div className="mb-1 text-[10px] font-bold uppercase tracking-[0.2em] text-accent">
+    <aside className="my-10 rounded-xl border border-accent/30 bg-gradient-to-br from-accent/[0.06] via-violet/[0.04] to-accent/[0.02] p-6 shadow-card">
+      <div className="mb-1 text-[10px] font-bold uppercase tracking-[0.2em] text-accent-deep">
         Where to buy
       </div>
       <div className="font-display text-lg font-semibold leading-snug">{product}</div>
@@ -101,7 +101,7 @@ export function BuyBox({
         href={href}
         target="_blank"
         rel="noopener noreferrer sponsored nofollow"
-        className="mt-3 inline-block border border-accent bg-accent px-4 py-2 text-sm font-semibold text-paper no-underline transition-colors hover:bg-transparent hover:text-accent"
+        className="mt-4 inline-block rounded-lg bg-gradient-to-r from-accent to-violet px-5 py-2.5 text-sm font-semibold text-white no-underline shadow-card transition-shadow hover:shadow-prism"
       >
         {cta} →
       </a>

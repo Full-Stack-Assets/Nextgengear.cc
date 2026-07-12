@@ -91,17 +91,17 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
       {/* Article header */}
       <header className="mb-12">
         <div className="mb-4 flex items-center gap-3 text-xs uppercase tracking-[0.2em] text-muted">
-          <Link href={`/categories/${frontmatter.category}`} className="border border-accent px-2 py-0.5 text-accent hover:bg-accent hover:text-paper transition-colors">
+          <Link href={`/categories/${frontmatter.category}`} className="rounded-full bg-accent/10 px-3 py-1 font-bold text-accent-deep transition-colors hover:bg-accent hover:text-white">
             {frontmatter.category}
           </Link>
           <span>{date}</span>
           <span>·</span>
           <span>{readingTimeMin} min read</span>
         </div>
-        <h1 className="font-display text-4xl sm:text-6xl font-black leading-[1.02] tracking-tight">
+        <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-bold leading-[1.05] tracking-tight">
           {frontmatter.title}
         </h1>
-        <p className="mt-6 font-display text-xl sm:text-2xl font-normal leading-snug text-ink/70">
+        <p className="mt-6 text-xl sm:text-2xl font-normal leading-snug text-muted">
           {frontmatter.description}
         </p>
       </header>
@@ -113,7 +113,7 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
           <img
             src={frontmatter.hero.url}
             alt={frontmatter.hero.alt}
-            className="aspect-video w-full object-cover"
+            className="aspect-video w-full rounded-none object-cover sm:rounded-2xl"
           />
           {frontmatter.hero.credit && (
             <figcaption className="mt-2 px-6 sm:px-0 text-xs text-muted">
@@ -142,8 +142,8 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
       {/* Contextual shop link — only for buyable product categories, so the
           back catalog earns affiliate revenue without per-post curation. */}
       {isShoppableCategory(frontmatter.category) && (
-        <aside className="my-12 border border-accent/40 bg-accent/5 p-5">
-          <div className="mb-1 text-[10px] font-bold uppercase tracking-[0.2em] text-accent">
+        <aside className="my-12 rounded-xl border border-accent/30 bg-gradient-to-br from-accent/[0.06] via-violet/[0.04] to-accent/[0.02] p-6 shadow-card">
+          <div className="mb-1 text-[10px] font-bold uppercase tracking-[0.2em] text-accent-deep">
             Shop this
           </div>
           <div className="font-display text-lg font-semibold leading-snug">
@@ -153,7 +153,7 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
             href={amazonSearchUrl(frontmatter.title)}
             target="_blank"
             rel="noopener noreferrer sponsored nofollow"
-            className="mt-3 inline-block border border-accent bg-accent px-4 py-2 text-sm font-semibold text-paper transition-colors hover:bg-transparent hover:text-accent"
+            className="mt-4 inline-block rounded-lg bg-gradient-to-r from-accent to-violet px-5 py-2.5 text-sm font-semibold text-white shadow-card transition-shadow hover:shadow-prism"
           >
             Search on Amazon →
           </a>
@@ -163,14 +163,14 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
 
       {/* Sources */}
       {frontmatter.sources?.length > 0 && (
-        <section className="mt-16 border-t-2 border-ink pt-8">
-          <div className="mb-4 font-display text-sm font-bold uppercase tracking-[0.3em] text-muted">
+        <section className="mt-16 border-t border-rule pt-8">
+          <div className="mb-4 font-display text-sm font-bold uppercase tracking-[0.3em] text-accent-deep">
             Sources
           </div>
           <ol className="space-y-2 text-sm">
             {frontmatter.sources.map((s, i) => (
               <li key={i} className="flex gap-3">
-                <span className="font-mono text-accent">{String(i + 1).padStart(2, '0')}</span>
+                <span className="font-mono text-accent-deep">{String(i + 1).padStart(2, '0')}</span>
                 <a href={s.url} target="_blank" rel="noopener noreferrer" className="underline hover:text-accent break-all">
                   {s.title || s.url}
                 </a>
@@ -182,11 +182,11 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
 
       {/* End-of-article newsletter CTA — captures engaged readers at the point
           they've finished a piece, the highest-intent moment to subscribe. */}
-      <section className="mt-16 border-2 border-ink bg-ink/[0.03] p-6 sm:p-8">
-        <div className="font-display text-2xl font-black leading-tight">
+      <section className="mt-16 rounded-2xl border border-rule bg-surface p-6 shadow-card sm:p-8">
+        <div className="font-display text-2xl font-bold leading-tight">
           Stay ahead of the gear curve
         </div>
-        <p className="mt-2 max-w-xl text-ink/70">
+        <p className="mt-2 max-w-xl text-muted">
           Get the week&rsquo;s most important gadget news and reviews in one short email.
           Free, and no spam.
         </p>
@@ -199,7 +199,7 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
       {frontmatter.tags?.length > 0 && (
         <div className="mt-10 flex flex-wrap gap-2">
           {frontmatter.tags.map((t) => (
-            <Link key={t} href={`/tags/${t}`} className="border border-ink/30 px-2 py-1 text-[11px] uppercase tracking-widest text-ink/70 hover:border-accent hover:text-accent transition-colors">
+            <Link key={t} href={`/tags/${t}`} className="rounded-full border border-rule bg-surface px-3 py-1 text-[11px] font-medium uppercase tracking-widest text-muted transition-colors hover:border-accent hover:text-accent">
               #{t}
             </Link>
           ))}
@@ -208,8 +208,8 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
 
       {/* Keep reading — internal links to related posts */}
       {related.length > 0 && (
-        <section className="mt-16 border-t-2 border-ink pt-8">
-          <div className="mb-6 font-display text-sm font-bold uppercase tracking-[0.3em] text-muted">
+        <section className="mt-16 border-t border-rule pt-8">
+          <div className="mb-6 font-display text-sm font-bold uppercase tracking-[0.3em] text-accent-deep">
             Keep reading
           </div>
           <ul className="space-y-6">
@@ -217,14 +217,14 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
               <li key={p.slug}>
                 <Link href={`/blog/${p.slug}`} className="group block">
                   <div className="flex items-center gap-3 text-[11px] uppercase tracking-[0.2em] text-muted">
-                    <span className="text-accent">{p.frontmatter.category}</span>
+                    <span className="font-bold text-accent-deep">{p.frontmatter.category}</span>
                     <span>·</span>
                     <span>{p.readingTimeMin} min read</span>
                   </div>
                   <div className="mt-1 font-display text-xl font-bold leading-snug group-hover:text-accent transition-colors">
                     {p.frontmatter.title}
                   </div>
-                  <p className="mt-1 text-sm leading-relaxed text-ink/70 line-clamp-2">
+                  <p className="mt-1 text-sm leading-relaxed text-muted line-clamp-2">
                     {p.frontmatter.description}
                   </p>
                 </Link>
@@ -235,7 +235,7 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
       )}
 
       {/* Back link */}
-      <div className="mt-16 border-t border-ink/20 pt-8">
+      <div className="mt-16 border-t border-rule pt-8">
         <Link href="/" className="inline-flex items-center gap-2 font-display font-semibold text-accent hover:gap-3 transition-all">
           ← Back to {SITE_NAME}
         </Link>
