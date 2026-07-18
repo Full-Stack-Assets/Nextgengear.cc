@@ -74,6 +74,24 @@ export function Question({ q, children }: { q: string; children: ReactNode }) {
 }
 
 /**
+ * Answer component — pairs naturally with <Question> or used standalone
+ * for direct explanations, summaries, or highlighted answers in articles.
+ * Matches your existing editorial styling (accent border, font-display, clean spacing).
+ */
+export function Answer({ children }: { children: ReactNode }) {
+  return (
+    <div className="my-6 rounded-xl border-l-4 border-accent bg-accent/5 pl-5 pr-5 py-4">
+      <div className="mb-1 text-[10px] font-bold uppercase tracking-[0.2em] text-accent-deep">
+        Answer
+      </div>
+      <div className="font-display text-lg font-medium leading-snug text-ink">
+        {children}
+      </div>
+    </div>
+  );
+}
+
+/**
  * A product call-to-action with an affiliate link. `product` is the exact name
  * the writer mentions; the link is an Amazon search for that name (never a
  * hallucinated ASIN), tagged with the configured Associate id. `query` lets the
@@ -117,5 +135,6 @@ export const mdxComponents = {
   Cons,
   FAQ,
   Question,
+  Answer,
   BuyBox,
 };
