@@ -2449,6 +2449,13 @@
       "url": "https://var0.xyz/posts/what-even-are-microservices.html",
       "publishedAt": "2026-07-28T23:58:46.327Z",
       "signature": "6b4f7a1824baa3cb"
+    },
+    {
+      "slug": "custom-pcb-wemos-d1-mini-night-light",
+      "title": "I Designed A Custom PCB To Avoid Pressing A Button Three Times",
+      "url": "https://blog.tymscar.com/posts/opensourcedimmer/",
+      "publishedAt": "2026-07-29T02:42:58.692Z",
+      "signature": "7d4f75b5959d9b08"
     }
   ]
 }

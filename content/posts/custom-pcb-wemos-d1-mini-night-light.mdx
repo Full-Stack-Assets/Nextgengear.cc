@@ -1,0 +1,67 @@
+---
+title: "How I Built a Custom PCB with a Wemos D1 Mini to Auto‑Press My Night Light Button"
+description: "Learn how a DIY PCB using a Wemos D1 Mini eliminates the need to manually press a night‑light button three times each night."
+date: "2026-07-29T02:42:58.690Z"
+category: "smarthome"
+tags: 
+  - "diy"
+  - "pcb"
+  - "homeassistant"
+  - "nightlight"
+  - "automation"
+hero: 
+  url: "https://images.pexels.com/photos/7286009/pexels-photo-7286009.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+  alt: "A detailed view of a technician using a soldering iron on a circuit board through a magnifying glass."
+  credit: "www.kaboompics.com"
+  creditUrl: "https://www.pexels.com/@karola-g"
+sources: 
+  - title: "I Designed A Custom PCB To Avoid Pressing A Button Three Times"
+    url: "https://blog.tymscar.com/posts/opensourcedimmer/"
+  - title: "I Designed A Custom PCB To Avoid Pressing A Button Three Times"
+    url: "https://blog.tymscar.com/posts/opensourcedimmer/"
+---
+
+Every night I struggled with a cheap night light that started at the brightest setting and required three button presses to reach a comfortable level. The device’s built‑in switch was disabled, so the only way to dim it was to cycle the intensity button manually. I tried the usual tricks—holding the button to reset EEPROM, opening the case for a potentiometer—but nothing worked. To keep my sleep routine seamless, I decided to let a microcontroller handle the button presses automatically. The result is a tiny custom PCB that integrates with Home Assistant and restores a dark bedroom without any finger gymnastics.
+
+<Callout type="takeaway">A tiny microcontroller‑driven PCB can replace a manual three‑press routine with a single automated click.</Callout>
+
+## What happened
+I use Home Assistant to turn the night light on whenever my phone enters sleep focus mode. The light itself is a simple Zigbee plug with a button that cycles through five intensity levels, starting at level 3, which makes the room far too bright for bedtime. Because the built‑in switch that sets a default intensity is always off, I was forced to press the button three times each night to reach a dim setting.
+
+After exhausting firmware tricks and searching for a hidden potentiometer, I settled on a hardware solution: a microcontroller that can simulate a button press. I chose the Wemos D1 Mini (ESP8266) because it already runs on the same Wi‑Fi network as Home Assistant and can be programmed with the Arduino core. I soldered a small PCB that holds the D1 Mini, a momentary push‑button bridge, and a MOSFET to safely switch the night‑light’s button contacts.
+
+The firmware watches for the Home Assistant “sleep focus” event via MQTT. When the event fires, the D1 Mini pulses the MOSFET for 200 ms, effectively pressing the night‑light button once. Since the light starts at level 3, a single press moves it to level 4, which I pre‑configured as my preferred dim level. The automation now runs without any manual interaction.
+
+## Why it matters
+Eliminating a repetitive three‑press routine may seem trivial, but it removes friction from a nightly habit that can disturb sleep quality. For anyone already using Home Assistant, adding a low‑cost microcontroller extends the ecosystem to devices that lack native smart integration. The approach also showcases how a modest DIY PCB can retrofit cheap electronics, extending their useful life and reducing e‑waste.
+
+<ProsCons>
+  <Pros>
+    <li>Zero manual button presses each night.</li>
+    <li>Integrates cleanly with existing Home Assistant automations.</li>
+    <li>Component cost stays under $5.</li>
+  </Pros>
+  <Cons>
+    <li>Requires basic soldering and firmware flashing.</li>
+    <li>Modifies the night light, voiding any warranty.</li>
+    <li>Adds a small continuous power draw.</li>
+  </Cons>
+</ProsCons>
+
+## How to think about it
+1. **Pick a microcontroller** – The Wemos D1 Mini is ideal for Wi‑Fi‑enabled homes, but any ESP8266/ESP32 board works.
+2. **Design the interface** – Use a MOSFET or optocoupler to isolate the night‑light button circuit from the 3.3 V logic.
+3. **Program the firmware** – Subscribe to an MQTT topic that Home Assistant publishes when sleep focus activates, then toggle the MOSFET for a brief pulse.
+4. **Assemble the PCB** – Keep the board compact; place the D1 Mini, MOSFET, and a header for power.
+5. **Test safely** – Verify the pulse correctly advances the light’s intensity before mounting it near the night‑light.
+
+<BuyBox product="Wemos D1 Mini" />
+
+<Callout type="warning">Never connect the PCB directly to a mains‑powered night light without proper isolation; use a low‑voltage supply or a relay to avoid fire risk.</Callout>
+
+## FAQ
+<FAQ>
+  <Question q="Can I use a different microcontroller instead of a Wemos D1 Mini?">Yes, any ESP8266 or ESP32 board that can run Arduino code and connect to your Wi‑Fi will work, as long as you adapt the pin assignments.</Question>
+  <Question q="Do I need to open the night light’s case to wire the PCB?">No, you can attach the PCB leads to the external button contacts using thin jumper wires or a small clip, preserving the original housing.</Question>
+  <Question q="How does the PCB actually trigger the button press?">The board drives a MOSFET that momentarily shorts the night‑light’s button terminals, mimicking a human press for the required duration.</Question>
+</FAQ>
