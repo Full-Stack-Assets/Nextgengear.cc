@@ -1,0 +1,67 @@
+---
+title: "OpenBSD revives relayd and httpd daemons after years of stagnation"
+description: "After a long pause, developers are modernizing OpenBSD’s relayd and httpd daemons, fixing bugs and adding features for real‑world use."
+date: "2026-08-01T03:42:54.979Z"
+category: "news"
+tags: 
+  - "openbsd"
+  - "relayd"
+  - "httpd"
+  - "daemons"
+  - "opensource"
+hero: 
+  url: "https://images.pexels.com/photos/31995010/pexels-photo-31995010.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+  alt: "Detailed view of a red circuit board with various electronic components and microchip."
+  credit: "Joachim Schnürle"
+  creditUrl: "https://www.pexels.com/@joa70"
+sources: 
+  - title: "Dead Software Walking: The ongoing evolution of relayd(8) and httpd(8)"
+    url: "https://rsadowski.de/posts/2026/dead-software-walking-relayd-and-httpd/"
+  - title: "Dead Software Walking: The ongoing evolution of relayd(8) and httpd(8)"
+    url: "https://rsadowski.de/posts/2026/dead-software-walking-relayd-and-httpd/"
+  - title: "Dead software walking: the ongoing evolution of relayd(8) and httpd(8)  –  OSnews"
+    url: "https://www.osnews.com/story/145654/dead-software-walking-the-ongoing-evolution-of-relayd8-and-httpd8/"
+  - title: "OSNews (@osnews@mstdn.social)"
+    url: "https://mstdn.social/@osnews"
+  - title: "Newest Comments | Lobsters"
+    url: "https://lobste.rs/comments"
+---
+
+The OpenBSD community has long relied on the lightweight relayd(8) and httpd(8) daemons for traffic forwarding and web serving. Development on both stalled after the OpenBSD 7.8 highlights, with only a handful of diffs landing on the tech@ mailing list. Recently, the author and collaborator kirill@ have taken the initiative to revive these tools, driven by real‑world deployments and a personal challenge to code in C again. Their work matters because these daemons sit at the core of many production OpenBSD firewalls and web servers, and their health directly impacts reliability and security.
+
+<Callout type="takeaway">OpenBSD’s relayd and httpd are finally getting the attention they need.</Callout>
+
+## What happened
+Development of relayd(8) and httpd(8) had effectively stalled after OpenBSD 7.8, with few contributions being merged despite multiple patches appearing on the mailing list. Established OpenBSD developers had moved on, leaving the daemons in a maintenance limbo.
+
+Seeing the gap, the author and kirill@ began actively contributing. They started by modernising the handcrafted imsg message system in relayd, planning to apply similar updates to httpd later. Their effort has already resulted in a wave of bug fixes, code‑style clean‑ups, and a handful of new features that address long‑standing limitations.
+
+The community response has been positive: numerous stalled patches have been reviewed, many long‑standing issues resolved, and the codebase now follows more contemporary C practices. This momentum signals a renewed commitment to keeping these core daemons robust for future OpenBSD releases.
+
+## Why it matters
+relayd and httpd are the backbone of OpenBSD’s networking and web services stack. Administrators depend on them for secure, low‑overhead traffic routing and static content serving. Stagnant code increases the risk of undiscovered bugs and security vulnerabilities, especially as the surrounding ecosystem evolves. By revitalising these daemons, OpenBSD improves its overall security posture, reduces technical debt, and offers users newer capabilities without sacrificing the platform’s famed simplicity.
+
+<ProsCons>
+  <Pros>
+    <li>Cleaner, more maintainable C code reduces future bugs.</li>
+    <li>New features address real‑world deployment needs.</li>
+    <li>Improved security through modernised messaging and patch review.</li>
+  </Pros>
+  <Cons>
+    <li>Potential regressions as extensive changes are merged.</li>
+    <li>Admins may need to adjust to subtle configuration nuances.</li>
+    <li>Limited testing before the next major OpenBSD release.</li>
+  </Cons>
+</ProsCons>
+
+## How to think about it
+If you run relayd or httpd on OpenBSD, start testing the latest -current snapshots in a non‑production environment. Verify that your existing configuration files load without errors and monitor logs for any new warnings. Consider contributing back any edge‑case patches you encounter; the project benefits from real‑world feedback. When the changes land in the upcoming OpenBSD 8.0 release, plan a staged rollout, keeping an eye on performance metrics and security advisories.
+
+<Callout type="warning">Because the codebase is undergoing substantial refactoring, expect possible temporary instability in -current builds; avoid deploying to critical production systems until the changes are part of an official release.</Callout>
+
+## FAQ
+<FAQ>
+  <Question q="When will the revived relayd and httpd be released?"><Answer>The changes are slated for inclusion in the OpenBSD 8.0 release, currently targeted for later this year, after thorough testing on the -current branch.</Answer></Question>
+  <Question q="Will existing configuration syntax change?"><Answer>No major syntax changes are planned; however, a few new directives have been added, and deprecated options are being cleaned up, so review the release notes before upgrading.</Answer></Question>
+  <Question q="How can I contribute to the ongoing work?"><Answer>Join the tech@ OpenBSD mailing list, pull the latest -current source, and submit patches via the standard OpenBSD CVS workflow; the maintainers welcome real‑world use‑case feedback.</Answer></Question>
+</FAQ>
