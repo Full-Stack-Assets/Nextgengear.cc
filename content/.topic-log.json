@@ -2610,6 +2610,13 @@
       "url": "https://rsadowski.de/posts/2026/dead-software-walking-relayd-and-httpd/",
       "publishedAt": "2026-08-01T03:42:54.981Z",
       "signature": "403710548efa642b"
+    },
+    {
+      "slug": "messy-git-history-boosts-velocity",
+      "title": "Accepting a messy git history",
+      "url": "https://beza1e1.tuxen.de/git_two_users.html",
+      "publishedAt": "2026-08-01T06:28:15.159Z",
+      "signature": "cf7d321e21f26511"
     }
   ]
 }
