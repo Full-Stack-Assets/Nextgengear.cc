@@ -1,0 +1,58 @@
+---
+title: "Don't be a meat proxy: Why relaying AI output without personal review adds no value"
+description: "Explore why simply copying AI responses without personal review adds no value, and how to responsibly use AI in code reviews."
+date: "2026-08-03T13:40:43.288Z"
+category: "news"
+tags: 
+  - "ai"
+  - "productivity"
+  - "code-review"
+  - "communication"
+hero: 
+  url: "https://images.pexels.com/photos/16094046/pexels-photo-16094046.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+  alt: "A man working on a laptop with AI software open on the screen, wearing eyeglasses."
+  credit: "Matheus Bertelli"
+  creditUrl: "https://www.pexels.com/@bertellifotografia"
+sources: 
+  - title: "Don't be a meat proxy"
+    url: "https://gruhn.me/blog/2026-08-03/"
+  - title: "Don't be a meat proxy"
+    url: "https://gruhn.me/blog/2026-08-03/"
+---
+
+Developers are increasingly tossing AI‑generated snippets into pull‑request discussions without reading them first. The practice, dubbed “meat proxy” by a recent blog post, treats the AI as a middleman that simply relays output. While it can speed up drafting, it forces reviewers to decode verbose, jargon‑laden text and adds hidden risk. Understanding the original intent and validating the code remains essential. Ignoring this step erodes the value that human review brings to software quality.
+
+<Callout type="takeaway">Relying on AI as a mere messenger strips away the critical validation that makes code reviews valuable.</Callout>
+
+## What happened
+The author repeatedly receives Slack questions, PR feedback, and WhatsApp arguments that end with a terse "Please don't do this." They explain that many teammates copy‑paste a ticket description into Claude, let the model generate code, and then forward the AI's output without ever reading it. The resulting AI text is often verbose, filled with plausible nonsense, and dense with jargon, forcing reviewers to look up almost every word.
+
+In code reviews, this pattern becomes a shortcut: the ticket description is fed to Claude Code, the generated implementation is posted, and any reviewer comments are fed back into Claude for iteration. The reviewers end up approving code they never examined, while the original author becomes a "meat proxy"—a conduit for AI output rather than a thoughtful contributor.
+
+## Why it matters
+When AI output is treated as a black box, the essential human step of understanding and validating code disappears. Bugs slip through because no one has verified the logic, and knowledge transfer stalls as team members skip the learning that comes from reading and critiquing code. Over time, reliance on AI as a proxy can erode code quality, increase technical debt, and create a false sense of productivity.
+
+<ProsCons>
+  <Pros>
+    <li>Fast initial drafts reduce boilerplate writing time.</li>
+    <li>AI can suggest alternative implementations or edge‑case handling.</li>
+    <li>Helpful for brainstorming when stuck on a problem.</li>
+  </Pros>
+  <Cons>
+    <li>Loss of comprehension leads to hidden bugs.</li>
+    <li>Team members miss learning opportunities.</li>
+    <li>Creates dependency on opaque, jargon‑heavy output.</li>
+  </Cons>
+</ProsCons>
+
+## How to think about it
+Treat AI as a collaborative assistant, not a substitute for your own reasoning. Start by prompting the model for ideas, then read the generated code line‑by‑line, verify its correctness, and rewrite it in your own words before sharing. Use the AI‑produced snippet as a reference, not as the final answer. Document any assumptions you uncover during validation, and encourage reviewers to do the same. By keeping the human loop tight, you capture the speed benefits of AI while preserving code quality and shared understanding.
+
+<Callout type="warning">Do not merge code that you have not personally inspected; doing so can introduce subtle bugs and security vulnerabilities.</Callout>
+
+## FAQ
+<FAQ>
+  <Question q="What does 'meat proxy' mean in the context of AI code reviews?">It describes a person who simply passes AI‑generated output to others without adding personal insight or validation, acting as a living conduit for the model.</Question>
+  <Question q="How can I use Claude or other LLMs without becoming a meat proxy?">Generate suggestions, then read, test, and rewrite the code yourself before sharing. Always add a summary in your own words that reflects your understanding.</Question>
+  <Question q="What are the signs that I'm relying too heavily on AI-generated code?">Frequent copy‑pasting without edits, difficulty explaining the code to a teammate, and an increase in post‑merge bugs are clear red flags.</Question>
+</FAQ>
