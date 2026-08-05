@@ -1,0 +1,59 @@
+---
+title: "Why My Custom 11ty Blog Engine Stalled and What It Means for Solo Developers"
+description: "A developer explains why his over‑engineered 11ty blog never got content, exposing workflow pitfalls for solo creators."
+date: "2026-08-05T22:12:54.270Z"
+category: "news"
+tags: 
+  - "static-site"
+  - "productivity"
+  - "webdev"
+  - "eleventy"
+  - "blogging"
+hero: 
+  url: "https://images.pexels.com/photos/37227160/pexels-photo-37227160.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+  alt: "Macro photography of color palette code in a programming environment."
+  credit: "Marek Prášil"
+  creditUrl: "https://www.pexels.com/@marek-prasil-479620"
+sources: 
+  - title: "I Built a Blog and Forgot to Write"
+    url: "https://benjcal.space/blog/i-built-a-blog-and-forgot-to-write/"
+  - title: "I Built a Blog and Forgot to Write - Ben's Web Space"
+    url: "https://benjcal.space/blog/i-built-a-blog-and-forgot-to-write/"
+---
+
+Building a personal blog should be a straightforward way to share ideas, yet Ben found himself trapped in a maze of scripts, front‑matter, and folder gymnastics. He crafted an 11ty‑based static site with custom CSS, image pipelines, and a one‑command deploy, only to realize the tooling itself was the barrier to writing. The result? A perfectly engineered site that never saw a post, highlighting a classic case of over‑engineering.
+
+<Callout type="takeaway">Over‑engineered tooling can kill the very productivity it aims to boost.</Callout>
+
+## What happened
+Ben’s blog started as a minimalist 11ty project, complete with custom scripts for image handling, markdown conversion, and a single npm deploy command. The workflow required creating a new folder, a matching markdown file, and duplicate front‑matter entries for each post, which quickly became tedious.
+
+When he tried to simplify the process by building his own static site generator, the complexity exploded: he needed to parse front‑matter, generate indexes, create RSS feeds, filter drafts, and implement hot‑reload. The effort to maintain the generator eclipsed the time left for actual writing, and the project stalled.
+
+## Why it matters
+For solo developers and hobbyists, the allure of a perfectly tuned toolchain can distract from the core goal—creating content. When the setup consumes more mental bandwidth than the output, the project stalls, leading to wasted effort and missed opportunities to engage an audience. This pattern is common across indie tech projects, where the “build the tool” mindset overshadows the product’s purpose.
+
+<ProsCons>
+  <Pros>
+    <li>Deep control over site performance and styling.</li>
+    <li>Learning opportunity for static site generation internals.</li>
+    <li>Tailored workflow that can be reused for future projects.</li>
+  </Pros>
+  <Cons>
+    <li>High time cost for setup and maintenance.</li>
+    <li>Steep learning curve that delays content creation.</li>
+    <li>Risk of abandoning the project before any value is delivered.</li>
+  </Cons>
+</ProsCons>
+
+## How to think about it
+Start by defining the primary goal: publishing content. Choose a proven platform (e.g., 11ty, Hugo, or a hosted CMS) that meets that goal with minimal friction. If customization is needed, layer it incrementally—add a script or plugin only after the basic publishing flow works smoothly. Regularly audit your toolchain: if a step adds more than a few minutes of effort per post, consider simplifying or automating it. Keep the focus on output, not on perfecting the underlying engine.
+
+<Callout type="warning">Avoid adding new build steps until you have at least one published post; otherwise, the tool becomes a barrier rather than an enabler.</Callout>
+
+## FAQ
+<FAQ>
+  <Question q="Is it worth building my own static site generator?">Only if you have a clear, recurring need that existing tools cannot meet; otherwise, the time investment outweighs the benefits.</Question>
+  <Question q="What lightweight alternatives exist for solo bloggers?">Platforms like 11ty with community plugins, Hugo, or even hosted services like Netlify CMS provide fast setups with minimal configuration.</Question>
+  <Question q="How can I streamline front‑matter management?">Use a single source of truth—store metadata in a JSON/YAML file and generate markdown front‑matter automatically via a script.</Question>
+</FAQ>
