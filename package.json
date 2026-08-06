@@ -11,16 +11,11 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
-    "validate:content": "node scripts/validate-content.mjs",
+    "validate:content": "node scripts/validate-content.mjs && vitest run tests/content-compiles.test.ts",
     "generate": "tsx scripts/run-local.ts",
     "seed": "tsx scripts/seed.ts",
     "digest": "tsx scripts/newsletter-digest.ts",
-    "sanitize": "tsx scripts/sanitize-content.ts",
-    "validate:content": "vitest run tests/content-compiles.test.ts",
-    "test": "vitest run",
-    "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage",
-    "typecheck": "tsc --noEmit"
+    "sanitize": "tsx scripts/sanitize-content.ts"
   },
   "dependencies": {
     "@octokit/rest": "^21.0.2",
