@@ -1,0 +1,43 @@
+name: CI
+
+# Quality gate for pull requests and pushes: type-checks the whole project and
+# runs the Vitest unit suite over the generation pipeline's pure logic. Kept
+# separate from the hourly generation workflow so a red test never blocks a post
+# and a bot commit never triggers a redundant test run against generated content.
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - 'content/**'
+  pull_request:
+    paths-ignore:
+      - 'content/**'
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Type-check
+        run: npm run typecheck
+
+      - name: Unit tests
+        run: npm test

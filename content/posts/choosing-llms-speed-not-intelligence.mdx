@@ -1,0 +1,62 @@
+---
+title: "Choosing Large Language Models for Speed, Not Raw Intelligence: My New Priority"
+description: "I’ve stopped picking LLMs for sheer intelligence and now prioritize response speed, sharing the thresholds that feel instant."
+date: "2026-08-03T02:51:44.222Z"
+category: "news"
+tags: 
+  - "ai"
+  - "large-language-models"
+  - "speed"
+  - "productivity"
+  - "model-selection"
+hero: 
+  url: "https://images.pexels.com/photos/34804017/pexels-photo-34804017.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+  alt: "Detailed view of a computer screen displaying code with a menu of AI actions, illustrating modern software development."
+  credit: "Daniil Komov"
+  creditUrl: "https://www.pexels.com/@dkomov"
+sources: 
+  - title: "I'm (mostly) picking models on speed now, not intelligence"
+    url: "https://martinalderson.com/posts/speed-vs-intelligence/"
+  - title: "I'm (mostly) picking models on speed now, not intelligence"
+    url: "https://martinalderson.com/posts/speed-vs-intelligence/"
+---
+
+After years of chasing the most capable large‑language models, I’ve started picking my daily‑driver AI on how fast it feels rather than how clever it is. The tipping point arrived when the Opus 4.6 series consistently delivered responses at roughly 100‑200 tokens per second, which feels instantaneous to most users. In contrast, newer models like Fable, despite higher parameter counts, lagged behind with noticeable latency, prompting a quick switch back to Opus. Speed matters because it directly shapes productivity, user satisfaction, and the cost of re‑working slow outputs.
+
+<Callout type="takeaway">Speed, not raw intelligence, now drives my LLM selection.</Callout>
+
+## What happened
+The author observed that models around the Opus 4.6 level are "smart enough" for daily tasks such as coding, research synthesis, slide‑deck creation, and database analysis, while delivering output at about 100‑200 tokens per second—roughly the human perception threshold of 100 ms for instant feedback. When the US government shutdown gave everyone a pause, the author revisited Opus and found it markedly quicker than the newly hyped Fable, whose guard‑railed version felt sluggish enough to abandon.
+
+Further testing highlighted a practical speed rule: output below 50 tokens per second feels sluggish, 100‑200 tokens per second feels "pretty damn fast," and exceeding 200 tokens per second can feel unnervingly rapid, especially as users become accustomed to higher throughput. These observations align with broader studies indicating that software latency directly impacts user enjoyment, regardless of feature richness.
+
+## Why it matters
+Prioritizing speed reshapes how developers and power users choose AI assistants. Faster responses reduce cognitive load, lower the chance of abandoning a task mid‑stream, and cut down on costly re‑iterations caused by lag‑induced errors. As LLMs become integral to productivity pipelines, latency becomes a competitive differentiator, influencing adoption rates across enterprises and individual creators alike.
+
+<ProsCons>
+  <Pros>
+    <li>Improved workflow efficiency and reduced friction.</li>
+    <li>Higher user satisfaction due to near‑instant feedback.</li>
+    <li>Lower total cost of ownership when fewer retries are needed.</li>
+  </Pros>
+  <Cons>
+    <li>Potential trade‑off with model depth or nuanced reasoning.</li>
+    <li>Fast models may still lag on specialized or rare domains.</li>
+    <li>Speed‑focused selection can overlook future‑proofing capabilities.</li>
+  </Cons>
+</ProsCons>
+
+## How to think about it
+1. **Define a speed baseline** – aim for at least 100 tokens per second for text‑heavy tasks and 200+ for code‑generation workloads.
+2. **Benchmark against real‑world prompts** – test the model on the exact types of queries you run daily and measure latency.
+3. **Balance with accuracy** – if a faster model consistently misinterprets nuanced requests, consider a hybrid approach: fast model for routine tasks, smarter model for edge cases.
+4. **Monitor updates** – model providers frequently release latency improvements; keep an eye on release notes and re‑evaluate periodically.
+
+<Callout type="warning">Don’t assume a faster model will always produce correct results; verify critical outputs before relying on them.</Callout>
+
+## FAQ
+<FAQ>
+  <Question q="What token‑per‑second rate feels instant for most users?">Around 100‑200 tokens per second generally matches the human perception of instant feedback.</Question>
+  <Question q="Can I use a fast model for all my tasks?">Fast models excel at routine tasks, but for highly specialized or nuanced work, a more capable (though slower) model may still be necessary.</Question>
+  <Question q="How often should I re‑evaluate my model choice?">Review performance quarterly or after major provider updates, as speed and capability can shift quickly.</Question>
+</FAQ>

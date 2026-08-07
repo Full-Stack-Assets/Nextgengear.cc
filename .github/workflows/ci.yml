@@ -1,0 +1,54 @@
+name: CI
+
+# Quality gate for human/agent changes: typecheck, unit tests, and a full
+# production/static build on every PR and every non-main branch push. The hourly
+# content bot commits straight to main (content only, no code), so main pushes
+# are intentionally excluded to avoid burning minutes on generated posts.
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches-ignore: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Unit tests
+        run: npm test
+
+      - name: Build static site
+        env:
+          NEXT_PUBLIC_SITE_URL: https://nextgengear.cc
+          NEXT_PUBLIC_NEWSLETTER_SUBSCRIBE_URL: ${{ vars.NEXT_PUBLIC_NEWSLETTER_SUBSCRIBE_URL }}
+          NEXT_PUBLIC_ADSENSE_CLIENT: ${{ vars.NEXT_PUBLIC_ADSENSE_CLIENT }}
+          NEXT_PUBLIC_ADSENSE_SLOT_IN_ARTICLE: ${{ vars.NEXT_PUBLIC_ADSENSE_SLOT_IN_ARTICLE }}
+          NEXT_PUBLIC_ADSENSE_SLOT_FOOTER: ${{ vars.NEXT_PUBLIC_ADSENSE_SLOT_FOOTER }}
+          NEXT_PUBLIC_AMAZON_ASSOCIATE_TAG: ${{ vars.NEXT_PUBLIC_AMAZON_ASSOCIATE_TAG }}
+        run: npm run build
+
+      - name: Verify Pages artifact
+        run: test -f out/index.html && test -f out/CNAME

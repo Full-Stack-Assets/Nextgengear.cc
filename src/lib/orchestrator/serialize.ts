@@ -25,17 +25,40 @@ export function serialize(post: GeneratedPost): string {
 }
 
 /**
- * Make the LLM-written MDX body safe to prerender. The model occasionally emits
- * unescaped double quotes inside a <Question q="..."> attribute (e.g. q="the
- * "limited" plan"), which breaks MDX parsing and fails the whole build. Replace
- * the inner double quotes with single quotes so the attribute stays well-formed.
+ * Make the LLM-written MDX body safe to prerender. A single malformed post
+ * fails the whole static export (next-mdx-remote throws at build), so we defend
+ * against the recurring failure modes the model produces:
+ *
+ *  1. Unescaped double quotes inside a <Question q="..."> attribute
+ *     (e.g. q="the "limited" plan") — swap the inner quotes for single quotes.
+ *  2. A <Question> answer split across indented lines, and/or a leftover
+ *     "Answer paragraph." template placeholder — both break MDX because the
+ *     element's children stop being simple inline text. Collapse the answer to
+ *     a single line and strip the placeholder.
+ *
+ * Each transform is a no-op on already-well-formed input.
  */
 export function sanitizeBody(body: string): string {
-  return body.replace(
+  // 1. Escape stray double quotes inside the q="..." attribute.
+  let out = body.replace(
     /(<Question\s+q=")([^\n]*?)(">)/g,
     (_match, open: string, question: string, close: string) =>
       `${open}${question.replace(/"/g, "'")}${close}`
   );
+
+  // 2. Normalize each <Question> element's inner content to a single, clean line.
+  out = out.replace(
+    /(<Question\b[^>]*>)([\s\S]*?)(<\/Question>)/g,
+    (_match, open: string, inner: string, close: string) => {
+      const cleaned = inner
+        .replace(/\s+/g, ' ')
+        .replace(/^\s*Answer paragraph\.?\s*/i, '')
+        .trim();
+      return `${open}${cleaned}${close}`;
+    }
+  );
+
+  return out;
 }
 
 function toYaml(obj: unknown, indent = 0): string {

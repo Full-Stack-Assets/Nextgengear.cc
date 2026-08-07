@@ -1,10 +1,11 @@
 import { listPosts } from '@/lib/posts';
+import { siteConfig } from '@/site.config';
 
-export const revalidate = 300;
+export const dynamic = 'force-static';
 
 export async function GET() {
   const posts = await listPosts();
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://wireandlogic.com';
+  const siteUrl = siteConfig.url;
 
   const items = posts
     .slice(0, 20)
@@ -24,9 +25,9 @@ export async function GET() {
   const feed = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Wire and Logic</title>
+    <title>${siteConfig.name}</title>
     <link>${siteUrl}</link>
-    <description>An hourly trend brief for builders, synthesized from across the web.</description>
+    <description>${siteConfig.description}</description>
     <language>en-us</language>
     <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
     <atom:link href="${siteUrl}/feed.xml" rel="self" type="application/rss+xml"/>
@@ -37,7 +38,6 @@ export async function GET() {
   return new Response(feed.trim(), {
     headers: {
       'content-type': 'application/xml; charset=utf-8',
-      'cache-control': 'public, max-age=300',
     },
   });
 }

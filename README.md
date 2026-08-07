@@ -1,4 +1,4 @@
-# Wire and Logic
+# NextGenGear.cc
 
 A self-hosted, zero-cost trend blog. A scheduled job runs every hour, picks the highest-signal story from seven sources, researches it, writes a structured MDX post, and commits it to GitHub. The Next.js site auto-deploys.
 
@@ -147,6 +147,65 @@ score = 0.5·popularity + 0.2·engagement + 0.3·recency
 - **recency** — exponential decay with a **24h half-life**
 
 Dedup uses a sorted-token fingerprint of the title, so "GPT-5 released today" and "Today: GPT-5 is out" collapse to the same signature. The topic log (`content/.topic-log.json`) is checked on every run and capped at 500 entries.
+
+---
+
+## Monetization
+
+Two revenue layers ship with the engine; both are off until you configure them.
+
+### Display ads — Google AdSense
+
+Set `NEXT_PUBLIC_ADSENSE_CLIENT` (or `adsenseClient` in `site.config.ts`) to your
+publisher id. That single value:
+
+- loads the AdSense script site-wide (so **Auto ads** work once you enable them in
+  the AdSense dashboard under **Ads → By site**),
+- emits the `google-adsense-account` verification meta tag, and
+- **serves `/ads.txt` automatically** — the route at `src/app/ads.txt/route.ts`
+  derives the required line (`google.com, pub-…, DIRECT, f08c47fec0942fa0`) from
+  the publisher id, so you never hand-maintain the file. Verify it's live at
+  `https://<your-domain>/ads.txt` after deploy; AdSense will warn if it can't find it.
+
+For manual ad units, also set `NEXT_PUBLIC_ADSENSE_SLOT_IN_ARTICLE` and
+`NEXT_PUBLIC_ADSENSE_SLOT_FOOTER` to your ad-unit ids.
+
+> **Heads-up:** this is AI-generated content. AdSense reviews against a
+> "scaled content" policy and may reject or hold approval — the disclosures on
+> `/about` and per post are there to help, but approval isn't guaranteed.
+
+### Affiliate links — Amazon Associates
+
+Set `NEXT_PUBLIC_AMAZON_ASSOCIATE_TAG` (or `affiliate.amazonTag` in
+`site.config.ts`). `<BuyBox>` blocks and the category-gated "Shop this" links then
+carry your tag. See `src/lib/affiliate.ts`.
+
+### Consent (EU/UK)
+
+A lightweight consent banner (`src/components/ConsentBanner.tsx`) wires **Google
+Consent Mode v2** — ad/analytics storage default to *denied* until the visitor
+accepts. For full EEA/UK compliance Google still requires a **certified CMP**;
+the built-in banner is a sensible default, not a substitute for one.
+
+---
+
+## Testing & CI
+
+```bash
+npm test                 # Vitest: core-logic unit tests + all-content MDX compile check
+npm run typecheck        # tsc --noEmit
+npm run validate:content # compile every post (finds build-breaking MDX fast)
+npm run sanitize         # normalize existing posts' MDX in place (maintenance)
+```
+
+Unit tests sit beside the code (`src/lib/**/*.test.ts`) and cover scoring/dedupe,
+the writer contract (schema self-heal + MDX structure guard), serialization, and
+affiliate logic. `tests/content-compiles.test.ts` compiles **every** post — one
+test per file — because a single malformed post aborts the whole `next build` and
+takes the site down; this catches it in CI on the exact file instead.
+
+`.github/workflows/ci.yml` runs `typecheck → test → build` on every PR and
+non-main branch push. Full details in [`docs/testing-and-ci.md`](docs/testing-and-ci.md).
 
 ---
 

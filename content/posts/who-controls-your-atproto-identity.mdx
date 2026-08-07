@@ -8,11 +8,11 @@ tags:
   - "decentralization"
   - "cryptography"
   - "identity"
-hero: 
-  url: "https://images.pexels.com/photos/3861437/pexels-photo-3861437.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
-  alt: "Laboratory setting showing gloved hands holding innovative 3D printed metal structures."
-  credit: "ThisIsEngineering"
-  creditUrl: "https://www.pexels.com/@thisisengineering"
+hero:
+  url: "https://live.staticflickr.com/65535/54283369934_04dc9c51f1_b.jpg"
+  alt: "Defense (of the internet) (from billionaires) in depth"
+  credit: "gruntzooki"
+  creditUrl: "https://www.flickr.com/photos/37996580417@N01/54283369934"
 sources: 
   - title: "Who owns your ATProto identity?"
     url: "https://kevinak.se/blog/who-actually-owns-your-atproto-identity-hint-its-probably-not-you"
@@ -70,13 +70,7 @@ Do not use default, third-party hosted PDS accounts for sensitive developer work
 ## FAQ
 
 <FAQ>
-  <Question q="Can a PDS operator actually post or commit code as me?">
-    Yes. Because the PDS holds your active signing key by default, any action the operator takes on your behalf is cryptographically valid and indistinguishable from your own actions across all ATProto applications.
-  </Question>
-  <Question q="How does ATProto identity differ from traditional platforms like GitHub?">
-    On traditional platforms, compromising your account does not give the host your private SSH or GPG keys used for local git commits. On ATProto, the PDS manages the keys for all integrated services, meaning a host compromise affects your social media, git repositories, and blogs simultaneously.
-  </Question>
-  <Question q="Is it possible to secure my identity without self-hosting a PDS?">
-    Yes. You can enroll a self-controlled backup rotation key with higher priority than your PDS's key. This allows you to cryptographically reclaim your DID and point it to a new PDS if your current provider is compromised or acts maliciously.
-  </Question>
+  <Question q="Can a PDS operator actually post or commit code as me?">Yes. Because the PDS holds your active signing key by default, any action the operator takes on your behalf is cryptographically valid and indistinguishable from your own actions across all ATProto applications.</Question>
+  <Question q="How does ATProto identity differ from traditional platforms like GitHub?">On traditional platforms, compromising your account does not give the host your private SSH or GPG keys used for local git commits. On ATProto, the PDS manages the keys for all integrated services, meaning a host compromise affects your social media, git repositories, and blogs simultaneously.</Question>
+  <Question q="Is it possible to secure my identity without self-hosting a PDS?">Yes. You can enroll a self-controlled backup rotation key with higher priority than your PDS's key. This allows you to cryptographically reclaim your DID and point it to a new PDS if your current provider is compromised or acts maliciously.</Question>
 </FAQ>

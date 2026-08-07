@@ -1,0 +1,62 @@
+---
+title: "IntelliJ IDEA’s Java & Kotlin LSP Extension Brings Full IDE Intelligence to VS Code and Cursor"
+description: "JetBrains releases a preview LSP extension that brings IntelliJ IDEA’s Java and Kotlin smart features to VS Code, Cursor, and agentic workflows."
+date: "2026-08-05T05:45:10.824Z"
+category: "news"
+tags: 
+  - "intellij"
+  - "lsp"
+  - "java"
+  - "kotlin"
+  - "vscode"
+  - "cursor"
+hero: 
+  url: "https://images.pexels.com/photos/34803988/pexels-photo-34803988.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+  alt: "Detailed view of code and file structure in a software development environment."
+  credit: "Daniil Komov"
+  creditUrl: "https://www.pexels.com/@dkomov"
+sources: 
+  - title: "IntelliJ IDEA Goes LSP: Java and Kotlin Intelligence Comes to VS Code, Cursor, and Agentic Flows"
+    url: "https://blog.jetbrains.com/idea/2026/08/intellij-idea-goes-lsp/"
+  - title: "IntelliJ IDEA Goes LSP: Java and Kotlin Intelligence Comes to VS Code, Cursor, and Agentic Flows - The JetBrains Blog"
+    url: "https://blog.jetbrains.com/idea/2026/08/intellij-idea-goes-lsp/"
+---
+
+Developers using lightweight editors have long missed the deep code insight that IntelliJ IDEA provides. JetBrains just announced a preview LSP extension that brings Java and Kotlin intelligence to VS Code, Cursor, and other LSP‑compatible tools. The move aligns IDE power with the rise of agentic development, where AI agents handle much of the coding work. By exposing smart completion, navigation, and analysis through LSP, the extension promises to boost productivity without the overhead of a full IDE. Early trials suggest noticeable gains for terminal‑based AI workflows.
+
+<Callout type="takeaway">IntelliJ IDEA’s Java & Kotlin LSP extension delivers full‑IDE intelligence to lightweight editors.</Callout>
+
+## What happened
+JetBrains released a preview “Java & Kotlin by IntelliJ IDEA” extension, now listed in the Visual Studio Marketplace and the Open VSX registry. The extension implements IntelliJ’s language server for Java and Kotlin, exposing smart code completion, navigation, and on‑the‑fly analysis to any LSP‑compatible editor.
+
+The server automatically imports Maven, Gradle, or Bazel projects and supports mixed‑language codebases, delivering fast performance even on large monorepos. JetBrains also shared early internal trials where AI agents using the LSP server completed tasks with lower token consumption and higher determinism.
+
+## Why it matters
+Bringing IntelliJ‑grade intelligence to lightweight editors lowers the barrier for developers and AI agents to access advanced language features without launching a heavyweight IDE. This can reduce context‑switching, speed up agentic workflows, and make Java/Kotlin development more accessible in cloud‑based or terminal‑centric environments.
+
+<ProsCons>
+  <Pros>
+    <li>Rich IntelliJ‑level code analysis in VS Code</li>
+    <li>Works with Maven, Gradle, Bazel projects out of the box</li>
+    <li>Improves AI‑agent workflows by reducing token usage</li>
+  </Pros>
+  <Cons>
+    <li>Preview release – may lack full feature parity</li>
+    <li>Requires download of IntelliJ backend services</li>
+    <li>Limited to Java and Kotlin for now</li>
+  </Cons>
+</ProsCons>
+
+## How to think about it
+Start by installing the extension in a non‑critical project to gauge performance and feature coverage. Compare its code‑completion and navigation against the full IDE to decide if it meets your daily needs. If you rely heavily on AI‑driven coding, test the LSP server’s impact on token consumption in your agentic pipelines. Keep an eye on JetBrains’ upcoming updates, as feature parity will grow over time.
+
+<BuyBox product="Java & Kotlin by IntelliJ IDEA" />
+
+<Callout type="warning">The extension is still in preview and may not support all IntelliJ features or large enterprise setups.</Callout>
+
+## FAQ
+<FAQ>
+  <Question q="Can the LSP extension replace the full IntelliJ IDEA IDE?">It offers many core features like smart completion and analysis, but it does not include the full suite of refactorings, UI tools, and plugins available in the desktop IDE.</Question>
+  <Question q="Which editors are currently supported?">The preview works with VS Code and any of its forks, such as Cursor, as well as any editor that implements the Language Server Protocol.</Question>
+  <Question q="Do I need an IntelliJ IDEA license to use the extension?">The extension can be installed for free; however, some advanced IntelliJ backend capabilities may require a licensed IDE in future releases.</Question>
+</FAQ>

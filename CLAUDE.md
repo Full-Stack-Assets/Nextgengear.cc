@@ -21,7 +21,7 @@ site-specific lives in **`src/site.config.ts`**. The npm package is still named
 - **Next.js 15** (App Router, React 19) — static-leaning blog, reads MDX from disk
 - **TinaCMS 3** — optional visual editor at `/admin`, schema mirrors the pipeline's frontmatter
 - **TypeScript** (strict), **Tailwind CSS 3**
-- **LLM writer** — OpenAI-compatible endpoint; default **Google Gemini** (`gemini-2.5-flash` — a stable GA model; the `gemini-flash-latest` alias was returning 503 "model is overloaded" under free-tier load), swappable to Groq / OpenRouter via `site.config.ts`
+- **LLM writer** — OpenAI-compatible endpoint; default **Groq** (`openai/gpt-oss-120b`, with `meta-llama/llama-4-scout-17b-16e-instruct` as the automatic `llmFallback` on the same key — Scout's 30K-TPM free-tier cap gives failover real headroom over gpt-oss's 8K; Gemini was dropped after persistent free-tier 503 "model overloaded" failures), swappable to OpenRouter etc. via `site.config.ts`
 - **GitHub Actions** — the hourly scheduler (NOT Vercel cron — Hobby plan caps cron at daily)
 - Content is committed as `.mdx` files; there is **no database**.
 
@@ -69,11 +69,12 @@ in `generate.ts` and validated by `PostSchema` (zod):
 4. `## Why it matters`
 5. `<ProsCons>` with `<Pros>`/`<Cons>` (3+ `<li>` each)
 6. `## How to think about it`
+6b. `<BuyBox product="…" />` — *optional*, only for posts centered on a specific buyable product (affiliate CTA → tagged Amazon search link via `src/lib/affiliate.ts`)
 7. `<Callout type="warning">` — *optional*, only when warranted
 8. `## FAQ` → `<FAQ>` with exactly 3 `<Question q="…">` entries
 
 The components are implemented in `src/components/mdx/index.tsx` (`Callout`,
-`ProsCons`, `Pros`, `Cons`, `FAQ`, `Question`, exported as `mdxComponents`) and
+`ProsCons`, `Pros`, `Cons`, `FAQ`, `Question`, `BuyBox`, exported as `mdxComponents`) and
 styled by `.prose-editorial` rules in `src/app/globals.css`. The same shape is
 mirrored in the TinaCMS rich-text templates (`tina/config.ts`).
 
@@ -86,6 +87,15 @@ recoverable overshoots instead of throwing; only genuinely unrepairable misses
 (too-short body, <2 tags, bad JSON) trigger a retry with the error fed back to
 the model. Don't add `.max()` before a transform — it fires first and defeats
 the heal.
+
+**MDX compile guard:** after `PostSchema` accepts a post, `generate.ts` runs the
+(sanitized) body through the real MDX compiler (`validateMdx` in
+`orchestrator/validate.ts`, using `next-mdx-remote`) before committing. A body
+that won't compile (unclosed `<Cons>`, unterminated `q="…"`, truncated `<FAQ>`)
+feeds the compiler's reason back into the retry loop instead of shipping a post
+that breaks the site build. `scripts/validate-content.mjs` (`npm run
+validate:content`, and the `content-check.yml` workflow) is the safety net over
+already-committed posts.
 
 ## Site structure (`src/app/`)
 
@@ -115,10 +125,20 @@ npm run dev              # tinacms dev wrapper around `next dev` → localhost:3
 npm run build            # bash scripts/build.sh (Tina cloud build only if creds set, then `next build`)
 npm start                # serve the production build
 npm run lint             # next lint
+npm run typecheck        # tsc --noEmit (CI gate)
+npm test                 # vitest run — unit suite over the pipeline's pure logic (CI gate)
+npm run test:watch       # vitest in watch mode while developing
+npm run validate:content # compile every content/posts/*.mdx (catches malformed posts)
 
 npm run generate -- --dry   # dry run: print the post, write nothing
 npm run generate            # real local run: writes content/posts/*.mdx + updates topic log + syndicates
 npm run digest              # newsletter weekly digest
+
+npm test                    # Vitest: core-logic unit tests + all-content MDX compile check
+npm run test:watch          # watch mode
+npm run typecheck           # tsc --noEmit
+npm run validate:content    # compile every content/posts/*.mdx (finds build-breaking posts fast)
+npm run sanitize            # normalize existing posts' MDX in place (maintenance)
 ```
 
 `scripts/run-local.ts` is the generation entrypoint the Action calls
@@ -133,7 +153,7 @@ Action's own git step does the commit/push.
   `adsenseClient`, the `llm` endpoint/model/key-env, and `imageProvider`. To
   re-niche or re-brand the site, edit this file (see `CREATE-A-SITE.md`).
 - **`.env.example`** lists every env var. Key ones: the LLM key matching
-  `llm.apiKeyEnv` (`GEMINI_API_KEY` by default), `BRAVE_API_KEY`,
+  `llm.apiKeyEnv` (`GROQ_API_KEY` by default), `BRAVE_API_KEY`,
   `PEXELS_API_KEY`, `REDDIT_CLIENT_ID/SECRET`, `GITHUB_TOKEN`/`OWNER`/`REPO`/`BRANCH`,
   `CRON_SECRET`, optional syndication / newsletter / AdSense vars.
 - Any unset source/integration is **skipped gracefully**, never fatal.
@@ -147,6 +167,12 @@ Action's own git step does the commit/push.
   optionally fires `VERCEL_DEPLOY_HOOK_URL`. A `concurrency` group prevents
   overlapping ticks. Add pipeline secrets under repo Settings → Secrets → Actions.
 - `.github/workflows/newsletter.yml` — newsletter digest workflow.
+- `.github/workflows/test.yml` — **CI gate** on PRs + pushes to `main`: runs
+  `npm run typecheck` and `npm test`. Ignores `content/**` so bot post commits
+  don't trigger it. See `docs/TESTING.md`.
+- `.github/workflows/content-check.yml` — compiles every `content/posts/**` MDX
+  file (`npm run validate:content`) on content changes + PRs, so a malformed post
+  is caught in CI rather than breaking the Vercel/`next build` prerender.
 
 ## Conventions for making changes
 
@@ -157,14 +183,37 @@ Action's own git step does the commit/push.
   `src/components/mdx/index.tsx`, the `.prose-editorial` styles, and the TinaCMS
   rich-text templates in `tina/config.ts`.
 - **Adding a source:** create `src/lib/sources/<name>.ts` exporting
-  `fetch<Name>(): Promise<RawItem[]>`, add it to the `Promise.all` in
-  `pipeline.ts` (wrapped in `.catch(() => [])`), and add its weight in
-  `score.ts`.
+  `fetch<Name>(): Promise<RawItem[]>`, add its literal to the `source` union in
+  `orchestrator/types.ts`, add it to the `Promise.all` in `pipeline.ts` (wrapped
+  in `.catch(() => [])`), and add its weight in `score.ts`'s `SOURCE_WEIGHT`
+  (**required** — a missing weight makes `popularity` `NaN`). Factor the
+  raw-response → `RawItem[]` mapping into an exported pure function (like
+  `lobstersToRawItems` / `toRawItems`) and unit-test it. Niche-agnostic
+  aggregators (Hacker News, Lobsters) must self-filter against
+  `siteConfig.sources.trendsKeywords` so off-niche stories can't win — see
+  `sources/lobsters.ts`.
+- **Network calls** should go through `fetchWithRetry` / `fetchJson`
+  (`src/lib/http.ts`) for a timeout + bounded backoff on 429/5xx/network blips.
+  Callers keep their own `.catch(() => [])` — the helper improves the odds
+  before that fallback ever fires.
 - **Failure handling philosophy:** sources, syndication, and deploy hooks must
   fail soft (return empty / log a warning) — never abort the run. Only an
   unrecoverable post-generation failure should throw.
+- **Add unit tests for new pure logic** (scoring, schema transforms, serialize,
+  source mapping) under a `__tests__/` folder — see `docs/TESTING.md`. The CI
+  gate (`typecheck` + `test`) runs on every PR.
 - **Test generation locally with `--dry` first** so you don't write junk MDX into
   `content/posts/`.
+- **Run `npm test` before pushing.** Unit tests live beside the code as
+  `*.test.ts` under `src/lib/`; `tests/content-compiles.test.ts` compiles every
+  post so a malformed MDX file (which aborts the whole `next build`) is caught in
+  CI on the exact file. Add/extend tests when you touch scoring, the writer
+  contract, serialization, or affiliate logic. CI (`.github/workflows/ci.yml`)
+  gates PRs on typecheck + tests + build. See `docs/testing-and-ci.md`.
+- **Guarding content quality:** malformed generated MDX is caught in two places —
+  `checkMdxStructure` in `generate.ts` (rejects unbalanced tags → LLM retry) and
+  `sanitizeBody` in `serialize.ts` (normalizes recoverable patterns before
+  writing). `npm run sanitize` re-runs the latter over the whole catalog.
 - Follow the existing code style: strict TypeScript, the file-level comment style
   already present in `orchestrator/*`, and zod for any new structured-output
   validation.

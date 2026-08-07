@@ -18,6 +18,7 @@ const SOURCE_WEIGHT: Record<RawItem['source'], number> = {
   rss: 0.7,
   youtube: 0.6,
   googletrends: 0.8,
+  lobsters: 0.85,
 };
 
 const HALF_LIFE_HOURS = 24;
