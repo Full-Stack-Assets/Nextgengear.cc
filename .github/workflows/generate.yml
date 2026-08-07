@@ -50,8 +50,7 @@ jobs:
           DEVTO_API_KEY: ${{ secrets.DEVTO_API_KEY }}
         run: npx tsx scripts/run-local.ts
 
-      - name: Detect candidate changes
-        id: changes
+      - name: Commit and push generated content
         shell: bash
         run: |
           if git diff --quiet -- content/; then
@@ -77,24 +76,24 @@ jobs:
         if: steps.changes.outputs.changed == 'true'
         run: npm run build
 
-      - name: Open validated content pull request
-        if: steps.changes.outputs.changed == 'true'
-        env:
-          GH_TOKEN: ${{ github.token }}
-        shell: bash
-        run: |
-          set -euo pipefail
+          git commit -m "post: $(date -u +%Y-%m-%dT%H:00Z) hourly dispatch"
 
-          branch="automation/content-${GITHUB_RUN_ID}"
-          git config user.name "nextgengear-content-bot"
-          git config user.email "actions@users.noreply.github.com"
-          git switch -c "$branch"
-          git add content/
-          git commit -m "content: add validated daily candidate"
-          git push --set-upstream origin "$branch"
+          branch="${GITHUB_REF_NAME:-main}"
 
-          gh pr create \
-            --base main \
-            --head "$branch" \
-            --title "Validated content candidate $(date -u +%Y-%m-%d)" \
-            --body $'## Automated content candidate\n\nThis candidate passed the repository typecheck, full content compiler, test suite, and production build before the pull request was opened.\n\nProduction is unchanged until this pull request is reviewed and merged.'
+          for attempt in 1 2 3 4 5; do
+            if git push origin "HEAD:${branch}"; then
+              echo "Pushed on attempt ${attempt}. GitHub Pages will deploy from the resulting push."
+              exit 0
+            fi
+
+            echo "Push rejected (attempt ${attempt}); rebasing onto origin/${branch} and retrying..."
+            git fetch origin "${branch}"
+
+            if ! git rebase "origin/${branch}"; then
+              echo "Rebase did not complete cleanly; aborting this attempt." >&2
+              git rebase --abort || true
+            fi
+          done
+
+          echo "Failed to push after multiple attempts." >&2
+          exit 1
