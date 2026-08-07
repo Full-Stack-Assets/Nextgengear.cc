@@ -5,15 +5,6 @@ import { listPosts } from '@/lib/posts';
 import { isShoppableCategory } from '@/lib/affiliate';
 import { SITE_NAME, SITE_URL } from '@/lib/structured-data';
 
-export const revalidate = 300;
-
-// Buyer-intent hub pages: "best <category>" is one of the highest-converting
-// query shapes for a gear site, and it's the natural landing page for affiliate
-// traffic. Each hub aggregates the freshest coverage in a category into one
-// continuously-updated guide, with internal links out to the individual posts
-// and the full archive.
-
-/** Human-friendly category label, e.g. "smarthome" → "Smart Home". */
 function label(category: string): string {
   const special: Record<string, string> = { smarthome: 'Smart Home' };
   return special[category] ?? category[0].toUpperCase() + category.slice(1);
@@ -22,8 +13,6 @@ function label(category: string): string {
 export async function generateStaticParams() {
   const posts = await listPosts();
   const cats = Array.from(new Set(posts.map((p) => p.frontmatter.category)));
-  // Only build hubs for buyable product categories — "best news" isn't a
-  // buyer-intent query, and these pages are the affiliate landing pages.
   return cats.filter(isShoppableCategory).map((category) => ({ category }));
 }
 
@@ -56,26 +45,18 @@ export default async function BestCategoryPage({ params }: { params: Promise<{ c
     <div className="mx-auto max-w-3xl px-6 py-16">
       <div className="mb-10 border-b border-rule pb-6">
         <div className="text-xs uppercase tracking-[0.3em] text-muted">Buying guide</div>
-        <h1 className="mt-2 font-display text-4xl sm:text-5xl font-bold tracking-tight leading-tight text-gradient">
-          The Best {name} in {year}
-        </h1>
+        <h1 className="mt-2 font-display text-4xl sm:text-5xl font-bold tracking-tight leading-tight text-gradient">The Best {name} in {year}</h1>
         <p className="mt-4 text-lg text-ink/70">
-          A continuously-updated guide to the latest {name.toLowerCase()} news, reviews, and
-          releases — pulled together from {SITE_NAME}&rsquo;s hourly coverage so you can see what
-          matters right now before you buy.
+          A continuously-updated guide to the latest {name.toLowerCase()} news, reviews, and releases — pulled together from {SITE_NAME}&rsquo;s hourly coverage so you can see what matters right now before you buy.
         </p>
       </div>
 
       <ol className="space-y-8">
         {featured.map((p, i) => (
           <li key={p.slug} className="flex gap-4">
-            <span className="font-display text-2xl font-bold text-accent/40 leading-none pt-1">
-              {String(i + 1).padStart(2, '0')}
-            </span>
+            <span className="font-display text-2xl font-bold text-accent/40 leading-none pt-1">{String(i + 1).padStart(2, '0')}</span>
             <Link href={`/blog/${p.slug}`} className="group block flex-1">
-              <h2 className="font-display text-xl sm:text-2xl font-semibold leading-snug group-hover:text-accent transition-colors">
-                {p.frontmatter.title}
-              </h2>
+              <h2 className="font-display text-xl sm:text-2xl font-semibold leading-snug group-hover:text-accent transition-colors">{p.frontmatter.title}</h2>
               <p className="mt-1 text-ink/70 line-clamp-2">{p.frontmatter.description}</p>
               <div className="mt-2 text-xs uppercase tracking-widest text-muted">
                 {new Date(p.frontmatter.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
@@ -87,9 +68,7 @@ export default async function BestCategoryPage({ params }: { params: Promise<{ c
       </ol>
 
       <div className="mt-12 border-t border-rule pt-8 text-sm">
-        <Link href={`/categories/${category}`} className="font-display font-semibold text-accent hover:underline">
-          Browse all {name.toLowerCase()} coverage →
-        </Link>
+        <Link href={`/categories/${category}`} className="font-display font-semibold text-accent hover:underline">Browse all {name.toLowerCase()} coverage →</Link>
       </div>
     </div>
   );
