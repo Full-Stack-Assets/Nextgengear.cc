@@ -2,8 +2,6 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { listPosts } from '@/lib/posts';
 
-export const revalidate = 300;
-
 export async function generateStaticParams() {
   const posts = await listPosts();
   const cats = Array.from(new Set(posts.map((p) => p.frontmatter.category)));
@@ -26,9 +24,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
         {posts.map((p) => (
           <li key={p.slug} className="py-6">
             <Link href={`/blog/${p.slug}`} className="group block">
-              <h2 className="font-display text-2xl font-semibold group-hover:text-accent transition-colors">
-                {p.frontmatter.title}
-              </h2>
+              <h2 className="font-display text-2xl font-semibold group-hover:text-accent transition-colors">{p.frontmatter.title}</h2>
               <p className="mt-1 text-ink/70">{p.frontmatter.description}</p>
               <div className="mt-2 text-xs uppercase tracking-widest text-muted">
                 {new Date(p.frontmatter.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}

@@ -2,8 +2,6 @@ import Link from 'next/link';
 import { listPosts } from '@/lib/posts';
 import { siteConfig } from '@/site.config';
 
-export const revalidate = 300; // re-check content every 5 minutes
-
 export default async function HomePage() {
   const posts = await listPosts();
   const [lead, ...rest] = posts;
@@ -140,7 +138,7 @@ function EmptyState() {
     <div className="rounded-2xl border-2 border-dashed border-rule bg-surface/50 py-24 text-center">
       <div className="font-display text-3xl font-bold">Nothing published yet.</div>
       <p className="mt-3 text-muted">
-        Run <code className="rounded-md bg-white px-2 py-0.5 text-sm border border-rule">npm run generate</code> or wait for the next cron tick.
+        Run <code className="rounded-md bg-white px-2 py-0.5 text-sm border border-rule">npm run generate</code> or wait for the next scheduled GitHub Actions run.
       </p>
     </div>
   );
