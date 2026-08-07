@@ -1,0 +1,5 @@
+# Production automation and security-sensitive paths require owner review.
+.github/workflows/ @Full-Stack-Assets
+src/lib/orchestrator/ @Full-Stack-Assets
+scripts/ @Full-Stack-Assets
+SECURITY.md @Full-Stack-Assets

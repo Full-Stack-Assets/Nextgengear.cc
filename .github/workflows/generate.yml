@@ -1,25 +1,26 @@
-name: Hourly Post Generation
+name: Validated Content Generation
 
 on:
   schedule:
-    # Hourly. Stagger minute across sister sites to avoid API spikes.
-    - cron: '0 * * * *'
+    # Research can run frequently elsewhere; production candidates are batched daily.
+    - cron: '0 12 * * *'
   workflow_dispatch:
 
 concurrency:
-  group: hourly-post-generation
+  group: validated-content-generation
   cancel-in-progress: false
 
 permissions:
   contents: write
+  pull-requests: write
 
 jobs:
-  generate:
+  generate-and-validate:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 35
 
     steps:
-      - name: Checkout
+      - name: Checkout production baseline
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -30,12 +31,11 @@ jobs:
           node-version: '20'
           cache: npm
 
-      - name: Install deps
+      - name: Install dependencies
         run: npm ci
 
-      - name: Run pipeline
+      - name: Generate candidate content
         env:
-          # Must match llm.apiKeyEnv / source config in src/site.config.ts
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
           BRAVE_API_KEY: ${{ secrets.BRAVE_API_KEY }}
@@ -43,7 +43,6 @@ jobs:
           REDDIT_CLIENT_ID: ${{ secrets.REDDIT_CLIENT_ID }}
           REDDIT_CLIENT_SECRET: ${{ secrets.REDDIT_CLIENT_SECRET }}
 
-          # Optional syndication targets
           BLUESKY_HANDLE: ${{ secrets.BLUESKY_HANDLE }}
           BLUESKY_APP_PASSWORD: ${{ secrets.BLUESKY_APP_PASSWORD }}
           MASTODON_INSTANCE_URL: ${{ secrets.MASTODON_INSTANCE_URL }}
@@ -54,20 +53,28 @@ jobs:
       - name: Commit and push generated content
         shell: bash
         run: |
-          set -euo pipefail
-
-          git config user.name "astrokobi-bot"
-          git config user.email "bot@astrokobi.com"
-
-          # Union merge driver for concurrent topic-log appends
-          git config merge.topiclog.name "union topic log entries"
-          git config merge.topiclog.driver "node scripts/merge-topic-log.mjs %O %A %B"
-
-          git add content/
-          if git diff --cached --quiet; then
-            echo "No new post generated — nothing to commit."
-            exit 0
+          if git diff --quiet -- content/; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "No new candidate content was generated."
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
+
+      - name: Typecheck
+        if: steps.changes.outputs.changed == 'true'
+        run: npm run typecheck
+
+      - name: Validate all content
+        if: steps.changes.outputs.changed == 'true'
+        run: npm run validate:content
+
+      - name: Run test suite
+        if: steps.changes.outputs.changed == 'true'
+        run: npm test -- --run
+
+      - name: Build complete site
+        if: steps.changes.outputs.changed == 'true'
+        run: npm run build
 
           git commit -m "post: $(date -u +%Y-%m-%dT%H:00Z) hourly dispatch"
 
