@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: nextgengear
+    runtime: node
+    plan: starter
+    region: ohio
+    buildCommand: npm ci && npm run build
+    startCommand: npm start
+    autoDeployTrigger: checksPass
+    healthCheckPath: /
+    domains:
+      - nextgengear.cc
+      - www.nextgengear.cc
+    envVars:
+      - key: NODE_VERSION
+        value: 22.18.0
+      - key: NODE_ENV
+        value: production
+      - key: NEXT_TELEMETRY_DISABLED
+        value: "1"
+      - key: NEXT_PUBLIC_TINA_CLIENT_ID
+        sync: false
+      - key: TINA_TOKEN
+        sync: false
