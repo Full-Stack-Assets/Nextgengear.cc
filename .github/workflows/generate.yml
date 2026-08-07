@@ -51,10 +51,7 @@ jobs:
           DEVTO_API_KEY: ${{ secrets.DEVTO_API_KEY }}
         run: npx tsx scripts/run-local.ts
 
-      - name: Commit, push, and optionally trigger Vercel
-        env:
-          VERCEL_DEPLOY_HOOK_URL: ${{ secrets.VERCEL_DEPLOY_HOOK_URL }}
-          PRODUCTION_BRANCH: main
+      - name: Commit and push generated content
         shell: bash
         run: |
           set -euo pipefail
@@ -78,21 +75,7 @@ jobs:
 
           for attempt in 1 2 3 4 5; do
             if git push origin "HEAD:${branch}"; then
-              echo "Pushed on attempt ${attempt}."
-
-              if [[ -n "${VERCEL_DEPLOY_HOOK_URL:-}" && "${branch}" == "${PRODUCTION_BRANCH}" ]]; then
-                echo "Triggering Vercel deploy hook..."
-                if curl -fsS -m 30 --retry 3 -X POST "${VERCEL_DEPLOY_HOOK_URL}" >/dev/null; then
-                  echo "Vercel redeploy triggered."
-                else
-                  echo "Vercel deploy hook call failed (non-fatal)." >&2
-                fi
-              elif [[ -n "${VERCEL_DEPLOY_HOOK_URL:-}" ]]; then
-                echo "Skipping deploy hook — '${branch}' is not production (${PRODUCTION_BRANCH})."
-              else
-                echo "VERCEL_DEPLOY_HOOK_URL not set; relying on Vercel git auto-deploy."
-              fi
-
+              echo "Pushed on attempt ${attempt}. GitHub Pages will deploy from the resulting push."
               exit 0
             fi
 
