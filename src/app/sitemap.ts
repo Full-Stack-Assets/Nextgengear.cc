@@ -3,6 +3,8 @@ import { SITE_URL } from '@/lib/structured-data';
 import { isShoppableCategory } from '@/lib/affiliate';
 import type { MetadataRoute } from 'next';
 
+export const dynamic = 'force-static';
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const siteUrl = SITE_URL;
   const posts = await listPosts();
@@ -22,7 +24,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.5,
   }));
 
-  // Buyer-intent hub pages — only for buyable product categories that have posts.
   const hubEntries: MetadataRoute.Sitemap = categories
     .filter(isShoppableCategory)
     .map((c) => ({
