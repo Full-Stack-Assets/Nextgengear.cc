@@ -2,8 +2,6 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { listPosts } from '@/lib/posts';
 
-export const revalidate = 300;
-
 export async function generateStaticParams() {
   const posts = await listPosts();
   const tags = Array.from(new Set(posts.flatMap((p) => p.frontmatter.tags ?? [])));
@@ -26,9 +24,7 @@ export default async function TagPage({ params }: { params: Promise<{ tag: strin
         {posts.map((p) => (
           <li key={p.slug} className="py-6">
             <Link href={`/blog/${p.slug}`} className="group block">
-              <h2 className="font-display text-2xl font-semibold group-hover:text-accent transition-colors">
-                {p.frontmatter.title}
-              </h2>
+              <h2 className="font-display text-2xl font-semibold group-hover:text-accent transition-colors">{p.frontmatter.title}</h2>
               <p className="mt-1 text-ink/70">{p.frontmatter.description}</p>
             </Link>
           </li>
