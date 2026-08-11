@@ -11,6 +11,7 @@ import { pickImage } from './image';
 import { serialize } from './serialize';
 import { loadTopicLog, saveTopicLog, commitPost } from './github';
 import type { RawItem, TopicLog } from './types';
+import { filterRelevantGearItems } from './relevance';
 
 export interface PipelineResult {
   ok: boolean;
@@ -53,11 +54,12 @@ export async function runPipeline(opts: PipelineOptions = {}): Promise<PipelineR
     // module self-filters against siteConfig.sources.trendsKeywords, so every
     // item it returns is already on-niche (Reddit / RSS / Brave / YouTube /
     // Google Trends are all niche-configured in siteConfig.sources).
-    const allItems = [...reddit, ...rss, ...yt, ...brave, ...trends, ...lobsters];
+    const gatheredItems = [...reddit, ...rss, ...yt, ...brave, ...trends, ...lobsters];
+    const allItems = filterRelevantGearItems(gatheredItems);
     doneGather();
 
     if (allItems.length === 0) {
-      return { ok: false, skipped: 'no items from any source', timings };
+      return { ok: false, skipped: 'no on-niche gear items from any source', timings };
     }
 
     // ── 2. Score & pick ───────────────────────────────────────────

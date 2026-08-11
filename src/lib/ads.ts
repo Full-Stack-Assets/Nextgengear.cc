@@ -5,8 +5,10 @@
 // the loaded script if enabled in the dashboard).
 import { siteConfig } from '@/site.config';
 
-export const ADSENSE_CLIENT =
+export const ADSENSE_PUBLISHER_ID =
   process.env.NEXT_PUBLIC_ADSENSE_CLIENT || siteConfig.adsenseClient;
+export const ADSENSE_CLIENT =
+  process.env.NEXT_PUBLIC_GOOGLE_CERTIFIED_CMP_ACTIVE === 'true' ? ADSENSE_PUBLISHER_ID : undefined;
 
 export const ADSENSE_SLOT_IN_ARTICLE = process.env.NEXT_PUBLIC_ADSENSE_SLOT_IN_ARTICLE;
 export const ADSENSE_SLOT_FOOTER = process.env.NEXT_PUBLIC_ADSENSE_SLOT_FOOTER;

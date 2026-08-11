@@ -15,7 +15,9 @@ export function SubscribeForm() {
         action={subscribeUrl}
         method="post"
         target="_blank"
-        rel="noopener noreferrer"
+      rel="noopener noreferrer"
+      data-analytics-event="newsletter_signup"
+      data-placement="footer"
         className="flex flex-col gap-2 sm:flex-row"
       >
         <input
