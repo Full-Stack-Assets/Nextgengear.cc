@@ -8,9 +8,10 @@ import { SITE_URL, SITE_NAME, SITE_DESCRIPTION, websiteJsonLd } from '@/lib/stru
 import { SubscribeForm } from '@/components/SubscribeForm';
 import { ConsentBanner } from '@/components/ConsentBanner';
 import { AdSlot } from '@/components/AdSlot';
-import { ADSENSE_CLIENT, ADSENSE_SLOT_FOOTER } from '@/lib/ads';
+import { ADSENSE_CLIENT, ADSENSE_PUBLISHER_ID, ADSENSE_SLOT_FOOTER } from '@/lib/ads';
 import { AFFILIATE_ENABLED, AFFILIATE_DISCLOSURE } from '@/lib/affiliate';
 import { siteConfig } from '@/site.config';
+import { PortfolioAnalytics } from '@/components/PortfolioAnalytics';
 import './globals.css';
 
 /* Self-hosted at build time via next/font — replaces the old render-blocking
@@ -65,13 +66,14 @@ export const metadata: Metadata = {
     description: SITE_DESCRIPTION,
   },
   // Static AdSense site-verification tag in <head> — crawlable without JS.
-  other: { 'google-adsense-account': ADSENSE_CLIENT },
+  other: { 'google-adsense-account': ADSENSE_PUBLISHER_ID },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${fontDisplay.variable} ${fontBody.variable} ${fontMono.variable}`}>
       <body className="relative">
+        <PortfolioAnalytics />
         {ADSENSE_CLIENT && (
           <>
             {/* Google Consent Mode v2 defaults — must run BEFORE the AdSense
