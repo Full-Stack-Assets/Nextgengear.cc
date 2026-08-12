@@ -2,10 +2,9 @@ name: Content check
 
 # Safety net for the content pipeline: compiles every content/posts/*.mdx with
 # the same engine the site builds with (next-mdx-remote) and fails if any post
-# is malformed. The in-pipeline `validateMdx` guard (generate.ts) is the primary
-# defense — this catches anything that still lands on main (e.g. a hand edit or a
-# post generated before the guard existed) so a broken post surfaces here instead
-# of silently breaking the Vercel / `next build` prerender.
+# is malformed. The in-pipeline `validateMdx` guard is the primary defense;
+# this catches anything that still lands in the repository so a broken post
+# surfaces here instead of breaking the production `next build` prerender.
 
 on:
   push:
@@ -21,6 +20,9 @@ concurrency:
   group: content-check-${{ github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+
 jobs:
   validate:
     runs-on: ubuntu-latest
@@ -32,10 +34,10 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
           cache: npm
 
-      - name: Install deps
+      - name: Install dependencies
         run: npm ci
 
       - name: Validate all posts compile as MDX

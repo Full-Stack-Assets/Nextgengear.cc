@@ -2,8 +2,6 @@ import type { Metadata } from 'next';
 import { Space_Grotesk, Inter, JetBrains_Mono } from 'next/font/google';
 import Link from 'next/link';
 import Script from 'next/script';
-import { Analytics } from '@vercel/analytics/next';
-import { SpeedInsights } from '@vercel/speed-insights/next';
 import { SITE_URL, SITE_NAME, SITE_DESCRIPTION, websiteJsonLd } from '@/lib/structured-data';
 import { SubscribeForm } from '@/components/SubscribeForm';
 import { ConsentBanner } from '@/components/ConsentBanner';
@@ -100,8 +98,6 @@ gtag('consent','default',{ad_storage:c,ad_user_data:c,ad_personalization:c,analy
         <main className="relative z-10">{children}</main>
         <Footer />
         {ADSENSE_CLIENT && <ConsentBanner />}
-        <Analytics />
-        <SpeedInsights />
       </body>
     </html>
   );
