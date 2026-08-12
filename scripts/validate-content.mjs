@@ -8,7 +8,7 @@
  *   npm run validate:content
  *
  * Wired into CI (.github/workflows/content-check.yml) so a malformed post is
- * surfaced immediately instead of only blowing up the Vercel/`next build`
+ * surfaced immediately instead of only breaking the production `next build`
  * prerender. Deliberately dependency-light (no TS, no aliases) so it runs with a
  * bare `node`.
  */

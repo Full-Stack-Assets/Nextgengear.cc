@@ -41,7 +41,7 @@ describe('validateMdx', () => {
     expect(res.ok).toBe(true);
   });
 
-  // Regression: the three real-world failure modes that broke the Vercel build.
+  // Regression: three real-world failure modes that broke the production build.
 
   it('rejects a <Cons> that is never closed before </ProsCons>', async () => {
     const bad = GOOD_BODY.replace('  </Cons>\n', '');

@@ -40,10 +40,10 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
           cache: npm
 
-      - name: Install deps
+      - name: Install dependencies
         run: npm ci
 
       - name: Run seed
@@ -64,17 +64,13 @@ jobs:
           MAX="${{ github.event.inputs.max_attempts || '120' }}"
           npx tsx scripts/seed.ts --count="${COUNT}" --max-attempts="${MAX}"
 
-      - name: Commit, push, and optionally trigger Vercel
-        env:
-          VERCEL_DEPLOY_HOOK_URL: ${{ secrets.VERCEL_DEPLOY_HOOK_URL }}
-          PRODUCTION_BRANCH: main
+      - name: Commit and push generated content
         shell: bash
         run: |
           set -euo pipefail
 
-          git config user.name "astrokobi-bot"
-          git config user.email "bot@astrokobi.com"
-
+          git config user.name "nextgengear-bot"
+          git config user.email "bot@nextgengear.cc"
           git config merge.topiclog.name "union topic log entries"
           git config merge.topiclog.driver "node scripts/merge-topic-log.mjs %O %A %B"
 
@@ -86,26 +82,21 @@ jobs:
 
           COUNT="${{ github.event.inputs.count || '30' }}"
           git commit -m "seed: bulk generate ${COUNT} posts"
-
           branch="${GITHUB_REF_NAME:-main}"
 
           for attempt in 1 2 3 4 5; do
             if git push origin "HEAD:${branch}"; then
-              echo "Pushed on attempt ${attempt}."
-
-              if [[ -n "${VERCEL_DEPLOY_HOOK_URL:-}" && "${branch}" == "${PRODUCTION_BRANCH}" ]]; then
-                echo "Triggering Vercel deploy hook..."
-                curl -fsS -m 30 --retry 3 -X POST "${VERCEL_DEPLOY_HOOK_URL}" >/dev/null || \
-                  echo "Vercel deploy hook call failed (non-fatal)." >&2
-              fi
-
+              echo "Pushed on attempt ${attempt}; the Pages workflow will publish the commit."
               exit 0
             fi
 
-            echo "Push rejected (attempt ${attempt}); rebasing onto origin/${branch}..."
+            echo "Push rejected (attempt ${attempt}); rebasing onto origin/${branch}."
             git fetch origin "${branch}"
-            git rebase "origin/${branch}" || git rebase --abort || true
+            if ! git rebase "origin/${branch}"; then
+              git rebase --abort || true
+              echo "Rebase failed on attempt ${attempt}." >&2
+            fi
           done
 
-          echo "Failed to push after multiple attempts." >&2
+          echo "Failed to push after five attempts." >&2
           exit 1
