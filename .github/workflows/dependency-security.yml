@@ -1,3 +1,4 @@
+# Re-run security verification after the maintained dependency refresh.
 name: Dependency security
 
 on:
