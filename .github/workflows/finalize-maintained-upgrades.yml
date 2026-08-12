@@ -1,0 +1,50 @@
+name: Finalize maintained dependency upgrades
+
+on:
+  push:
+    branches:
+      - agent/remove-platform-coupling
+
+permissions:
+  contents: write
+
+jobs:
+  upgrade-and-verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout cleanup branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Upgrade maintained dependencies
+        run: |
+          npm install @tinacms/cli@latest tinacms@latest --no-audit --no-fund
+          npm install --save-dev vitest@latest @vitest/coverage-v8@latest --no-audit --no-fund
+
+      - name: Verify security and application behavior
+        run: |
+          npm audit --audit-level=critical
+          npm run typecheck
+          npm test
+          npm run validate:content
+          npm run build
+
+      - name: Commit upgrades and remove this one-shot workflow
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/workflows/finalize-maintained-upgrades.yml
+          git add package.json package-lock.json
+          git commit -m "Upgrade maintained dependencies after security audit"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
