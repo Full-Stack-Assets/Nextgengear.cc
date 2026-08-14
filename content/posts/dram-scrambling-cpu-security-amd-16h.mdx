@@ -1,0 +1,61 @@
+---
+title: "How DRAM Scrambling Bypasses CPU Security on AMD Family 16h Platforms"
+description: "A new GitHub project shows how DRAM address remapping on AMD Family 16h CPUs can bypass firmware and OS memory protections."
+date: "2026-08-14T12:34:40.161Z"
+category: "news"
+tags: 
+  - "cpu"
+  - "dram"
+  - "security"
+  - "exploit"
+  - "hardware"
+hero: 
+  url: "https://images.pexels.com/photos/33829026/pexels-photo-33829026.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+  alt: "Intel Core Ultra CPU with packaging box, highlighting its high-performance capabilities."
+  credit: "Andrey Matveev"
+  creditUrl: "https://www.pexels.com/@zeleboba"
+sources: 
+  - title: "Unlocking _everything_ on the CPU with DRAM scrambling"
+    url: "https://github.com/xoreaxeaxeax/skitter-creek-bath-salts"
+  - title: "GitHub - xoreaxeaxeax/skitter-creek-bath-salts: Unlocking _everything_ on the CPU with DRAM scrambling"
+    url: "https://github.com/xoreaxeaxeax/skitter-creek-bath-salts"
+---
+
+A GitHub project named “skitter‑creek‑bath‑salts” demonstrates a method to scramble DRAM address translations on AMD Family 16h CPUs. By flipping a single bit in the memory controller’s bank‑swizzle register, the code rewires the final mapping layer so that physical addresses no longer correspond to fixed DRAM coordinates. This effectively bypasses the firmware, SMM, and OS memory‑guard mechanisms that rely on static address maps. The researchers proved the concept on real silicon and documented the steps needed to keep the system alive while the entire memory space is shuffled. If the technique scales, it could expose hidden carve‑outs and undermine a core pillar of platform security.
+
+<Callout type="takeaway">DRAM address remapping can invalidate the CPU’s memory protection assumptions.</Callout>
+
+## What happened
+The repository contains a proof‑of‑concept that modifies the DCT (DRAM Controller) registers on AMD Family 16h processors. The authors identified the bank‑swizzle‑mode register as a single‑bit lever that changes how the memory controller translates physical addresses to raw DRAM coordinates. By writing to this register, they force the controller to map any address to an arbitrary location, causing “&x != &x”.
+
+The exploit works at the lowest layer of the memory pipeline, after the data fabric has generated a physical address but before the DRAM command is issued. Because all higher‑level protections—CPU microcode, SMM, and OS page tables—track physical addresses, they remain blind to the altered DRAM coordinates. The project also describes a fast‑path routine that disables auxiliary processors, primes TLBs, and keeps the system stable while the entire address space is scrambled.
+
+The authors note that AMD’s later 17h and newer families omit the translation registers from public documentation, suggesting the vulnerability may be harder to reproduce on newer silicon, while similar address‑remap knobs exist on ARM and RISC‑V platforms.
+
+## Why it matters
+Memory isolation is a cornerstone of modern threat models; if an attacker can rewrite the final address translation, every barrier that assumes a fixed mapping is bypassed. This opens the door to reading or overwriting firmware regions, secure enclaves, and other protected carve‑outs without triggering traditional detection. Enterprises that rely on AMD‑based servers for confidential workloads could see their threat surface expand dramatically. Additionally, the technique highlights a broader class of hardware‑level bugs that are invisible to software‑only testing, urging vendors to reconsider how they document and lock down low‑level controller registers.
+
+<ProsCons>
+  <Pros>
+    <li>Reveals a previously undocumented attack surface on widely deployed CPUs.</li>
+    <li>Provides researchers with a concrete testbed for hardware‑level security studies.</li>
+    <li>Encourages vendors to harden memory‑controller firmware and hide critical registers.</li>
+  </Pros>
+  <Cons>
+    <li>Exploit requires physical‑level access or privileged code execution, limiting immediate threat.</li>
+    <li>Can cause system instability or data loss if applied to production hardware.</li>
+    <li>Lack of documentation on newer generations leaves uncertainty about the prevalence of the bug.</li>
+  </Cons>
+</ProsCons>
+
+## How to think about it
+When evaluating platform security, consider not only the documented protection mechanisms but also the hidden configuration registers in the memory controller. Verify that firmware updates lock down any mutable translation bits, and employ runtime integrity checks that compare expected DRAM coordinate maps against observed behavior. For critical deployments, prefer CPUs whose newer generations omit or lock these registers, and isolate firmware update paths to prevent unauthorized register writes.
+
+<Callout type="warning">Attempting the DRAM scrambling technique on a live system can corrupt memory, cause crashes, and potentially expose sensitive data; only run it in isolated lab environments.</Callout>
+
+## FAQ
+<FAQ>
+  <Question q="Can this DRAM scrambling be used to gain root access on a running system?">It can bypass memory isolation, but the attacker still needs code execution with sufficient privileges to write the controller registers; once achieved, they can read or modify protected regions, effectively escalating to full system control.</Question>
+  <Question q="Do newer AMD CPUs (17h and later) have the same vulnerability?">The public research shows that the specific bank‑swizzle register is undocumented on 17h and newer parts, making the exact exploit harder to reproduce, though similar remap registers may exist.</Question>
+  <Question q="What mitigation steps can administrators take today?">Apply the latest microcode and BIOS updates that lock down memory‑controller registers, monitor for unexpected writes to the DCT configuration space, and consider using CPUs from generations where the registers are not exposed.</Question>
+</FAQ>
